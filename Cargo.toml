@@ -1,0 +1,20 @@
+[package]
+name = "fisika"
+description = "A physics library"
+version = "0.1.0"
+edition = "2018"
+authors = ["José Luis Cruz <joseluis@andamira.net>"]
+license = "MIT/Apache-2.0"
+include = [
+    "src/**/*.rs",
+    "Cargo.toml",
+	"LICENSE-*",
+]
+publish = false
+
+[dependencies]
+paste = "1.0.5"
+pretty_dtoa = "0.3.0"
+
+[dev-dependencies]
+float_eq = "0.6.0"

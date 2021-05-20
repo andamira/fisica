@@ -1,0 +1,17 @@
+[alias]
+
+# BUILD
+b = "build"
+br = "build --release"
+
+# RUN
+r = "run"
+rr = "run --release"
+re = "run --example"
+
+# DOC
+d = "doc --no-deps"
+do = "doc --no-deps --open"
+
+# TEST
+t = "test -- --nocapture"
