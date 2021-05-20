@@ -1,7 +1,7 @@
 //!
 //!
 
-use crate::{Acceleration, GravitationalFieldStrength, Mass, F, Distance, Length, Moment};
+use crate::{Acceleration, Distance, GravitationalFieldStrength, Length, Mass, Moment, F};
 
 /// Any interaction that, when unopposed, will change the motion of an object,
 /// measured in `N` (newtons).

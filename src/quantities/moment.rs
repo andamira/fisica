@@ -28,8 +28,6 @@ impl Moment {
         Self(f.0 * d.0)
     }
 
-    // TODO: https://www.mathsisfun.com/physics/moment-torque.html
-
     /// Calculates the [`Distance`] for a given [`Force`] (`d = M / F`).
     #[inline]
     pub fn calc_length(&self, f: Force) -> Distance {
@@ -43,6 +41,4 @@ impl Moment {
     }
 }
 
-// TODO: prefixes
-// # is it meganewtons per kilogram? newtons per milligram?
 // impl_prefixes![Moment, Nkg, ];

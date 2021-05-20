@@ -46,7 +46,6 @@ pub type Distance = Length;
 /// (== [`Length`]). Vertical length, in `m`.
 pub type Height = Length;
 
-
 /// # Formulas: [`Distance`]
 impl Distance {
     /// Returns the `Distance` from the given [`Moment`] and [`Force`] (`d = M / F`).
@@ -121,37 +120,51 @@ impl Length {
     /// [0]:https://en.wikipedia.org/wiki/Bond_length
     pub const COVALENT_BOND_DIAMOND: Self = Length(1.54e-10);
 
-    /// Roughly the [distance from Earth to the Sun][0], about 150 million kilometres.
+    /// Roughly the [distance from Earth to the Sun][0], 1.495978707×10¹¹ metres.
     ///
     /// [0]:https://en.wikipedia.org/wiki/Astronomical_unit
     pub const ASTRONOMICAL_UNIT: Self = Length(1.495978707e11);
 }
 
 /// # Non SI units conversions
-// TODO
 impl Length {
-    /// Returns `Length` as `Å` (`ångströms`) (10e-10 metres)
-    #[inline]
-    #[allow(non_snake_case)]
-    pub fn as_A(&self) -> F {
-        self.0 / 10e10
-    }
+    fn_prefix_constructors_unicode![
+        Length,
+        "au",
+        "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
+        au,
+        astronomical_units,
+        Self::ASTRONOMICAL_UNIT.0
+    ];
+    fn_prefix_getters_unicode![
+        Length,
+        "au",
+        "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
+        au,
+        astronomical_units,
+        Self::ASTRONOMICAL_UNIT.0
+    ];
 
-    /// Returns `Length` as `Å` (`ångströms`) (10e-10 metres)
-    #[inline]
-    pub fn as_angstroms(&self) -> F {
-        self.0 / 10e10
-    }
-
-    fn_prefix_constructors![Length, A, angstroms, 1.0e10, "e-10"];
-
-    // /// Returns `Length` as `au` (`astronomical units`) (10e-10 metres)
-    // #[inline]
-    // #[allow(non_snake_case)]
-    // pub fn as_au(&self) -> F { self.0 / 10e10 }
-    //
-    // #[inline]
-    // pub fn as_astronomical_unit(&self) -> F { self.0 / 10e10 }
+    fn_prefix_constructors_unicode![
+        Length,
+        "`Å`",
+        "`ångströms`",
+        A,
+        angstroms,
+        metres,
+        1.0e10,
+        "⁻¹⁰"
+    ];
+    fn_prefix_getters_unicode![
+        Length,
+        "`Å`",
+        "`ångströms`",
+        A,
+        angstroms,
+        metres,
+        1.0e10,
+        "⁻¹⁰"
+    ];
 }
 
 impl_prefixes![Length, m, metres];

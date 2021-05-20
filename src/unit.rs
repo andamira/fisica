@@ -59,18 +59,6 @@ macro_rules! impl_unit {
                 format!["{} {}", self.0, self.unit_long()]
             }
         }
-
-        // /// Constructors
-        // FIXME: remove this
-        // impl $type {
-        //     pub const fn new(quantity: F) -> Self {
-        //         Self(quantity)
-        //     }
-        //
-        //     pub const fn $method_name(quantity: F) -> Self {
-        //         Self::new(quantity)
-        //     }
-        // }
     };
 }
 

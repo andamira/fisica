@@ -67,13 +67,3 @@ pub use power::Power;
 pub use pressure::Pressure;
 pub use speed::{Speed, Velocity};
 pub use volume::Volume;
-
-// TODO: re-exports thematically grouped mods (maybe some are simpler than others)
-// ... start small with obvious choices.
-//
-// - force & motion
-// - light
-// - electricity
-// - magnetism (electromagnetism?)
-// - matter
-// - pressure
