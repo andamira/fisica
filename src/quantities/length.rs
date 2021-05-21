@@ -120,7 +120,7 @@ impl Length {
     /// [0]:https://en.wikipedia.org/wiki/Bond_length
     pub const COVALENT_BOND_DIAMOND: Self = Length(1.54e-10);
 
-    /// Roughly the [distance from Earth to the Sun][0], 1.495978707×10¹¹ metres.
+    /// (10e11) Roughly the [distance from Earth to the Sun][0] (`149.5978707 Tm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Astronomical_unit
     pub const ASTRONOMICAL_UNIT: Self = Length(1.495978707e11);
@@ -128,15 +128,7 @@ impl Length {
 
 /// # Non SI units conversions
 impl Length {
-    fn_prefix_constructors_unicode![
-        Length,
-        "au",
-        "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
-        au,
-        astronomical_units,
-        Self::ASTRONOMICAL_UNIT.0
-    ];
-    fn_prefix_getters_unicode![
+    fn_both_unicode![
         Length,
         "au",
         "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
@@ -145,7 +137,7 @@ impl Length {
         Self::ASTRONOMICAL_UNIT.0
     ];
 
-    fn_prefix_constructors_unicode![
+    fn_both_unicode![
         Length,
         "`Å`",
         "`ångströms`",
@@ -153,17 +145,7 @@ impl Length {
         angstroms,
         metres,
         1.0e10,
-        "⁻¹⁰"
-    ];
-    fn_prefix_getters_unicode![
-        Length,
-        "`Å`",
-        "`ångströms`",
-        A,
-        angstroms,
-        metres,
-        1.0e10,
-        "⁻¹⁰"
+        "10⁻¹⁰"
     ];
 }
 

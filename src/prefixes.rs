@@ -7,7 +7,7 @@
 use crate::*;
 
 /// Generates 2 prefix constructors (short and long)
-macro_rules! fn_prefix_constructors {
+macro_rules! fn_constructors {
     ($type:ty, $q:ident, $quantity:ident, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
         paste::paste! {
             #[inline]
@@ -67,7 +67,7 @@ macro_rules! fn_prefix_constructors {
 }
 
 /// Generates 2 prefix constructors (short and long) with custom unicode quantity and/or prefix
-macro_rules! fn_prefix_constructors_unicode {
+macro_rules! fn_constructors_unicode {
     // specify strings for the 2 quantities, strings for the 2 prefixes, and the base unit
     ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
         paste::paste! {
@@ -86,7 +86,7 @@ macro_rules! fn_prefix_constructors_unicode {
 
     // specify strings for the 2 quantities, strings for the 2 prefixes
     ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_prefix_constructors_unicode![
+        fn_constructors_unicode![
             $type,
             $q_str,
             $quantity_str,
@@ -104,7 +104,7 @@ macro_rules! fn_prefix_constructors_unicode {
 
     // specify strings for the 2 prefixes (e.g. "µ", "micro")
     ($type:ty, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_prefix_constructors_unicode![
+        fn_constructors_unicode![
             $type,
             $q,
             $quantity,
@@ -150,7 +150,7 @@ macro_rules! fn_prefix_constructors_unicode {
 }
 
 /// Generates 2 prefix getters (short and long)
-macro_rules! fn_prefix_getters {
+macro_rules! fn_getters {
     ($type:ty, $q:ident, $quantity:ident, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
         paste::paste! {
             #[inline]
@@ -212,9 +212,10 @@ macro_rules! fn_prefix_getters {
 }
 
 /// Generates 2 prefix getters (short and long) with custom unicode quantity and/or prefix
-macro_rules! fn_prefix_getters_unicode {
+macro_rules! fn_getters_unicode {
     // specify strings for the 2 quantities, strings for the 2 prefixes, and the base unit
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
+    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr,
+        $prefix_str:expr, $p:ident, $prefix:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
         paste::paste! {
             #[inline]
             #[doc = "Returns `" $type "` as `" $p_str "" $q_str "` (`" $prefix_str "" $quantity_str
@@ -230,8 +231,9 @@ macro_rules! fn_prefix_getters_unicode {
     };
 
     // specify strings for the 2 quantities, strings for the 2 prefixes
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_prefix_getters_unicode![
+    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr,
+        $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
+        fn_getters_unicode![
             $type,
             $q_str,
             $quantity_str,
@@ -249,7 +251,7 @@ macro_rules! fn_prefix_getters_unicode {
 
     // specify strings for the 2 prefixes (e.g. "µ", "micro")
     ($type:ty, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_prefix_getters_unicode![
+        fn_getters_unicode![
             $type,
             $q,
             $quantity,
@@ -296,6 +298,39 @@ macro_rules! fn_prefix_getters_unicode {
     };
 }
 
+/// Generates both constructors and getters
+macro_rules! fn_both_unicode {
+    //
+    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $oper:expr) => {
+        fn_constructors_unicode![$type, $q_str, $quantity_str, $q, $quantity, $oper];
+        fn_getters_unicode![$type, $q_str, $quantity_str, $q, $quantity, $oper];
+    };
+
+    // specify strings for the 2 quantities, and for the base unit (e.g. "Å", "ångströms")
+    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
+        fn_constructors_unicode![
+            $type,
+            $q_str,
+            $quantity_str,
+            $q,
+            $quantity,
+            $base_unit,
+            $oper,
+            $pow
+        ];
+        fn_getters_unicode![
+            $type,
+            $q_str,
+            $quantity_str,
+            $q,
+            $quantity,
+            $base_unit,
+            $oper,
+            $pow
+        ];
+    };
+}
+
 /// Generates SI prefixes constructors and converter methods
 macro_rules! impl_prefixes {
     ($type:ty, $q:ident, $quantity:ident) => {
@@ -309,49 +344,49 @@ macro_rules! impl_prefixes {
             #[doc = "[`as_" $quantity "`](" $type "#method.as_" $quantity ")"]
 
             impl $type {
-                fn_prefix_constructors![$type, $q, $quantity, Y, yotta, 1.0e24, "10²⁴"];
-                fn_prefix_constructors![$type, $q, $quantity, Z, zetta, 1.0e21, "10²¹"];
-                fn_prefix_constructors![$type, $q, $quantity, E, exa, 1.0e18, "10¹⁸"];
-                fn_prefix_constructors![$type, $q, $quantity, P, peta, 1.0e15, "10¹⁵"];
-                fn_prefix_constructors![$type, $q, $quantity, T, tera, 1.0e12, "10¹²"];
-                fn_prefix_constructors![$type, $q, $quantity, G, giga, 1.0e9, "10⁹"];
-                fn_prefix_constructors![$type, $q, $quantity, M, mega, 1.0e6, "10⁶"];
-                fn_prefix_constructors![$type, $q, $quantity, k, kilo, 1.0e3, "10³"];
-                fn_prefix_constructors![$type, $q, $quantity, h, hecto, 1.0e2, "10²"];
-                fn_prefix_constructors![$type, $q, $quantity, da, deka, 1.0e1, "10¹"];
-                fn_prefix_constructors![$type, $q, $quantity, "10⁰"];
-                fn_prefix_constructors![$type, $q, $quantity, d, deci, 1.0e-1, "10⁻¹"];
-                fn_prefix_constructors![$type, $q, $quantity, c, centi, 1.0e-2, "10⁻²"];
-                fn_prefix_constructors![$type, $q, $quantity, m, milli, 1.0e-3, "10⁻³"];
-                fn_prefix_constructors_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-6, "10⁻⁶"];
-                fn_prefix_constructors![$type, $q, $quantity, n, nano, 1.0e-9, "10⁻⁹"];
-                fn_prefix_constructors![$type, $q, $quantity, p, pico, 1.0e-12, "10⁻¹²"];
-                fn_prefix_constructors![$type, $q, $quantity, f, femto, 1.0e-15, "10⁻¹⁵"];
-                fn_prefix_constructors![$type, $q, $quantity, a, atto, 1.0e-18, "10⁻¹⁸"];
-                fn_prefix_constructors![$type, $q, $quantity, z, zepto, 1.0e-21, "10⁻²¹"];
-                fn_prefix_constructors![$type, $q, $quantity, y, yocto, 0.0e-24, "10⁻²⁴"];
+                fn_constructors![$type, $q, $quantity, Y, yotta, 1.0e24, "10²⁴"];
+                fn_constructors![$type, $q, $quantity, Z, zetta, 1.0e21, "10²¹"];
+                fn_constructors![$type, $q, $quantity, E, exa, 1.0e18, "10¹⁸"];
+                fn_constructors![$type, $q, $quantity, P, peta, 1.0e15, "10¹⁵"];
+                fn_constructors![$type, $q, $quantity, T, tera, 1.0e12, "10¹²"];
+                fn_constructors![$type, $q, $quantity, G, giga, 1.0e9, "10⁹"];
+                fn_constructors![$type, $q, $quantity, M, mega, 1.0e6, "10⁶"];
+                fn_constructors![$type, $q, $quantity, k, kilo, 1.0e3, "10³"];
+                fn_constructors![$type, $q, $quantity, h, hecto, 1.0e2, "10²"];
+                fn_constructors![$type, $q, $quantity, da, deka, 1.0e1, "10¹"];
+                fn_constructors![$type, $q, $quantity, "10⁰"];
+                fn_constructors![$type, $q, $quantity, d, deci, 1.0e-1, "10⁻¹"];
+                fn_constructors![$type, $q, $quantity, c, centi, 1.0e-2, "10⁻²"];
+                fn_constructors![$type, $q, $quantity, m, milli, 1.0e-3, "10⁻³"];
+                fn_constructors_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-6, "10⁻⁶"];
+                fn_constructors![$type, $q, $quantity, n, nano, 1.0e-9, "10⁻⁹"];
+                fn_constructors![$type, $q, $quantity, p, pico, 1.0e-12, "10⁻¹²"];
+                fn_constructors![$type, $q, $quantity, f, femto, 1.0e-15, "10⁻¹⁵"];
+                fn_constructors![$type, $q, $quantity, a, atto, 1.0e-18, "10⁻¹⁸"];
+                fn_constructors![$type, $q, $quantity, z, zepto, 1.0e-21, "10⁻²¹"];
+                fn_constructors![$type, $q, $quantity, y, yocto, 0.0e-24, "10⁻²⁴"];
 
-                fn_prefix_getters![$type, $q, $quantity, Y, yotta, 1.0e24, "10²⁴"];
-                fn_prefix_getters![$type, $q, $quantity, Z, zetta, 1.0e21, "10²¹"];
-                fn_prefix_getters![$type, $q, $quantity, E, exa, 1.0e18, "10¹⁸"];
-                fn_prefix_getters![$type, $q, $quantity, P, peta, 1.0e15, "10¹⁵"];
-                fn_prefix_getters![$type, $q, $quantity, T, tera, 1.0e12, "10¹²"];
-                fn_prefix_getters![$type, $q, $quantity, G, giga, 1.0e9, "10⁹"];
-                fn_prefix_getters![$type, $q, $quantity, M, mega, 1.0e6, "10⁶"];
-                fn_prefix_getters![$type, $q, $quantity, k, kilo, 1.0e3, "10³"];
-                fn_prefix_getters![$type, $q, $quantity, h, hecto, 1.0e2, "10²"];
-                fn_prefix_getters![$type, $q, $quantity, da, deka, 1.0e1, "10¹"];
-                fn_prefix_getters![$type, $q, $quantity, "10⁰"];
-                fn_prefix_getters![$type, $q, $quantity, d, deci, 1.0e-1, "10⁻¹"];
-                fn_prefix_getters![$type, $q, $quantity, c, centi, 1.0e-2, "10⁻²"];
-                fn_prefix_getters![$type, $q, $quantity, m, milli, 1.0e-3, "10⁻³"];
-                fn_prefix_getters_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-6, "10⁻⁶"];
-                fn_prefix_getters![$type, $q, $quantity, n, nano, 1.0e-9, "10⁻⁹"];
-                fn_prefix_getters![$type, $q, $quantity, p, pico, 1.0e-12, "10⁻¹²"];
-                fn_prefix_getters![$type, $q, $quantity, f, femto, 1.0e-15, "10⁻¹⁵"];
-                fn_prefix_getters![$type, $q, $quantity, a, atto, 1.0e-18, "10⁻¹⁸"];
-                fn_prefix_getters![$type, $q, $quantity, z, zepto, 1.0e-21, "10⁻²¹"];
-                fn_prefix_getters![$type, $q, $quantity, y, yocto, 0.0e-24, "10⁻²⁴"];
+                fn_getters![$type, $q, $quantity, Y, yotta, 1.0e24, "10²⁴"];
+                fn_getters![$type, $q, $quantity, Z, zetta, 1.0e21, "10²¹"];
+                fn_getters![$type, $q, $quantity, E, exa, 1.0e18, "10¹⁸"];
+                fn_getters![$type, $q, $quantity, P, peta, 1.0e15, "10¹⁵"];
+                fn_getters![$type, $q, $quantity, T, tera, 1.0e12, "10¹²"];
+                fn_getters![$type, $q, $quantity, G, giga, 1.0e9, "10⁹"];
+                fn_getters![$type, $q, $quantity, M, mega, 1.0e6, "10⁶"];
+                fn_getters![$type, $q, $quantity, k, kilo, 1.0e3, "10³"];
+                fn_getters![$type, $q, $quantity, h, hecto, 1.0e2, "10²"];
+                fn_getters![$type, $q, $quantity, da, deka, 1.0e1, "10¹"];
+                fn_getters![$type, $q, $quantity, "10⁰"];
+                fn_getters![$type, $q, $quantity, d, deci, 1.0e-1, "10⁻¹"];
+                fn_getters![$type, $q, $quantity, c, centi, 1.0e-2, "10⁻²"];
+                fn_getters![$type, $q, $quantity, m, milli, 1.0e-3, "10⁻³"];
+                fn_getters_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-6, "10⁻⁶"];
+                fn_getters![$type, $q, $quantity, n, nano, 1.0e-9, "10⁻⁹"];
+                fn_getters![$type, $q, $quantity, p, pico, 1.0e-12, "10⁻¹²"];
+                fn_getters![$type, $q, $quantity, f, femto, 1.0e-15, "10⁻¹⁵"];
+                fn_getters![$type, $q, $quantity, a, atto, 1.0e-18, "10⁻¹⁸"];
+                fn_getters![$type, $q, $quantity, z, zepto, 1.0e-21, "10⁻²¹"];
+                fn_getters![$type, $q, $quantity, y, yocto, 0.0e-24, "10⁻²⁴"];
             }
         }
     };
@@ -369,49 +404,49 @@ macro_rules! impl_prefixes_base_kilo {
             #[doc = "[`as_kilo" $quantity "`](" $type "#method.as_kilo" $quantity ")"]
 
             impl $type {
-                fn_prefix_constructors![$type, $q, $quantity, Y, yotta, 1.0e21, "10²⁴"];
-                fn_prefix_constructors![$type, $q, $quantity, Z, zetta, 1.0e18, "10²¹"];
-                fn_prefix_constructors![$type, $q, $quantity, E, exa, 1.0e15, "10¹⁸"];
-                fn_prefix_constructors![$type, $q, $quantity, P, peta, 1.0e12, "10¹⁵"];
-                fn_prefix_constructors![$type, $q, $quantity, T, tera, 1.0e9, "10¹²"];
-                fn_prefix_constructors![$type, $q, $quantity, G, giga, 1.0e6, "10⁹"];
-                fn_prefix_constructors![$type, $q, $quantity, M, mega, 1.0e3, "10⁶"];
-                fn_prefix_constructors![$type, $q, $quantity, k, kilo, "10³"];
-                fn_prefix_constructors![$type, $q, $quantity, h, hecto, 1.0e-1, "10²"];
-                fn_prefix_constructors![$type, $q, $quantity, da, deka, 1.0e-2, "10¹"];
-                fn_prefix_constructors![$type, $q, $quantity, 1.0e-3, "10⁰"];
-                fn_prefix_constructors![$type, $q, $quantity, d, deci, 1.0e-4, "10⁻¹"];
-                fn_prefix_constructors![$type, $q, $quantity, c, centi, 1.0e-5, "10⁻²"];
-                fn_prefix_constructors![$type, $q, $quantity, m, milli, 1.0e-6, "10⁻³"];
-                fn_prefix_constructors_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-9, "⁻⁶"];
-                fn_prefix_constructors![$type, $q, $quantity, n, nano, 1.0e-12, "10⁻⁹"];
-                fn_prefix_constructors![$type, $q, $quantity, p, pico, 1.0e-15, "10⁻¹²"];
-                fn_prefix_constructors![$type, $q, $quantity, f, femto, 1.0e-18, "10⁻¹⁵"];
-                fn_prefix_constructors![$type, $q, $quantity, a, atto, 1.0e-21, "10⁻¹⁸"];
-                fn_prefix_constructors![$type, $q, $quantity, z, zepto, 1.0e-24, "10⁻²¹"];
-                fn_prefix_constructors![$type, $q, $quantity, y, yocto, 0.0e-27, "10⁻²⁴"];
+                fn_constructors![$type, $q, $quantity, Y, yotta, 1.0e21, "10²⁴"];
+                fn_constructors![$type, $q, $quantity, Z, zetta, 1.0e18, "10²¹"];
+                fn_constructors![$type, $q, $quantity, E, exa, 1.0e15, "10¹⁸"];
+                fn_constructors![$type, $q, $quantity, P, peta, 1.0e12, "10¹⁵"];
+                fn_constructors![$type, $q, $quantity, T, tera, 1.0e9, "10¹²"];
+                fn_constructors![$type, $q, $quantity, G, giga, 1.0e6, "10⁹"];
+                fn_constructors![$type, $q, $quantity, M, mega, 1.0e3, "10⁶"];
+                fn_constructors![$type, $q, $quantity, k, kilo, "10³"];
+                fn_constructors![$type, $q, $quantity, h, hecto, 1.0e-1, "10²"];
+                fn_constructors![$type, $q, $quantity, da, deka, 1.0e-2, "10¹"];
+                fn_constructors![$type, $q, $quantity, 1.0e-3, "10⁰"];
+                fn_constructors![$type, $q, $quantity, d, deci, 1.0e-4, "10⁻¹"];
+                fn_constructors![$type, $q, $quantity, c, centi, 1.0e-5, "10⁻²"];
+                fn_constructors![$type, $q, $quantity, m, milli, 1.0e-6, "10⁻³"];
+                fn_constructors_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-9, "⁻⁶"];
+                fn_constructors![$type, $q, $quantity, n, nano, 1.0e-12, "10⁻⁹"];
+                fn_constructors![$type, $q, $quantity, p, pico, 1.0e-15, "10⁻¹²"];
+                fn_constructors![$type, $q, $quantity, f, femto, 1.0e-18, "10⁻¹⁵"];
+                fn_constructors![$type, $q, $quantity, a, atto, 1.0e-21, "10⁻¹⁸"];
+                fn_constructors![$type, $q, $quantity, z, zepto, 1.0e-24, "10⁻²¹"];
+                fn_constructors![$type, $q, $quantity, y, yocto, 0.0e-27, "10⁻²⁴"];
 
-                fn_prefix_getters![$type, $q, $quantity, Y, yotta, 1.0e21, "10²⁴"];
-                fn_prefix_getters![$type, $q, $quantity, Z, zetta, 1.0e18, "10²¹"];
-                fn_prefix_getters![$type, $q, $quantity, E, exa, 1.0e15, "10¹⁸"];
-                fn_prefix_getters![$type, $q, $quantity, P, peta, 1.0e12, "10¹⁵"];
-                fn_prefix_getters![$type, $q, $quantity, T, tera, 1.0e9, "10¹²"];
-                fn_prefix_getters![$type, $q, $quantity, G, giga, 1.0e6, "10⁹"];
-                fn_prefix_getters![$type, $q, $quantity, M, mega, 1.0e3, "10⁶"];
-                fn_prefix_getters![$type, $q, $quantity, k, kilo, "10³"];
-                fn_prefix_getters![$type, $q, $quantity, h, hecto, 1.0e-1, "10²"];
-                fn_prefix_getters![$type, $q, $quantity, da, deka, 1.0e-2, "10¹"];
-                fn_prefix_getters![$type, $q, $quantity, 1.0e-3, "10⁰"];
-                fn_prefix_getters![$type, $q, $quantity, d, deci, 1.0e-4, "10⁻¹"];
-                fn_prefix_getters![$type, $q, $quantity, c, centi, 1.0e-5, "10⁻²"];
-                fn_prefix_getters![$type, $q, $quantity, m, milli, 1.0e-6, "10⁻³"];
-                fn_prefix_getters_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-9, "⁻⁶"];
-                fn_prefix_getters![$type, $q, $quantity, n, nano, 1.0e-12, "10⁻⁹"];
-                fn_prefix_getters![$type, $q, $quantity, p, pico, 1.0e-15, "10⁻¹²"];
-                fn_prefix_getters![$type, $q, $quantity, f, femto, 1.0e-18, "10⁻¹⁵"];
-                fn_prefix_getters![$type, $q, $quantity, a, atto, 1.0e-21, "10⁻¹⁸"];
-                fn_prefix_getters![$type, $q, $quantity, z, zepto, 1.0e-24, "10⁻²¹"];
-                fn_prefix_getters![$type, $q, $quantity, y, yocto, 0.0e-27, "10⁻²⁴"];
+                fn_getters![$type, $q, $quantity, Y, yotta, 1.0e21, "10²⁴"];
+                fn_getters![$type, $q, $quantity, Z, zetta, 1.0e18, "10²¹"];
+                fn_getters![$type, $q, $quantity, E, exa, 1.0e15, "10¹⁸"];
+                fn_getters![$type, $q, $quantity, P, peta, 1.0e12, "10¹⁵"];
+                fn_getters![$type, $q, $quantity, T, tera, 1.0e9, "10¹²"];
+                fn_getters![$type, $q, $quantity, G, giga, 1.0e6, "10⁹"];
+                fn_getters![$type, $q, $quantity, M, mega, 1.0e3, "10⁶"];
+                fn_getters![$type, $q, $quantity, k, kilo, "10³"];
+                fn_getters![$type, $q, $quantity, h, hecto, 1.0e-1, "10²"];
+                fn_getters![$type, $q, $quantity, da, deka, 1.0e-2, "10¹"];
+                fn_getters![$type, $q, $quantity, 1.0e-3, "10⁰"];
+                fn_getters![$type, $q, $quantity, d, deci, 1.0e-4, "10⁻¹"];
+                fn_getters![$type, $q, $quantity, c, centi, 1.0e-5, "10⁻²"];
+                fn_getters![$type, $q, $quantity, m, milli, 1.0e-6, "10⁻³"];
+                fn_getters_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-9, "⁻⁶"];
+                fn_getters![$type, $q, $quantity, n, nano, 1.0e-12, "10⁻⁹"];
+                fn_getters![$type, $q, $quantity, p, pico, 1.0e-15, "10⁻¹²"];
+                fn_getters![$type, $q, $quantity, f, femto, 1.0e-18, "10⁻¹⁵"];
+                fn_getters![$type, $q, $quantity, a, atto, 1.0e-21, "10⁻¹⁸"];
+                fn_getters![$type, $q, $quantity, z, zepto, 1.0e-24, "10⁻²¹"];
+                fn_getters![$type, $q, $quantity, y, yocto, 0.0e-27, "10⁻²⁴"];
             }
 
         }
