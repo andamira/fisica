@@ -1,7 +1,7 @@
 //!
 //!
 
-use crate::F;
+use crate::{Distance, Length, Speed, F};
 
 /// `Time`, in seconds: `s`.
 ///
@@ -27,22 +27,52 @@ pub struct Time(pub F);
 //     pub const SYMBOL: &'static str = "s";
 // }
 
-/// # Constants by order of magnitude
+/// # `Time` formulas
 impl Time {
-    /// [Julian Year](https://en.wikipedia.org/wiki/Julian_year_(astronomy)),
-    /// used in astronomy, (`365.25 days`).
+    /// Derives the `Time` from the given [`Distance`] and [`Speed`] (`t = d / s`).
+    pub fn from_distance_speed(d: Distance, s: Speed) -> Self {
+        Self(d.0 / s.0)
+    }
+
+    /// (Alias of [from_distance_speed][Length::from_distance_speed]).
+    pub fn from_speed_distance(s: Speed, d: Distance) -> Self {
+        Time::from_distance_speed(d, s)
+    }
+
+    /// Calculates the `Speed` from the given [`Distance`] (`s = d / t`).
+    pub fn calc_speed(&self, d: Distance) -> Speed {
+        Speed(d.0 / self.0)
+    }
+
+    /// Calculates the [`Distance`] given the [`Speed`] (`d = s × t`).
+    #[inline]
+    pub fn calc_distance(&self, s: Speed) -> Distance {
+        Length(self.0 * s.0)
+    }
+}
+
+/// # `Time` constants by order of magnitude]
+///
+/// <https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)>
+impl Time {
+    /// [Julian Year][0], used in astronomy, (`365.25 days`).
+    ///
+    /// [0]:https://en.wikipedia.org/wiki/Julian_year_(astronomy)
     pub const JULIAN_YEAR: Self = Time(31_557_600.);
 
-    /// [Full moon cycle](https://en.wikipedia.org/wiki/Year#Full_moon_cycle)
-    /// (`411 days 18 hours 49 minutes 35 seconds`)
+    /// [Full moon cycle][0] (`411 days 18 hours 49 minutes 35 seconds`).
+    ///
+    /// [0]:https://en.wikipedia.org/wiki/Year#Full_moon_cycle
     pub const FULL_MOON_CYCLE: Self = Time(35578174.777056);
 
-    /// [Draconic Year](https://en.wikipedia.org/wiki/Year#Draconic_year),
-    /// (`346 days 14 hours 52 minuets 54 seconds`)
+    /// [Draconic Year][0] (`346 days 14 hours 52 minuets 54 seconds`).
+    ///
+    /// [0]:https://en.wikipedia.org/wiki/Year#Draconic_year
     pub const DRACONIC_YEAR: Self = Time(29947974.5562912);
 
-    /// [Lunar Year](https://en.wikipedia.org/wiki/Lunar_calendar)
-    /// (`354 days 8 hours 48 minutes 34 seconds`)
+    /// [Lunar Year][0] (`354 days 8 hours 48 minutes 34 seconds`).
+    ///
+    /// [0]:https://en.wikipedia.org/wiki/Lunar_calendar
     pub const LUNAR_YEAR: Self = Time(30617314.848);
 }
 
@@ -71,8 +101,19 @@ impl_prefixes![Time, s, seconds];
 mod tests {
     use float_eq::assert_float_eq;
 
-    use crate::{Time, F};
+    use crate::{Distance, Length, Speed, Time, F};
 
+    /// Checks the formulas behave as expected.
+    #[test]
+    fn time_formulas() {
+        // Distance, Speed & Time
+        let time = Time::from_distance_speed(Length(300.), Speed(12.));
+        assert_float_eq!(25., time.0, r2nd <= F::EPSILON);
+        assert_float_eq!(300., time.calc_distance(Speed(12.)).0, r2nd <= F::EPSILON);
+        assert_float_eq!(12., time.calc_speed(Length(300.)).0, r2nd <= F::EPSILON);
+    }
+
+    /// Checks the constants are defined as expected.
     #[test]
     fn time_constants() {
         assert_float_eq!(365.25, Time::JULIAN_YEAR.as_days(), r2nd <= F::EPSILON);
@@ -89,10 +130,15 @@ mod tests {
         assert_float_eq!(354.36707, Time::LUNAR_YEAR.as_days(), r2nd <= F::EPSILON);
     }
 
+    /// Checks the non SI prefixes behave as expected.
+    // TODO: test as_ methods
     #[test]
     fn time_non_si() {
-        assert_float_eq!(60., Time::in_m(1.).0, r2nd <= F::EPSILON);
+        assert_float_eq!(60., Time::in_min(1.).0, r2nd <= F::EPSILON);
         assert_float_eq!(3600., Time::in_h(1.).0, r2nd <= F::EPSILON);
         assert_float_eq!(86_400., Time::in_d(1.).0, r2nd <= F::EPSILON);
+        assert_float_eq!(604_800., Time::in_w(1.).0, r2nd <= F::EPSILON);
+        assert_float_eq!(31_536e3, Time::in_y(1.).0, r2nd <= F::EPSILON);
+        assert_float_eq!(Time::JULIAN_YEAR.0, Time::in_jy(1.).0, r2nd <= F::EPSILON);
     }
 }

@@ -2,7 +2,7 @@
 //!
 //#![allow(non_snake_case)]
 
-use crate::{Force, Moment, F};
+use crate::{Force, Moment, Speed, Time, F};
 
 // pub const ASTRONOMICAL_UNIT: Length = Length::from_metres(149_597_870_700.);
 
@@ -46,11 +46,39 @@ pub type Distance = Length;
 /// (== [`Length`]). Vertical length, in `m`.
 pub type Height = Length;
 
-/// # Formulas: [`Distance`]
+/// # [`Distance`] formulas
 impl Distance {
-    /// Returns the `Distance` from the given [`Moment`] and [`Force`] (`d = M / F`).
+    /// Derives the [`Distance`] from the given [`Time`] and [`Speed`] (`d = s × t`).
+    #[inline]
+    pub fn from_time_speed(t: Time, s: Speed) -> Self {
+        Length(t.0 * s.0)
+    }
+
+    /// (Alias of [from_time_speed][Length::from_time_speed]).
+    #[inline]
+    pub fn from_speed_time(s: Speed, t: Time) -> Self {
+        Self::from_time_speed(t, s)
+    }
+
+    /// Calculates the `Speed` given the [`Time`] (`s = d / t`).
+    pub fn calc_speed(&self, t: Time) -> Speed {
+        Speed(self.0 / t.0)
+    }
+
+    /// Calculates the [`Time`] given the [`Speed`] (`t = d / s`).
+    pub fn calc_time(&self, s: Speed) -> Time {
+        Time(self.0 / s.0)
+    }
+
+    /// Derives the `Distance` from the given [`Moment`] and [`Force`] (`d = M / F`).
     pub fn from_moment_force(m: Moment, f: Force) -> Self {
         Self(m.0 / f.0)
+    }
+
+    /// (Alias of [from_moment_force][Length::from_moment_force]).
+    #[inline]
+    pub fn from_force_moment(f: Force, m: Moment) -> Self {
+        Self::from_moment_force(m, f)
     }
 
     /// Calculates the [`Moment`] for a given [`Force`] (`M = F × d`).
@@ -66,7 +94,7 @@ impl Distance {
     }
 }
 
-/// # Constants by order of magnitude
+/// # `Length` constants by order of magnitude
 ///
 /// <https://en.wikipedia.org/wiki/Orders_of_magnitude_(length)>
 impl Length {
@@ -115,12 +143,17 @@ impl Length {
     /// [0]:https://en.wikipedia.org/wiki/Bohr_radius
     pub const BOHR_RADIUS: Self = Length(5.29177210903e-11);
 
+    /// (10e-10) 1 [Ångström][0] (`100 pm`)
+    ///
+    /// [0]:https://en.wikipedia.org/wiki/Angstrom
+    pub const ANGSTROM: Self = Length(1e-10);
+
     /// (10e-10) Length of a carbon-carbon [covalent bond][0] in diamond (`154 pm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Bond_length
     pub const COVALENT_BOND_DIAMOND: Self = Length(1.54e-10);
 
-    /// (10e11) Roughly the [distance from Earth to the Sun][0] (`149.5978707 Tm`).
+    /// (10e11) Roughly the [distance from the Earth to the Sun][0] (`149.5978707 Tm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Astronomical_unit
     pub const ASTRONOMICAL_UNIT: Self = Length(1.495978707e11);
@@ -155,7 +188,7 @@ impl_prefixes![Length, m, metres];
 mod tests {
     use float_eq::assert_float_eq;
 
-    use crate::{Length, F};
+    use crate::{Distance, Force, Length, Moment, Speed, Time, F};
 
     /// Checks the constants are defined as expected.
     #[test]
@@ -195,5 +228,21 @@ mod tests {
             Length::COVALENT_BOND_DIAMOND.as_pm(),
             r2nd <= F::EPSILON
         );
+    }
+
+    /// Checks the formulas behave as expected.
+    #[test]
+    fn length_formulas() {
+        // Distance, Speed & Time
+        let distance = Distance::from_time_speed(Time(25.), Speed(12.));
+        assert_float_eq!(300., distance.0, r2nd <= F::EPSILON);
+        assert_float_eq!(25., distance.calc_time(Speed(12.)).0, r2nd <= F::EPSILON);
+        assert_float_eq!(12., distance.calc_speed(Time(25.)).0, r2nd <= F::EPSILON);
+
+        // Distance, Moment & Force
+        let distance = Distance::from_moment_force(Moment(6.), Force(30.));
+        assert_float_eq!(0.2, distance.0, r2nd <= F::EPSILON);
+        assert_float_eq!(6., distance.calc_moment(Force(30.)).0, r2nd <= F::EPSILON);
+        assert_float_eq!(30., distance.calc_force(Moment(6.)).0, r2nd <= F::EPSILON);
     }
 }

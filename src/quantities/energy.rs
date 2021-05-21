@@ -1,7 +1,7 @@
 //!
 //!
 
-use crate::{Distance, Force, Mass, Power, Time, F, SPEED_OF_LIGHT_SQUARED};
+use crate::{Distance, Force, Mass, Power, Speed, Time, F};
 
 /// `Energy`, in joules: `J`.
 #[derive(Clone, Copy, Debug)]
@@ -34,7 +34,7 @@ impl Energy {
     ///
     /// [0]:https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence
     pub fn from_mass(m: Mass) -> Self {
-        Self(m.0 * SPEED_OF_LIGHT_SQUARED)
+        Self(m.0 * Speed::LIGHT_SQUARED.0)
     }
 }
 

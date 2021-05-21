@@ -1,4 +1,3 @@
-// fisika src/constants.rs
 //!
 //!
 
@@ -7,26 +6,15 @@ use crate::F;
 // CONSTANTS
 //
 // https://en.wikipedia.org/wiki/Physical_constant
+// https://en.wikipedia.org/wiki/List_of_physical_constants
 
-/// The speed of light, in `m/s`.
+/// The [Coulomb constant][0], the electric force constant,
+/// or the electrostatic constant.
 ///
-/// See also:
-/// - [`SPEED_OF_LIGHT_SQUARED`]
+/// `8.987551792.3×10⁹ N×m²/C²`
 ///
-/// # External links
-/// - <https://en.wikipedia.org/wiki/Speed_of_light>
-pub const SPEED_OF_LIGHT: F = 299_792_458.;
-
-/// The [`SPEED_OF_LIGHT`], squared.
-///
-/// See also:
-/// - [`SPEED_OF_LIGHT`]
-pub const SPEED_OF_LIGHT_SQUARED: F = 89_875_517_873_681_764.;
-
-/// The Coulomb constant, the electric force constant, or the electrostatic constant
-///
-/// 8987551792.3(14) `N × m²/C²` (kg × m3 × s^−2 × C^−2)
-///
-/// # External links
-/// - <https://en.wikipedia.org/wiki/Coulomb_constant>
+/// [0]:https://en.wikipedia.org/wiki/Coulomb_constant
+//
+// https://www.johndcook.com/blog/2021/03/31/coulombs-constant/
+// https://physics.stackexchange.com/questions/93588/why-does-coulombs-constant-have-units
 pub const COULOMB_CONSTANT: F = 8_987_551_792.3;

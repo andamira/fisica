@@ -28,9 +28,15 @@ impl Moment {
         Self(f.0 * d.0)
     }
 
+    /// (Alias of [from_force_distance][Moment::from_force_distance]).
+    #[inline]
+    pub fn from_distance_force(d: Distance, f: Force) -> Self {
+        Self::from_force_distance(f, d)
+    }
+
     /// Calculates the [`Distance`] for a given [`Force`] (`d = M / F`).
     #[inline]
-    pub fn calc_length(&self, f: Force) -> Distance {
+    pub fn calc_distance(&self, f: Force) -> Distance {
         Length(self.0 / f.0)
     }
 
@@ -42,3 +48,20 @@ impl Moment {
 }
 
 // impl_prefixes![Moment, Nkg, ];
+
+#[cfg(test)]
+mod tests {
+    use float_eq::assert_float_eq;
+
+    use crate::{Distance, Force, Length, Moment, F};
+
+    /// Checks the formulas behave as expected.
+    #[test]
+    fn moment_formulas() {
+        // Distance, Moment & Force
+        let moment = Moment::from_force_distance(Force(30.), Length(0.2));
+        assert_float_eq!(6., moment.0, r2nd <= F::EPSILON);
+        assert_float_eq!(0.2, moment.calc_distance(Force(30.)).0, r2nd <= F::EPSILON);
+        assert_float_eq!(30., moment.calc_force(Length(0.2)).0, r2nd <= F::EPSILON);
+    }
+}
