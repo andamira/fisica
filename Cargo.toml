@@ -18,3 +18,10 @@ pretty_dtoa = "0.3.0"
 
 [dev-dependencies]
 float_eq = "0.6.0"
+
+# related crates:
+#
+# uom = "0.31.1"
+# physical_constants = "0.4.1"
+# rapier2d = "0.8.0"
+# rapier3d = "0.8.0"

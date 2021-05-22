@@ -4,39 +4,12 @@
 
 use crate::{Force, Moment, Speed, Time, F};
 
-// pub const ASTRONOMICAL_UNIT: Length = Length::from_metres(149_597_870_700.);
-
 /// The measure of one spatial dimension of an object in `m` (metres).
 ///
 /// Base quantity.
 ///
 /// # External links
 /// - <https://en.wikipedia.org/wiki/Length>
-//
-// # Trivia
-//
-// The format for a sixty-four bit float includes one sign bit, followed by eleven
-// bits to specify exponent, followed by fifty two bits for the mantissa.
-//
-// If we expand the number of exponent bits, then we can choose more orders of magnitude.
-// A planck length is around 10-35 meters, while the observable universe is 93 billion
-// light years across, or around 10e27 meters. That's a swing of 62 orders of magnitude.
-// Eleven exponent bits can handle 2048 orders of magnitude.
-//
-// The limitation is that, for each order of magnitude, floating point can only handle
-// 15 to 17 decimal significant figures. That means if we have an error of around 10e11
-// meters when we use it to represent things on the scale of the observable universe.
-// That's on the order of the distance from here to the Moon.
-//
-// If we want to have perfect accuracy at every scale, then we shouldn't even use a
-// floating point value; we should use an integer number of Planck lengths. This is
-// like just dumping the exponent and sign bit to use nothing but mantissa.
-//
-// As stated, we need to swing 62 decimal orders of magnitude. In binary, that's
-// 62*ln(10)/ln(2) or around 206 bits.
-//
-// source: <https://www.reddit.com/r/theydidthemath/comments/2p2skt/request_how_many_bits_would_a_floating_point/>
-//
 #[derive(Clone, Copy, Debug)]
 pub struct Length(pub F);
 

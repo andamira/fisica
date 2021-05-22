@@ -3,12 +3,12 @@
 
 use crate::F;
 
-///
+/// in `N/kg`.
 #[derive(Clone, Copy, Debug)]
 pub struct GravitationalFieldStrength(pub F);
 pub type Gfs = GravitationalFieldStrength;
 
-/// in `N/kg`.
+/// # `Length` constants by order of magnitude
 impl GravitationalFieldStrength {
     pub const fn in_mercury() -> Self {
         Self(3.8)
