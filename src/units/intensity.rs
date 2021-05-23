@@ -1,7 +1,7 @@
 //!
 //!
 
-use crate::F;
+use crate::Magnitude;
 
 /// The luminous power emitted by a point light source in a particular direction.
 ///
@@ -13,6 +13,22 @@ use crate::F;
 /// - <https://en.wikipedia.org/wiki/Luminous_intensity>
 /// - <https://en.wikipedia.org/wiki/Candela>
 #[derive(Clone, Copy, Debug)]
-pub struct Intensity(pub F);
+pub struct Intensity {
+    pub m: Magnitude,
+}
+
+/// # Constructors
+impl Intensity {
+    /// new Intensity
+    #[inline]
+    pub const fn new(m: Magnitude) -> Self {
+        Self { m }
+    }
+
+    #[inline]
+    pub const fn without_direction(m: Magnitude) -> Self {
+        Self::new(m)
+    }
+}
 
 impl_prefixes![Intensity, cd, candelas];

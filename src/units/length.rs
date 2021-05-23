@@ -1,8 +1,8 @@
 //!
 //!
-//#![allow(non_snake_case)]
 
-use crate::{Force, Moment, Speed, Time, F};
+use crate::units::{Force, Moment, Speed, Time};
+use crate::Magnitude;
 
 /// The measure of one spatial dimension of an object in `m` (metres).
 ///
@@ -11,7 +11,23 @@ use crate::{Force, Moment, Speed, Time, F};
 /// # External links
 /// - <https://en.wikipedia.org/wiki/Length>
 #[derive(Clone, Copy, Debug)]
-pub struct Length(pub F);
+pub struct Length {
+    pub m: Magnitude,
+}
+
+/// # Constructors
+impl Length {
+    /// new Length
+    #[inline]
+    pub const fn new(m: Magnitude) -> Self {
+        Self { m }
+    }
+
+    #[inline]
+    pub const fn without_direction(m: Magnitude) -> Self {
+        Self::new(m)
+    }
+}
 
 /// (== [`Length`]). How far apart objects are, in `m`.
 pub type Distance = Length;
@@ -24,7 +40,7 @@ impl Distance {
     /// Derives the [`Distance`] from the given [`Time`] and [`Speed`] (`d = s × t`).
     #[inline]
     pub fn from_time_speed(t: Time, s: Speed) -> Self {
-        Length(t.0 * s.0)
+        Length::new(t.m * s.m)
     }
 
     /// (Alias of [from_time_speed][Length::from_time_speed]).
@@ -35,17 +51,17 @@ impl Distance {
 
     /// Calculates the `Speed` given the [`Time`] (`s = d / t`).
     pub fn calc_speed(&self, t: Time) -> Speed {
-        Speed(self.0 / t.0)
+        Speed::new(self.m / t.m)
     }
 
     /// Calculates the [`Time`] given the [`Speed`] (`t = d / s`).
     pub fn calc_time(&self, s: Speed) -> Time {
-        Time(self.0 / s.0)
+        Time::new(self.m / s.m)
     }
 
     /// Derives the `Distance` from the given [`Moment`] and [`Force`] (`d = M / F`).
     pub fn from_moment_force(m: Moment, f: Force) -> Self {
-        Self(m.0 / f.0)
+        Self::new(m.m / f.m)
     }
 
     /// (Alias of [from_moment_force][Length::from_moment_force]).
@@ -57,13 +73,13 @@ impl Distance {
     /// Calculates the [`Moment`] for a given [`Force`] (`M = F × d`).
     #[inline]
     pub fn calc_moment(&self, f: Force) -> Moment {
-        Moment(self.0 * f.0)
+        Moment::new(self.m * f.m, f.d)
     }
 
     /// Calculates the [`Force`] for a given [`Moment`] (`F = M / d`).
     #[inline]
     pub fn calc_force(&self, m: Moment) -> Force {
-        Force(m.0 / self.0)
+        Force::new(m.m / self.m, m.d)
     }
 }
 
@@ -76,60 +92,60 @@ impl Length {
     /// (10e-35) The [Planck length][0] constant.
     ///
     /// [0]:https://en.wikipedia.org/wiki/Planck_length
-    pub const PLANCK: Self = Length(1.616255e-35);
+    pub const PLANCK: Self = Length::new(1.616255e-35);
 
     /// (10e-17) Range of the [weak force][0](`10 am`).
     ///
     /// [0]: https://en.wikipedia.org/wiki/Weak_interaction
-    pub const WEAK_FORCE_RANGE: Self = Length(1e-17);
+    pub const WEAK_FORCE_RANGE: Self = Length::new(1e-17);
 
     /// (10e-16) Approximate [proton][0] radius (`0.833 fm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Proton
-    pub const PROTON_RADIUS: Self = Length(8.33e-16);
+    pub const PROTON_RADIUS: Self = Length::new(8.33e-16);
 
     // atomic to cellular scale
 
     /// (10e-15) [Classical electron radius][0] (`2.8179403227 fm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Classical_electron_radius
-    pub const ELECTRON_RADIUS: Self = Length(2.8179403227e-15);
+    pub const ELECTRON_RADIUS: Self = Length::new(2.8179403227e-15);
 
     /// (10e-15) Minimum diameter of the atomic nucleus (`3 fm`).
-    pub const ATOMIC_NUCLEUS_DIAMETER_MIN: Self = Length(3e-15);
+    pub const ATOMIC_NUCLEUS_DIAMETER_MIN: Self = Length::new(3e-15);
 
     /// (10e-14) Maximum diameter of the atomic nucleus (`15 fm`).
-    pub const ATOMIC_NUCLEUS_DIAMETER_MAX: Self = Length(1.5e-14);
+    pub const ATOMIC_NUCLEUS_DIAMETER_MAX: Self = Length::new(1.5e-14);
 
     /// (10e-12) Wavelength of shortest [X-rays][0] (`5 pm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/X-ray
-    pub const XRAY_SHORTEST_WAVELENGTH: Self = Length(5e-12);
+    pub const XRAY_SHORTEST_WAVELENGTH: Self = Length::new(5e-12);
 
     /// (10e-11) Covalent radius of [helium][0] atom (`28 pm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Helium
-    pub const HELIUM_RADIUS: Self = Length(2.8e-11);
+    pub const HELIUM_RADIUS: Self = Length::new(2.8e-11);
 
     /// (10e-11) [Bohr radius][0] (`52.9177210903 pm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Bohr_radius
-    pub const BOHR_RADIUS: Self = Length(5.29177210903e-11);
+    pub const BOHR_RADIUS: Self = Length::new(5.29177210903e-11);
 
     /// (10e-10) 1 [Ångström][0] (`100 pm`)
     ///
     /// [0]:https://en.wikipedia.org/wiki/Angstrom
-    pub const ANGSTROM: Self = Length(1e-10);
+    pub const ANGSTROM: Self = Length::new(1e-10);
 
     /// (10e-10) Length of a carbon-carbon [covalent bond][0] in diamond (`154 pm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Bond_length
-    pub const COVALENT_BOND_DIAMOND: Self = Length(1.54e-10);
+    pub const COVALENT_BOND_DIAMOND: Self = Length::new(1.54e-10);
 
     /// (10e11) Roughly the [distance from the Earth to the Sun][0] (`149.5978707 Tm`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Astronomical_unit
-    pub const ASTRONOMICAL_UNIT: Self = Length(1.495978707e11);
+    pub const ASTRONOMICAL_UNIT: Self = Length::new(1.495978707e11);
 }
 
 /// # Non SI units conversions
@@ -140,7 +156,7 @@ impl Length {
         "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
         au,
         astronomical_units,
-        Self::ASTRONOMICAL_UNIT.0
+        Self::ASTRONOMICAL_UNIT.m
     ];
 
     fn_both_unicode![
@@ -159,47 +175,61 @@ impl_prefixes![Length, m, metres];
 
 #[cfg(test)]
 mod tests {
-    use float_eq::assert_float_eq;
-
-    use crate::{Distance, Force, Length, Moment, Speed, Time, F};
+    use {super::*, float_eq::assert_float_eq};
 
     /// Checks the constants are defined as expected.
     #[test]
     fn length_constants() {
-        assert_float_eq!(0.0000000000162, Length::PLANCK.as_ym(), r2nd <= F::EPSILON);
-        assert_float_eq!(10., Length::WEAK_FORCE_RANGE.as_am(), r2nd <= F::EPSILON);
-        assert_float_eq!(0.833, Length::PROTON_RADIUS.as_fm(), r2nd <= F::EPSILON);
+        assert_float_eq!(
+            0.0000000000162,
+            Length::PLANCK.as_ym(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            10.,
+            Length::WEAK_FORCE_RANGE.as_am(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            0.833,
+            Length::PROTON_RADIUS.as_fm(),
+            r2nd <= Magnitude::EPSILON
+        );
 
         assert_float_eq!(
             2.8179403227,
             Length::ELECTRON_RADIUS.as_fm(),
-            r2nd <= F::EPSILON
+            r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             3.,
             Length::ATOMIC_NUCLEUS_DIAMETER_MIN.as_fm(),
-            r2nd <= F::EPSILON
+            r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             15.,
             Length::ATOMIC_NUCLEUS_DIAMETER_MAX.as_fm(),
-            r2nd <= F::EPSILON
+            r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             5.,
             Length::XRAY_SHORTEST_WAVELENGTH.as_pm(),
-            r2nd <= F::EPSILON
+            r2nd <= Magnitude::EPSILON
         );
-        assert_float_eq!(28., Length::HELIUM_RADIUS.as_pm(), r2nd <= F::EPSILON);
+        assert_float_eq!(
+            28.,
+            Length::HELIUM_RADIUS.as_pm(),
+            r2nd <= Magnitude::EPSILON
+        );
         assert_float_eq!(
             52.9177210903,
             Length::BOHR_RADIUS.as_pm(),
-            r2nd <= F::EPSILON
+            r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             154.,
             Length::COVALENT_BOND_DIAMOND.as_pm(),
-            r2nd <= F::EPSILON
+            r2nd <= Magnitude::EPSILON
         );
     }
 
@@ -207,15 +237,34 @@ mod tests {
     #[test]
     fn length_formulas() {
         // Distance, Speed & Time
-        let distance = Distance::from_time_speed(Time(25.), Speed(12.));
-        assert_float_eq!(300., distance.0, r2nd <= F::EPSILON);
-        assert_float_eq!(25., distance.calc_time(Speed(12.)).0, r2nd <= F::EPSILON);
-        assert_float_eq!(12., distance.calc_speed(Time(25.)).0, r2nd <= F::EPSILON);
+        let distance = Distance::from_time_speed(Time::new(25.), Speed::new(12.));
+        assert_float_eq!(300., distance.m, r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            25.,
+            distance.calc_time(Speed::new(12.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            12.,
+            distance.calc_speed(Time::new(25.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
 
         // Distance, Moment & Force
-        let distance = Distance::from_moment_force(Moment(6.), Force(30.));
-        assert_float_eq!(0.2, distance.0, r2nd <= F::EPSILON);
-        assert_float_eq!(6., distance.calc_moment(Force(30.)).0, r2nd <= F::EPSILON);
-        assert_float_eq!(30., distance.calc_force(Moment(6.)).0, r2nd <= F::EPSILON);
+        let distance = Distance::from_moment_force(
+            Moment::without_direction(6.),
+            Force::without_direction(30.),
+        );
+        assert_float_eq!(0.2, distance.m, r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            6.,
+            distance.calc_moment(Force::without_direction(30.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            30.,
+            distance.calc_force(Moment::without_direction(6.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
     }
 }

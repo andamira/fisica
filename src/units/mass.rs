@@ -1,7 +1,8 @@
 //!
 //!
 
-use crate::{Acceleration, Energy, Force, GravitationalFieldStrength, Speed, Weight, F};
+use crate::units::{Acceleration, Energy, Force, GravitationalFieldStrength, Speed, Weight};
+use crate::Magnitude;
 
 /// The amount of matter in an object, in `kg` (kilograms).
 ///
@@ -9,7 +10,23 @@ use crate::{Acceleration, Energy, Force, GravitationalFieldStrength, Speed, Weig
 /// - <https://en.wikipedia.org/wiki/Mass>
 /// - <https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)>
 #[derive(Clone, Copy, Debug)]
-pub struct Mass(pub F);
+pub struct Mass {
+    pub m: Magnitude,
+}
+
+/// # Constructors
+impl Mass {
+    /// new Mass
+    #[inline]
+    pub const fn new(m: Magnitude) -> Self {
+        Self { m }
+    }
+
+    #[inline]
+    pub const fn without_direction(m: Magnitude) -> Self {
+        Self::new(m)
+    }
+}
 
 /// # Formulas
 impl Mass {
@@ -18,13 +35,15 @@ impl Mass {
     /// [0]:https://en.wikipedia.org/wiki/Mass–energy_equivalence
     #[inline]
     pub fn from_energy(e: Energy) -> Self {
-        Self(Speed::LIGHT_SQUARED.0 / e.0)
+        Self {
+            m: Speed::LIGHT_SQUARED.m / e.m,
+        }
     }
 
     /// Derive `Mass` from [`Force`] and [`Acceleration`] (`m = F / a`).
     #[inline]
     pub fn from_force_acceleration(f: Force, a: Acceleration) -> Self {
-        Self(f.0 / a.0)
+        Self { m: f.m / a.m }
     }
 
     /// (Alias of [from_mass_force][Acceleration::from_mass_force]).
@@ -36,30 +55,36 @@ impl Mass {
     /// Calculates the [`Force`] given the [`Acceleration`] (`F = m × a`).
     #[inline]
     pub fn calc_force(&self, a: Acceleration) -> Force {
-        Force(self.0 * a.0)
+        Force {
+            m: self.m * a.m,
+            d: a.d,
+        }
     }
 
     /// Calculates the `Acceleration` given the [`Force`] (`a = F / m`).
     pub fn calc_acceleration(&self, f: Force) -> Acceleration {
-        Acceleration(f.0 / self.0)
+        Acceleration {
+            m: f.m / self.m,
+            d: f.d,
+        }
     }
 
     /// Derive `Mass` from [`Weight`] and [`GravitationalFieldStrength`] (`m = w / gfs`).
     #[inline]
     pub fn from_weight_gfs(w: Weight, gfs: GravitationalFieldStrength) -> Self {
-        Self(w.0 / gfs.0)
+        Self { m: w.m / gfs.m }
     }
 
     /// Calculates the [`Weight`] given the [`GravitationalFieldStrength`] (`W = m × g`).
     #[inline]
     pub fn calc_weight(&self, g: GravitationalFieldStrength) -> Weight {
-        Force(self.0 * g.0)
+        Force::new(self.m * g.m, g.d)
     }
 
     /// Calculates the [`GravitationalFieldStrength`] given the [`Weight`] (`g = w / m`).
     #[inline]
     pub fn calc_gfs(&self, w: Weight) -> GravitationalFieldStrength {
-        GravitationalFieldStrength(w.0 / self.0)
+        GravitationalFieldStrength::new(w.m / self.m, w.d)
     }
 }
 
@@ -67,17 +92,26 @@ impl_prefixes_base_kilo![Mass, g, grams];
 
 #[cfg(test)]
 mod tests {
-    use float_eq::assert_float_eq;
-
-    use crate::{Acceleration, Distance, Force, Length, Mass, F};
+    use {super::*, float_eq::assert_float_eq};
 
     /// Checks the formulas behave as expected.
     #[test]
     fn mass_formulas() {
         // Force, Acceleration & Mass
-        let mass = Mass::from_force_acceleration(Force(10.), Acceleration(2.));
-        assert_float_eq!(5., mass.0, r2nd <= F::EPSILON);
-        assert_float_eq!(2., mass.calc_acceleration(Force(10.)).0, r2nd <= F::EPSILON);
-        assert_float_eq!(10., mass.calc_force(Acceleration(2.)).0, r2nd <= F::EPSILON);
+        let mass = Mass::from_force_acceleration(
+            Force::without_direction(10.),
+            Acceleration::without_direction(2.),
+        );
+        assert_float_eq!(5., mass.m, r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            2.,
+            mass.calc_acceleration(Force::without_direction(10.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            10.,
+            mass.calc_force(Acceleration::without_direction(2.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
     }
 }

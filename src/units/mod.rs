@@ -1,11 +1,73 @@
 //!
 //!
 
+// Base quantities
+// - https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
+// - https://en.wikipedia.org/wiki/Physical_quantity#Base_quantities
+//
+
+// Derived quantities
+// - https://en.wikipedia.org/wiki/International_System_of_Quantities#Derived_quantities
+// - https://en.wikipedia.org/wiki/Physical_quantity#General_derived_quantities
+
+// the 7 base units
+// - https://en.wikipedia.org/wiki/2019_redefinition_of_the_SI_base_units
+
 use core::fmt;
 
-use crate::{quantities::*, F};
+use crate::Magnitude;
 
-///
+mod amount;
+mod current;
+mod intensity;
+mod length;
+mod mass;
+mod temperature;
+mod time;
+
+pub use amount::Amount;
+pub use current::Current;
+pub use intensity::Intensity;
+pub use length::{Distance, Height, Length};
+pub use mass::Mass;
+pub use temperature::Temperature;
+pub use time::Time;
+
+// derived
+
+mod acceleration;
+mod area;
+mod charge;
+mod density;
+mod energy;
+mod force;
+mod frequency;
+mod gfs;
+mod moment;
+mod momentum;
+mod power;
+mod pressure;
+mod speed;
+mod velocity;
+mod volume;
+
+pub use acceleration::Acceleration;
+pub use area::Area;
+pub use charge::Charge;
+pub use density::Density;
+pub use energy::{Energy, Work};
+pub use force::{Force, Weight};
+pub use frequency::Frequency;
+pub use gfs::{Gfs, GravitationalFieldStrength};
+pub use moment::{Moment, Torque};
+pub use momentum::Momentum;
+pub use power::Power;
+pub use pressure::Pressure;
+pub use speed::Speed;
+pub use velocity::Velocity;
+pub use volume::Volume;
+
+/// A trait common to all units.
 pub trait Unit {
     /// Returns the unit in short format.
     fn unit() -> String;
@@ -27,12 +89,13 @@ pub trait Unit {
 /// - fmt::Display _(using short format)_
 /// - [`Unit`]
 /// - constructors: `new()` & `$method_name()` _(`$lplural` by default)_.
-/// - TODO: as_f64()
+///
+// - TODO: differentitate vector units
 macro_rules! impl_unit {
     ($type:ty, $short:expr, $lsingular:expr, $lplural:expr, $method_name:ident) => {
         impl fmt::Display for $type {
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, "{} {}", self.0, Self::unit())
+                write!(f, "{} {}", self.m, Self::unit())
             }
         }
 
@@ -40,23 +103,27 @@ macro_rules! impl_unit {
             fn unit() -> String {
                 $short.into()
             }
+
             fn unit_long_s(&self) -> String {
                 $lsingular.into()
             }
+
             fn unit_long_p(&self) -> String {
                 $lplural.into()
             }
+
             fn unit_long(&self) -> String {
-                // if self.0 == 1. {
+                // if self.m == 1. {
                 // https://rust-lang.github.io/rust-clippy/master/index.html#float_cmp
-                if (self.0 - 1.).abs() < F::EPSILON {
+                if (self.m - 1.).abs() < Magnitude::EPSILON {
                     $lsingular.into()
                 } else {
                     $lplural.into()
                 }
             }
+
             fn long(&self) -> String {
-                format!["{} {}", self.0, self.unit_long()]
+                format!["{} {}", self.m, self.unit_long()]
             }
         }
     };

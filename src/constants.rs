@@ -1,7 +1,7 @@
 //!
 //!
 
-use crate::F;
+use crate::Magnitude;
 
 // CONSTANTS
 //
@@ -17,4 +17,4 @@ use crate::F;
 //
 // https://www.johndcook.com/blog/2021/03/31/coulombs-constant/
 // https://physics.stackexchange.com/questions/93588/why-does-coulombs-constant-have-units
-pub const COULOMB_CONSTANT: F = 8_987_551_792.3;
+pub const COULOMB_CONSTANT: Magnitude = 8_987_551_792.3;
