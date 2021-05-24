@@ -40,7 +40,7 @@ impl Force {
     }
 }
 
-/// (== [`Force`]) of the pull of gravity on an object, in `N`.
+/// (== [`Force`]) The pull of gravity on an object.
 pub type Weight = Force;
 
 /// # Formulas: [`Force`]

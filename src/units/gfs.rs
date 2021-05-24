@@ -9,6 +9,8 @@ pub struct GravitationalFieldStrength {
     pub m: Magnitude,
     pub d: Direction,
 }
+
+/// (== [`GravitationalFieldStrength`])
 pub type Gfs = GravitationalFieldStrength;
 
 /// # Constructors

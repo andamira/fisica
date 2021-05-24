@@ -35,7 +35,7 @@ impl Moment {
     }
 }
 
-/// The informal name for Moment
+/// (== [`Moment`]) The informal name for Moment
 ///
 /// # External links
 /// - <https://physics.stackexchange.com/questions/16389/torque-vs-moment>

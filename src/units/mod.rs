@@ -1,5 +1,11 @@
+//! All the physical units
 //!
-//!
+//! External links:
+//! - <https://en.wikipedia.org/wiki/International_System_of_Units>
+//! - <https://en.wikipedia.org/wiki/SI_unit>
+//! - <https://en.wikipedia.org/wiki/Order_of_magnitude>
+
+
 
 // Base quantities
 // - https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
@@ -66,6 +72,30 @@ pub use pressure::Pressure;
 pub use speed::Speed;
 pub use velocity::Velocity;
 pub use volume::Volume;
+
+/// Units for kinematics.
+///
+/// Kinematics is a subfield of physics, developed in [classical mechanics][0],
+/// that describes the [motion][1] of points, bodies, and systems of bodies
+/// without considering the forces that cause them to move.
+///
+/// [0]:https://en.wikipedia.org/wiki/Classical_mechanics
+/// [1]:https://en.wikipedia.org/wiki/Motion_(physics)
+pub mod kinematics {
+    pub use crate::units::{Distance, Length, Speed, Time};
+}
+
+/// Units for dynamics.
+///
+/// Dynamics is the branch of physics developed in [classical mechanics][0]
+/// concerned with the study of [forces][1] and their effects on [motion][2].
+///
+/// [0]:https://en.wikipedia.org/wiki/Classical_mechanics
+/// [1]:https://en.wikipedia.org/wiki/Force_(physics)
+/// [2]:https://en.wikipedia.org/wiki/Motion_(physics)
+pub mod dynamics {
+    pub use crate::units::{Force, Velocity};
+}
 
 /// A trait common to all units.
 pub trait Unit {

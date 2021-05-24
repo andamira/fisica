@@ -4,12 +4,9 @@
 use crate::units::{Force, Moment, Speed, Time};
 use crate::Magnitude;
 
-/// The measure of one spatial dimension of an object in `m` (metres).
+/// The [Length][0] is the measure of one spatial dimension of an object, in `m` (metres).
 ///
-/// Base quantity.
-///
-/// # External links
-/// - <https://en.wikipedia.org/wiki/Length>
+/// [0]: https://en.wikipedia.org/wiki/Length
 #[derive(Clone, Copy, Debug)]
 pub struct Length {
     pub m: Magnitude,
@@ -29,10 +26,10 @@ impl Length {
     }
 }
 
-/// (== [`Length`]). How far apart objects are, in `m`.
+/// (== [`Length`]) How far apart objects are.
 pub type Distance = Length;
 
-/// (== [`Length`]). Vertical length, in `m`.
+/// (== [`Length`]) Vertical length.
 pub type Height = Length;
 
 /// # [`Distance`] formulas

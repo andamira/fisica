@@ -10,8 +10,8 @@ pub struct Energy {
     pub m: Magnitude,
 }
 
-/// (== [`Energy`]) transferred when a [`Force`] moves an object over a [`Distance`],
-/// in `J`.
+/// (== [`Energy`]) Energy transferred when a [`Force`] moves an object over a
+/// [`Distance`].
 ///
 /// Also: The amount of force applied in the direction of motion.
 pub type Work = Energy;
