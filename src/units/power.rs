@@ -30,7 +30,7 @@ impl Power {
 impl Power {
     /// Derives the Power from the given [`Energy`] and [`Time`] (`P = E / t`).
     pub fn from_energy_time(e: Energy, t: Time) -> Self {
-        Self { m: e.m / t.m }
+        Self::new(e.m / t.m)
     }
 
     /// (Alias of [from_energy_time][Power::from_energy_time]).
@@ -41,13 +41,13 @@ impl Power {
     /// Calculates the [`Energy`] given the [`Time`] (`E = P × t`).
     #[inline]
     pub fn calc_energy(&self, t: Time) -> Energy {
-        Energy { m: self.m * t.m }
+        Energy::new(self.m * t.m)
     }
 
     /// Calculates the [`Time`] given the [`Energy`] (`t = E / P`).
     #[inline]
     pub fn calc_time(&self, e: Energy) -> Time {
-        Time { m: e.m / self.m }
+        Time::new(e.m / self.m)
     }
 }
 

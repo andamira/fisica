@@ -33,10 +33,7 @@ impl Force {
     /// new Force with undefined direction
     #[inline]
     pub const fn without_direction(m: Magnitude) -> Self {
-        Self {
-            m,
-            d: Direction::ZERO,
-        }
+        Self::new(m, Direction::ZERO)
     }
 }
 
@@ -47,10 +44,7 @@ pub type Weight = Force;
 impl Force {
     /// Derives the `Force` from the given [`Mass`] and [`Acceleration`] (`F = m × a`).
     pub fn from_mass_acceleration(m: Mass, a: Acceleration) -> Self {
-        Self {
-            m: m.m * a.m,
-            d: a.d,
-        }
+        Self::new(m.m * a.m, a.d)
     }
 
     /// (Alias of [from_mass_acceleration][Force::from_mass_acceleration]).
@@ -73,10 +67,7 @@ impl Force {
 
     /// Derives the `Force` from the given [`Moment`] and [`Distance`] (`F = M / d`).
     pub fn from_moment_distance(m: Moment, d: Distance) -> Self {
-        Self {
-            m: (m.m / d.m),
-            d: m.d,
-        }
+        Self::new(m.m / d.m, m.d)
     }
 
     /// (Alias of [from_moment_distance][Force::from_moment_distance]).
@@ -125,10 +116,7 @@ impl Weight {
     /// A common home scale in reality measures the Weight (Force), calibrated
     /// to show the Mass in kg, assuming it's being used on Earth's surface.
     pub fn from_mass_gfs(m: Mass, g: GravitationalFieldStrength) -> Self {
-        Self {
-            m: (m.m * g.m),
-            d: g.d,
-        }
+        Self::new(m.m * g.m, g.d)
     }
 
     /// Calculates the [`Mass`] given the [`GravitationalFieldStrength`] (`m = w / g`).

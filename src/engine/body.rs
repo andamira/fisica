@@ -1,11 +1,11 @@
 //!
 
-use crate::{Position, Orientation};
 use crate::engine::Shape;
+use crate::{Orientation, Position};
 
 /// A physical body
 pub struct Body {
-    pos: Position,
-    ori: Orientation,
-    shape: Shape,
+    pub pos: Position,
+    pub orien: Orientation,
+    pub shape: Shape,
 }

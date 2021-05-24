@@ -24,10 +24,7 @@ impl Acceleration {
     /// new Acceleration with undefined direction
     #[inline]
     pub const fn without_direction(m: Magnitude) -> Self {
-        Self {
-            m,
-            d: Direction::ZERO,
-        }
+        Self::new(m, Direction::ZERO)
     }
 }
 
@@ -37,7 +34,7 @@ impl Acceleration {
     /// (`a = v / t`).
     #[inline]
     pub fn from_velocity_time(v: Velocity, t: Time) -> Self {
-        Self::new(v.m.m / t.m, v.d)
+        Self::new(v.m / t.m, v.d)
     }
 
     /// (Alias of [from_velocity_time][Acceleration::from_velocity_time]).
@@ -47,7 +44,7 @@ impl Acceleration {
     }
 
     pub fn from_velocities_time(v_initial: Velocity, v_final: Velocity, t: Time) -> Self {
-        Self::new((v_final.m.m - v_initial.m.m) / t.m, v_final.d + v_initial.d) // CHECK vector substraction? sum?
+        Self::new((v_final.m - v_initial.m) / t.m, v_final.d + v_initial.d) // CHECK vector substraction? sum?
     }
 
     /// (Alias of [from_velocities_time][Acceleration::from_velocities_time]).

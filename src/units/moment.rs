@@ -28,10 +28,7 @@ impl Moment {
     /// new Moment with undefined direction
     #[inline]
     pub const fn without_direction(m: Magnitude) -> Self {
-        Self {
-            m,
-            d: Direction::ZERO,
-        }
+        Self::new(m, Direction::ZERO)
     }
 }
 
@@ -47,10 +44,7 @@ impl Moment {
     /// Returns the `Moment` of applying a [`Force`] over some [`Distance`]
     /// (`M = F × d`).
     pub fn from_force_distance(f: Force, d: Distance) -> Self {
-        Self {
-            m: f.m * d.m,
-            d: f.d,
-        }
+        Self::new(f.m * d.m, f.d)
     }
 
     /// (Alias of [from_force_distance][Moment::from_force_distance]).
@@ -62,16 +56,13 @@ impl Moment {
     /// Calculates the [`Distance`] for a given [`Force`] (`d = M / F`).
     #[inline]
     pub fn calc_distance(&self, f: Force) -> Distance {
-        Length { m: self.m / f.m }
+        Length::new(self.m / f.m)
     }
 
     /// Calculates the [`Force`] for a given [`Distance`] (`F = M / d`).
     #[inline]
     pub fn calc_force(&self, d: Distance) -> Force {
-        Force {
-            m: self.m / d.m,
-            d: self.d,
-        }
+        Force::new(self.m / d.m, self.d)
     }
 }
 

@@ -29,7 +29,7 @@ impl Speed {
     /// Derives the `Speed` from the given [`Distance`] and [`Time`] (`s = d / t`).
     #[inline]
     pub fn from_distance_time(d: Distance, t: Time) -> Self {
-        Self { m: d.m / t.m }
+        Self::new(d.m / t.m)
     }
 
     /// (Alias of [from_distance_time][Speed::from_distance_time]).
@@ -41,12 +41,12 @@ impl Speed {
     /// Calculates the [`Distance`] given the [`Time`] (`d = s × t`).
     #[inline]
     pub fn calc_distance(&self, t: Time) -> Distance {
-        Length { m: self.m * t.m }
+        Length::new(self.m * t.m)
     }
 
     /// Calculates the [`Time`] given the [`Distance`] (`t = d / s`).
     pub fn calc_time(&self, d: Distance) -> Time {
-        Time { m: d.m / self.m }
+        Time::new(d.m / self.m)
     }
 }
 

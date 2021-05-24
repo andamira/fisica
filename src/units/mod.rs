@@ -5,8 +5,6 @@
 //! - <https://en.wikipedia.org/wiki/SI_unit>
 //! - <https://en.wikipedia.org/wiki/Order_of_magnitude>
 
-
-
 // Base quantities
 // - https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
 // - https://en.wikipedia.org/wiki/Physical_quantity#Base_quantities

@@ -4,7 +4,7 @@
 use crate::units::{Force, Moment, Speed, Time};
 use crate::Magnitude;
 
-/// The [Length][0] is the measure of one spatial dimension of an object, in `m` (metres).
+/// [Length][0] is the measure of one spatial dimension of an object, in `m` (metres).
 ///
 /// [0]: https://en.wikipedia.org/wiki/Length
 #[derive(Clone, Copy, Debug)]
@@ -67,13 +67,13 @@ impl Distance {
         Self::from_moment_force(m, f)
     }
 
-    /// Calculates the [`Moment`] for a given [`Force`] (`M = F × d`).
+    /// Calculates the [`Moment`] given the [`Force`] (`M = F × d`).
     #[inline]
     pub fn calc_moment(&self, f: Force) -> Moment {
         Moment::new(self.m * f.m, f.d)
     }
 
-    /// Calculates the [`Force`] for a given [`Moment`] (`F = M / d`).
+    /// Calculates the [`Force`] given the [`Moment`] (`F = M / d`).
     #[inline]
     pub fn calc_force(&self, m: Moment) -> Force {
         Force::new(m.m / self.m, m.d)

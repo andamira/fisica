@@ -48,7 +48,7 @@ impl Time {
 impl Time {
     /// Derives the `Time` from the given [`Distance`] and [`Speed`] (`t = d / s`).
     pub fn from_distance_speed(d: Distance, s: Speed) -> Self {
-        Self { m: d.m / s.m }
+        Self::new(d.m / s.m)
     }
 
     /// (Alias of [from_distance_speed][Time::from_distance_speed]).
@@ -58,19 +58,19 @@ impl Time {
 
     /// Calculates the `Speed` from the given [`Distance`] (`s = d / t`).
     pub fn calc_speed(&self, d: Distance) -> Speed {
-        Speed { m: d.m / self.m }
+        Speed::new(d.m / self.m)
     }
 
     /// Calculates the [`Distance`] given the [`Speed`] (`d = s × t`).
     #[inline]
     pub fn calc_distance(&self, s: Speed) -> Distance {
-        Length { m: self.m * s.m }
+        Length::new(self.m * s.m)
     }
 
     /// Derives Time from the given [`Energy`] and [`Power`] (`t = E / P`).
     #[inline]
     pub fn from_energy_power(e: Energy, p: Power) -> Self {
-        Self { m: e.m / p.m }
+        Self::new(e.m / p.m)
     }
 
     /// (Alias of [from_energy_power][Time::from_energy_power]).
@@ -82,13 +82,13 @@ impl Time {
     /// Calculates the [`Power`] given the [`Energy`] (`P = E / t`).
     #[inline]
     pub fn calc_power(&self, e: Energy) -> Power {
-        Power { m: e.m / self.m }
+        Power::new(e.m / self.m)
     }
 
     /// Calculates the [`Energy`] given the [`Power`] (`E = P * t`).
     #[inline]
     pub fn calc_energy(&self, p: Power) -> Time {
-        Time { m: self.m * p.m }
+        Time::new(self.m * p.m)
     }
 }
 

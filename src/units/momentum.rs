@@ -23,10 +23,7 @@ impl Momentum {
     /// new Momentum with undefined direction
     #[inline]
     pub const fn without_direction(m: Magnitude) -> Self {
-        Self {
-            m,
-            d: Direction::ZERO,
-        }
+        Self::new(m, Direction::ZERO)
     }
 }
 

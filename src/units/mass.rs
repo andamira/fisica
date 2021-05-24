@@ -35,15 +35,13 @@ impl Mass {
     /// [0]:https://en.wikipedia.org/wiki/Mass–energy_equivalence
     #[inline]
     pub fn from_energy(e: Energy) -> Self {
-        Self {
-            m: Speed::LIGHT_SQUARED.m / e.m,
-        }
+        Self::new(Speed::LIGHT_SQUARED.m / e.m)
     }
 
     /// Derive `Mass` from [`Force`] and [`Acceleration`] (`m = F / a`).
     #[inline]
     pub fn from_force_acceleration(f: Force, a: Acceleration) -> Self {
-        Self { m: f.m / a.m }
+        Self::new(f.m / a.m)
     }
 
     /// (Alias of [from_mass_force][Acceleration::from_mass_force]).
@@ -55,24 +53,18 @@ impl Mass {
     /// Calculates the [`Force`] given the [`Acceleration`] (`F = m × a`).
     #[inline]
     pub fn calc_force(&self, a: Acceleration) -> Force {
-        Force {
-            m: self.m * a.m,
-            d: a.d,
-        }
+        Force::new(self.m * a.m, a.d)
     }
 
     /// Calculates the `Acceleration` given the [`Force`] (`a = F / m`).
     pub fn calc_acceleration(&self, f: Force) -> Acceleration {
-        Acceleration {
-            m: f.m / self.m,
-            d: f.d,
-        }
+        Acceleration::new(f.m / self.m, f.d)
     }
 
     /// Derive `Mass` from [`Weight`] and [`GravitationalFieldStrength`] (`m = w / gfs`).
     #[inline]
     pub fn from_weight_gfs(w: Weight, gfs: GravitationalFieldStrength) -> Self {
-        Self { m: w.m / gfs.m }
+        Self::new(w.m / gfs.m)
     }
 
     /// Calculates the [`Weight`] given the [`GravitationalFieldStrength`] (`W = m × g`).
