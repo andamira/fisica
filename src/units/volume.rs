@@ -27,13 +27,13 @@ impl Volume {
 
 /// # Formulas
 impl Volume {
-    fn_both_unicode![
+    scalar_methods![
         Volume,
-        "l",
-        "[`litres`][Volume::LITRE]",
         l,
         litres,
-        Self::LITRE.m
+        qu = "l",
+        Qu = "[`litres`][Volume::LITRE]",
+        f = Self::LITRE.m
     ];
 }
 

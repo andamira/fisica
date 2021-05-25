@@ -1,331 +1,209 @@
 //! SI prefixes
-//!
 
-// TODO: devise a way to create compound prefixes, for Area, Speed, Momentum, etc.
-//  - either of the 2 or 3 units could be the modified one…
-
-/// Generates 2 prefix constructors (short and long)
-macro_rules! fn_constructors {
-    ($type:ty, $q:ident, $quantity:ident, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "New `" $type "` in `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (" $pow " " $quantity ")."]
-            pub fn [<in_$p $q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-
-            #[inline]
-            #[doc = "New `" $type "` in `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (" $pow " " $quantity ")."]
-            pub fn [<in_$prefix $quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-        }
-    };
-
-    ($type:ty, $q:ident, $quantity:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "New `" $type "` in `" $q "` (`" $quantity "`) (" $pow " " $quantity ")."]
-            pub fn [<in_$q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-
-            #[inline]
-            #[doc = "New `" $type "` in `" $q "` (`" $quantity "`) (" $pow " " $quantity ")."]
-            pub fn [<in_$quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-        }
-    };
-
-    // base constructors are const, and stores the value as it is.
-    ($type:ty, $q:ident, $quantity:ident, $p:ident, $prefix:ident, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "New `" $type "` in `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<in_$p $q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
-
-            #[inline]
-            #[doc = "New `" $type "` in `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<in_$prefix $quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
-        }
-    };
-    ($type:ty, $q:ident, $quantity:ident, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "New `" $type "` in `" $q "` (`" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<in_$q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
-
-            #[inline]
-            #[doc = "New `" $type "` in `" $q "` (`" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<in_$quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
-        }
-    };
-}
+// TODO: new version: `vector_methods`
+// for compound prefixes, for Area, Speed, Momentum, etc.
+// either of the 2 or 3 units could be the modified one…
+//  - all combinations? 12 * 12?
+//  - hide the combinations in order to not saturate the docs?
 
 /// Generates 2 prefix constructors (short and long) with custom unicode quantity and/or prefix
-macro_rules! fn_constructors_unicode {
-    // specify strings for the 2 quantities, strings for the 2 prefixes, and the base unit
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "New `" $type "` in `" $p_str "" $q_str "` (`" $prefix_str "" $quantity_str
-                "`) (" $pow " " $base_unit ")."]
-            #[allow(non_snake_case)]
-            pub fn [<in_$p $q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-
-            #[inline]
-            #[doc = "New `" $type "` in `" $p_str "" $q_str "` (`" $prefix_str "" $quantity_str
-                "`) (" $pow " " $base_unit ")."]
-            pub fn [<in_$prefix $quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-        }
-    };
-
-    // specify strings for the 2 quantities, strings for the 2 prefixes
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_constructors_unicode![
-            $type,
-            $q_str,
-            $quantity_str,
-            $q,
-            $quantity,
-            $p_str,
-            $prefix_str,
-            $p,
-            $prefix,
-            $quantity,
-            $oper,
-            $pow
-        ];
-    };
-
-    // specify strings for the 2 prefixes (e.g. "µ", "micro")
-    ($type:ty, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_constructors_unicode![
-            $type,
-            $q,
-            $quantity,
-            $q,
-            $quantity,
-            $p_str,
-            $prefix_str,
-            $p,
-            $prefix,
-            $quantity,
-            $oper,
-            $pow
-        ];
-    };
-
-    // specify strings for the 2 quantities, and for the base unit (e.g. "Å", "ångströms")
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "New `" $type "` in " $q_str " (" $quantity_str ") (" $pow " " $base_unit ")."]
-            pub fn [<in_$q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-
-            #[inline]
-            #[doc = "New `" $type "` in " $q_str " (" $quantity_str ") (" $pow " " $base_unit ")."]
-            pub fn [<in_$quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-        }
-    };
-
-    // specify strings for the 2 quantities (e.g. "au", "astronomical unit")
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $oper:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "New `" $type "` in " $q_str " (" $quantity_str ")"]
-            pub fn [<in_$q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-
-            #[inline]
-            #[doc = "New `" $type "` in " $q_str " (" $quantity_str ")"]
-            pub fn [<in_$quantity>](q: crate::Magnitude) -> Self { Self::without_direction(q * $oper) }
-        }
-    };
-}
-
-/// Generates 2 prefix getters (short and long)
-macro_rules! fn_getters {
-    ($type:ty, $q:ident, $quantity:ident, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (" $pow " " $quantity ")."]
-            #[allow(non_snake_case)]
-            pub fn [<as_$p $q>](&self) -> crate::Magnitude { self.m / $oper }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (" $pow " " $quantity ")."]
-            pub fn [<as_$prefix $quantity>](&self) -> crate::Magnitude { self.m / $oper }
-        }
-    };
-
-    ($type:ty, $q:ident, $quantity:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $q "` (`" $quantity
-                "`) (" $pow " " $quantity ")."]
-            pub fn [<as_$q>](&self) -> crate::Magnitude { self.m / $oper }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $q "` (`" $quantity
-                "`) (" $pow " " $quantity ")."]
-            pub fn [<as_$quantity>](&self) -> crate::Magnitude { self.m / $oper }
-        }
-    };
-
-    // base unit getters are const, and returns the stored value as it is.
-    ($type:ty, $q:ident, $quantity:ident, $p:ident, $prefix:ident, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "Returns `" $type "` as `  `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<as_$p $q>](&self) -> crate::Magnitude { self.m }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as `  `" $p "" $q "` (`" $prefix "" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<as_$prefix $quantity>](&self) -> crate::Magnitude { self.m }
-        }
-    };
-
-    ($type:ty, $q:ident, $quantity:ident, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "Returns `" $type "` as ` " $q "` (`" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            #[allow(non_snake_case)]
-            pub const fn [<as_$q>](&self) -> crate::Magnitude { self.m }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as ` " $q "` (`" $quantity
-                "`) (base unit, " $pow " " $quantity ")."]
-            pub const fn [<as_$quantity>](&self) -> crate::Magnitude { self.m }
-        }
-    };
-}
-
-/// Generates 2 prefix getters (short and long) with custom unicode quantity and/or prefix
-macro_rules! fn_getters_unicode {
-    // specify strings for the 2 quantities, strings for the 2 prefixes, and the base unit
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr,
-        $prefix_str:expr, $p:ident, $prefix:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $p_str "" $q_str "` (`" $prefix_str "" $quantity_str
-                "`) (" $pow " " $base_unit ")."]
-            #[allow(non_snake_case)]
-            pub fn [<as_$p $q>](&self) -> crate::Magnitude { self.m / $oper }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $p_str "" $q_str "` (`" $prefix_str "" $quantity_str
-                "`) (" $pow " " $base_unit ")."]
-            pub fn [<as_$prefix $quantity>](&self) -> crate::Magnitude { self.m / $oper }
-        }
-    };
-
-    // specify strings for the 2 quantities, strings for the 2 prefixes
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $p_str:expr,
-        $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_getters_unicode![
-            $type,
-            $q_str,
-            $quantity_str,
-            $q,
-            $quantity,
-            $p_str,
-            $prefix_str,
-            $p,
-            $prefix,
-            $quantity,
-            $oper,
-            $pow
-        ];
-    };
-
-    // specify strings for the 2 prefixes (e.g. "µ", "micro")
-    ($type:ty, $q:ident, $quantity:ident, $p_str:expr, $prefix_str:expr, $p:ident, $prefix:ident, $oper:expr, $pow:expr) => {
-        fn_getters_unicode![
-            $type,
-            $q,
-            $quantity,
-            $q,
-            $quantity,
-            $p_str,
-            $prefix_str,
-            $p,
-            $prefix,
-            $quantity,
-            $oper,
-            $pow
-        ];
-    };
-
-    // specify strings for the 2 quantities, and for the base unit (e.g. "Å", "ångströms")
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "Returns `" $type "` as " $q_str " (" $quantity_str
-                ") (" $pow " " $base_unit ")."]
-            pub fn [<as_$q>](&self) -> crate::Magnitude { self.m / $oper }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as `" $q_str "` (`" $quantity_str
-                "`) (" $pow " " $base_unit ")."]
-            pub fn [<as_$quantity>](&self) -> crate::Magnitude { self.m / $oper }
-        }
-    };
-
-    // specify strings for the 2 quantities (e.g. "au", "astronomical unit")
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $oper:expr) => {
-        paste::paste! {
-            #[inline]
-            #[allow(non_snake_case)]
-            #[doc = "Returns `" $type "` as " $q_str " (" $quantity_str ")"]
-            pub fn [<as_$q>](&self) -> crate::Magnitude { self.m / $oper }
-
-            #[inline]
-            #[doc = "Returns `" $type "` as " $q_str " (" $quantity_str ")"]
-            pub fn [<as_$quantity>](&self) -> crate::Magnitude { self.m / $oper }
-        }
-    };
-}
-
-/// Generates both constructors and getters
-macro_rules! fn_both_unicode {
+macro_rules! scalar_methods {
+    // ROOT RULE: NON const, WITH conversion factor
     //
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $oper:expr) => {
-        fn_constructors_unicode![$type, $q_str, $quantity_str, $q, $quantity, $oper];
-        fn_getters_unicode![$type, $q_str, $quantity_str, $q, $quantity, $oper];
+    // LEGEND:
+    // qu = abbreviated quantity in unicode
+    // Qu = quantity in unicode
+    // pu = abbreviated prefix in unicode
+    // Pu = prefix in unicode
+    // pa = abbreviated prefix in ascii
+    // Pa = prefix in ascii
+    // f = conversion factor in number
+    // fu = conversion factor in unicode
+    // Bu = base unit for conversion, in unicode
+    //
+    // NOTE:
+    // - prefixes can be an empty string if you don't need them
+    // - The base unit of reference is usually the quantity in unicode
+    //
+    // IDEA TODO:
+    // - add 2 more parameters, for " (" & ")", to surround last part
+    //
+    // MAYBE:
+    // - add fa = conversion factor in ascii?
+    // - use tt instead of ident for $q & $Q (change everywhere), and use same order ascii
+    //   first, unicode second.
+    // - add t= q= Q=
+    //
+    ($type:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt,
+     pu=$pu:tt, Pu=$Pu:tt, pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr, Bu=$Bu:tt) => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $type "` in `" $pu "" $q "` (`" $Pu "" $Q "`) (" $fu " " $Bu ")."]
+            pub fn [<in_$pa $q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $f) }
+            #[inline]
+            #[doc = "New `" $type "` in `" $pu "" $q "` (`" $Pu "" $Q "`) (" $fu " " $Bu ")."]
+            pub fn [<in_$Pa $Q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $f) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $type "` as `" $pu "" $q "` (`" $Pu "" $Q "`) (" $fu " " $Bu ")."]
+            pub fn [<as_$pa $q>](&self) -> crate::Magnitude { self.m / $f }
+            #[inline]
+            #[doc = "Returns `" $type "` as `" $pu "" $q "` (`" $Pu "" $Q "`) (" $fu " " $Bu ")."]
+            pub fn [<as_$Pa $Q>](&self) -> crate::Magnitude { self.m / $f }
+        }
     };
 
-    // specify strings for the 2 quantities, and for the base unit (e.g. "Å", "ångströms")
-    ($type:ty, $q_str:expr, $quantity_str:expr, $q:ident, $quantity:ident, $base_unit:ident, $oper:expr, $pow:expr) => {
-        fn_constructors_unicode![
-            $type,
-            $q_str,
-            $quantity_str,
-            $q,
-            $quantity,
-            $base_unit,
-            $oper,
-            $pow
-        ];
-        fn_getters_unicode![
-            $type,
-            $q_str,
-            $quantity_str,
-            $q,
-            $quantity,
-            $base_unit,
-            $oper,
-            $pow
-        ];
+    // ALIAS: doesn't have to specify: qu, Qu, Bu
+    //
+    // useful for: all non-base units, with unicode prefix
+    //
+    // e.g.:
+    // scalar_methods![$type, $q, $quantity, pu="µ", Pu="micro", pa="u", Pa="micro",
+    //   f=1e-6, fu="10⁻⁶"];
+    ($type:ty, $q:ident, $Q:ident,
+     pu=$pu:tt, Pu=$Pu:tt, pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr) => {
+        scalar_methods![$type, $q, $Q, qu=$q, Qu=$Q,
+        pu=$pa, Pu=$Pa, pa=$pa, Pa=$Pa, f=$f, fu=$fu, Bu=$Q];
+    };
+
+    // ALIAS: doesnt have to specify: qu, Qu, pu, Pu, Bu
+    //
+    // useful for: all non-base units, with ascii prefix (doesn't support µ, micro)
+    //
+    // e.g.:
+    // scalar_methods![$type, $q, $quantity, "m", "milli", 1.0e-3, "10⁻³"];
+    ($type:ty, $q:ident, $Q:ident,
+        pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr) => {
+        scalar_methods![$type, $q, $Q,
+        pu=$pa, Pu=$Pa, pa=$pa, Pa=$Pa, f=$f, fu=$fu];
+    };
+
+    // ALIAS: doesn't have to specify: pu, Pu, pa, Pa
+    //
+    // useful for: units WITHOUT prefix and unicode quantity (like Å, ångströms)
+    //
+    // e.g.:
+    // scalar_methods![ Length, A, angstroms, "`Å`", "`ångströms`",
+    //   metres, 1.0e10, "10⁻¹⁰" ];
+    ($type:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, f=$f:expr, fu=$fu:expr, Bu=$Bu:tt) => {
+        scalar_methods![$type, $q, $Q, qu=$qu, Qu=$Qu,
+        pu="", Pu="", pa="", Pa="", f=$f, fu=$fu, Bu=$Bu];
+    };
+
+    // ALIAS: doesnt have to specify: qu, Qu, pa, Pa, pu, Pu
+    //
+    // e.g.:
+    // scalar_methods![Time, y, years, f=60., fu="365", Bu="days"];
+    ($type:ty, $q:ident, $Q:ident, f=$f:expr, fu=$fu:tt, Bu=$Bu:tt) => {
+        scalar_methods![$type, $q, $Q, qu=$q, Qu=$Q,
+        pu="", Pu="", pa="", Pa="", f=$f, fu=$fu, Bu=$Bu];
+    };
+
+    // ALIAS: doesnt have to specify: qu, Qu, pa, Pa, pu, Pu, Bu
+    //
+    // useful for units WITHOUT prefixes, WITH conversion factor (grams)
+    //
+    // e.g.:
+    // scalar_methods![$type, $q, $quantity, f=1e-3, fu="10⁰"];
+    ($type:ty, $q:ident, $Q:ident, f=$f:expr, fu=$fu:expr) => {
+        scalar_methods![$type, $q, $Q,
+        pu="", Pu="", pa="", Pa="", f=$f, fu=$fu];
+    };
+
+    // ROOT RULE:
+    //
+    // This is similar to the angstroms ALIAS, but with less docs
+    // MAYBE: join together
+    //
+    // useful for: units WITHOUT prefix, without… extra docs TODO
+    //
+    // e.g.:
+    // scalar_methods![ Length, au, astronomical_units, qu="au",
+    //   Qu="[`astronomical units`][Length::ASTRONOMICAL_UNIT]", f=Self::ASTRONOMICAL_UNIT.m ];
+    ($type:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, f=$f:expr) => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $type "` in " $qu " (" $Qu ")"]
+            pub fn [<in_$q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $f) }
+            #[inline]
+            #[doc = "New `" $type "` in " $qu " (" $Qu ")"]
+            pub fn [<in_$Q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $f) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $type "` as " $qu " (" $Qu ")"]
+            pub fn [<as_$q>](&self) -> crate::Magnitude { self.m / $f }
+            #[inline]
+            #[doc = "Returns `" $type "` as " $qu " (" $Qu ")"]
+            pub fn [<as_$Q>](&self) -> crate::Magnitude { self.m / $f }
+        }
+    };
+
+    // ALIAS:
+    //
+    // e.g.:
+    // scalar_methods![Time, min, minutes, f=60.];
+    ($type:ty, $q:ident, $Q:ident, f=$f:expr) => {
+        scalar_methods![$type, $q, $Q, qu=$q, Qu=$Q, f=$f];
+    };
+
+    // ROOT RULE: base unit, const, WITHOUT conversion factor, WITHOUT prefixes
+    //
+    // useful for: all base SI units except the kilogram (metre, kelvin, pascal…)
+    //
+    // e.g.:
+    // scalar_methods![$type, $q, $quantity, base, fu="10⁰"];
+    ($type:ty, $q:ident, $Q:ident, base, fu=$fu:expr) => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $type "` in `" $q "` (`" $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<in_$q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
+            #[inline]
+            #[doc = "New `" $type "` in `" $q "` (`" $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<in_$Q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $type "` as `" $q "` (`" $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<as_$q>](&self) -> crate::Magnitude { self.m }
+            #[inline]
+            #[doc = "Returns `" $type "` as `" $q "` (`" $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<as_$Q>](&self) -> crate::Magnitude { self.m }
+        }
+    };
+
+    // ROOT RULE: base unit, const, WITHOUT conversion factor, with prefixes
+    //
+    // useful for: the kilogram SI base unit
+    //
+    // e.g.:
+    // scalar_methods![$type, $q, $quantity, pa="k", Pa="kilo", base, fu="10³"];
+    ($type:ty, $q:ident, $Q:ident, pa=$pa:tt, Pa=$Pa:tt, base, fu=$fu:expr) => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $type "` in `" $pa $q "` (`" $Pa $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<in_$pa $q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
+            #[inline]
+            #[doc = "New `" $type "` in `" $pa $q "` (`" $Pa $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<in_$Pa $Q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $type "` as `" $pa $q "` (`" $Pa $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<as_$pa $q>](&self) -> crate::Magnitude { self.m }
+            #[inline]
+            #[doc = "Returns `" $type "` as `" $pa $q "` (`" $Pa $Q "`) (base unit, " $fu " " $Q ")."]
+            pub const fn [<as_$Pa $Q>](&self) -> crate::Magnitude { self.m }
+        }
     };
 }
 
@@ -333,58 +211,34 @@ macro_rules! fn_both_unicode {
 macro_rules! impl_prefixes {
     ($type:ty, $q:ident, $quantity:ident) => {
         paste::paste! {
-
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $type "` quantity is internally stored in `" $quantity "`**."]
             #[doc = "- base *const* constructors: [`in_" $q "`](" $type "#method.in_" $q"),"]
             #[doc = "[`in_" $quantity "`](" $type "#method.in_" $quantity ")"]
             #[doc = "- base *const* converters: [`as_" $q "`](" $type "#method.as_" $q"),"]
             #[doc = "[`as_" $quantity "`](" $type "#method.as_" $quantity ")"]
-
             impl $type {
-                fn_constructors![$type, $q, $quantity, Y, yotta, 1.0e24, "10²⁴"];
-                fn_constructors![$type, $q, $quantity, Z, zetta, 1.0e21, "10²¹"];
-                fn_constructors![$type, $q, $quantity, E, exa, 1.0e18, "10¹⁸"];
-                fn_constructors![$type, $q, $quantity, P, peta, 1.0e15, "10¹⁵"];
-                fn_constructors![$type, $q, $quantity, T, tera, 1.0e12, "10¹²"];
-                fn_constructors![$type, $q, $quantity, G, giga, 1.0e9, "10⁹"];
-                fn_constructors![$type, $q, $quantity, M, mega, 1.0e6, "10⁶"];
-                fn_constructors![$type, $q, $quantity, k, kilo, 1.0e3, "10³"];
-                fn_constructors![$type, $q, $quantity, h, hecto, 1.0e2, "10²"];
-                fn_constructors![$type, $q, $quantity, da, deka, 1.0e1, "10¹"];
-                fn_constructors![$type, $q, $quantity, "10⁰"];
-                fn_constructors![$type, $q, $quantity, d, deci, 1.0e-1, "10⁻¹"];
-                fn_constructors![$type, $q, $quantity, c, centi, 1.0e-2, "10⁻²"];
-                fn_constructors![$type, $q, $quantity, m, milli, 1.0e-3, "10⁻³"];
-                fn_constructors_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-6, "10⁻⁶"];
-                fn_constructors![$type, $q, $quantity, n, nano, 1.0e-9, "10⁻⁹"];
-                fn_constructors![$type, $q, $quantity, p, pico, 1.0e-12, "10⁻¹²"];
-                fn_constructors![$type, $q, $quantity, f, femto, 1.0e-15, "10⁻¹⁵"];
-                fn_constructors![$type, $q, $quantity, a, atto, 1.0e-18, "10⁻¹⁸"];
-                fn_constructors![$type, $q, $quantity, z, zepto, 1.0e-21, "10⁻²¹"];
-                fn_constructors![$type, $q, $quantity, y, yocto, 0.0e-24, "10⁻²⁴"];
-
-                fn_getters![$type, $q, $quantity, Y, yotta, 1.0e24, "10²⁴"];
-                fn_getters![$type, $q, $quantity, Z, zetta, 1.0e21, "10²¹"];
-                fn_getters![$type, $q, $quantity, E, exa, 1.0e18, "10¹⁸"];
-                fn_getters![$type, $q, $quantity, P, peta, 1.0e15, "10¹⁵"];
-                fn_getters![$type, $q, $quantity, T, tera, 1.0e12, "10¹²"];
-                fn_getters![$type, $q, $quantity, G, giga, 1.0e9, "10⁹"];
-                fn_getters![$type, $q, $quantity, M, mega, 1.0e6, "10⁶"];
-                fn_getters![$type, $q, $quantity, k, kilo, 1.0e3, "10³"];
-                fn_getters![$type, $q, $quantity, h, hecto, 1.0e2, "10²"];
-                fn_getters![$type, $q, $quantity, da, deka, 1.0e1, "10¹"];
-                fn_getters![$type, $q, $quantity, "10⁰"];
-                fn_getters![$type, $q, $quantity, d, deci, 1.0e-1, "10⁻¹"];
-                fn_getters![$type, $q, $quantity, c, centi, 1.0e-2, "10⁻²"];
-                fn_getters![$type, $q, $quantity, m, milli, 1.0e-3, "10⁻³"];
-                fn_getters_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-6, "10⁻⁶"];
-                fn_getters![$type, $q, $quantity, n, nano, 1.0e-9, "10⁻⁹"];
-                fn_getters![$type, $q, $quantity, p, pico, 1.0e-12, "10⁻¹²"];
-                fn_getters![$type, $q, $quantity, f, femto, 1.0e-15, "10⁻¹⁵"];
-                fn_getters![$type, $q, $quantity, a, atto, 1.0e-18, "10⁻¹⁸"];
-                fn_getters![$type, $q, $quantity, z, zepto, 1.0e-21, "10⁻²¹"];
-                fn_getters![$type, $q, $quantity, y, yocto, 0.0e-24, "10⁻²⁴"];
+                scalar_methods![$type, $q, $quantity, pa="Y", Pa="yotta", f=1e24, fu="10²⁴"];
+                scalar_methods![$type, $q, $quantity, pa="Z", Pa="zetta", f=1e21, fu="10²¹"];
+                scalar_methods![$type, $q, $quantity, pa="E", Pa="exa", f=1e18, fu="10¹⁸"];
+                scalar_methods![$type, $q, $quantity, pa="P", Pa="peta", f=1e15, fu="10¹⁵"];
+                scalar_methods![$type, $q, $quantity, pa="T", Pa="tera", f=1e12, fu="10¹²"];
+                scalar_methods![$type, $q, $quantity, pa="G", Pa="giga", f=1e9, fu="10⁹"];
+                scalar_methods![$type, $q, $quantity, pa="M", Pa="mega", f=1e6, fu="10⁶"];
+                scalar_methods![$type, $q, $quantity, pa="k", Pa="kilo", f=1e3, fu="10³"];
+                scalar_methods![$type, $q, $quantity, pa="h", Pa="hecto", f=1e2, fu="10²"];
+                scalar_methods![$type, $q, $quantity, pa="da", Pa="deka", f=1e1, fu="10¹"];
+                scalar_methods![$type, $q, $quantity, base, fu="10⁰"];
+                scalar_methods![$type, $q, $quantity, pa="d", Pa="deci", f=1e-1, fu="10⁻¹"];
+                scalar_methods![$type, $q, $quantity, pa="c", Pa="centi", f=1e-2, fu="10⁻²"];
+                scalar_methods![$type, $q, $quantity, pa="m", Pa="milli", f=1e-3, fu="10⁻³"];
+                scalar_methods![$type, $q, $quantity, pu="µ", Pu="micro", pa="u", Pa="micro", f=1e-6, fu="10⁻⁶"];
+                scalar_methods![$type, $q, $quantity, pa="n", Pa="nano", f=1e-9, fu="10⁻⁹"];
+                scalar_methods![$type, $q, $quantity, pa="p", Pa="pico", f=1e-12, fu="10⁻¹²"];
+                scalar_methods![$type, $q, $quantity, pa="f", Pa="femto", f=1e-15, fu="10⁻¹⁵"];
+                scalar_methods![$type, $q, $quantity, pa="a", Pa="atto", f=1e-18, fu="10⁻¹⁸"];
+                scalar_methods![$type, $q, $quantity, pa="z", Pa="zepto", f=1e-21, fu="10⁻²¹"];
+                scalar_methods![$type, $q, $quantity, pa="y", Pa="yocto", f=1e-24, fu="10⁻²⁴"];
             }
         }
     };
@@ -400,53 +254,29 @@ macro_rules! impl_prefixes_base_kilo {
             #[doc = "[`in_kilo" $quantity "`](" $type "#method.in_kilo" $quantity ")"]
             #[doc = "- base *const* converters: [`as_k" $q "`](" $type "#method.as_k" $q"),"]
             #[doc = "[`as_kilo" $quantity "`](" $type "#method.as_kilo" $quantity ")"]
-
             impl $type {
-                fn_constructors![$type, $q, $quantity, Y, yotta, 1.0e21, "10²⁴"];
-                fn_constructors![$type, $q, $quantity, Z, zetta, 1.0e18, "10²¹"];
-                fn_constructors![$type, $q, $quantity, E, exa, 1.0e15, "10¹⁸"];
-                fn_constructors![$type, $q, $quantity, P, peta, 1.0e12, "10¹⁵"];
-                fn_constructors![$type, $q, $quantity, T, tera, 1.0e9, "10¹²"];
-                fn_constructors![$type, $q, $quantity, G, giga, 1.0e6, "10⁹"];
-                fn_constructors![$type, $q, $quantity, M, mega, 1.0e3, "10⁶"];
-                fn_constructors![$type, $q, $quantity, k, kilo, "10³"];
-                fn_constructors![$type, $q, $quantity, h, hecto, 1.0e-1, "10²"];
-                fn_constructors![$type, $q, $quantity, da, deka, 1.0e-2, "10¹"];
-                fn_constructors![$type, $q, $quantity, 1.0e-3, "10⁰"];
-                fn_constructors![$type, $q, $quantity, d, deci, 1.0e-4, "10⁻¹"];
-                fn_constructors![$type, $q, $quantity, c, centi, 1.0e-5, "10⁻²"];
-                fn_constructors![$type, $q, $quantity, m, milli, 1.0e-6, "10⁻³"];
-                fn_constructors_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-9, "⁻⁶"];
-                fn_constructors![$type, $q, $quantity, n, nano, 1.0e-12, "10⁻⁹"];
-                fn_constructors![$type, $q, $quantity, p, pico, 1.0e-15, "10⁻¹²"];
-                fn_constructors![$type, $q, $quantity, f, femto, 1.0e-18, "10⁻¹⁵"];
-                fn_constructors![$type, $q, $quantity, a, atto, 1.0e-21, "10⁻¹⁸"];
-                fn_constructors![$type, $q, $quantity, z, zepto, 1.0e-24, "10⁻²¹"];
-                fn_constructors![$type, $q, $quantity, y, yocto, 0.0e-27, "10⁻²⁴"];
-
-                fn_getters![$type, $q, $quantity, Y, yotta, 1.0e21, "10²⁴"];
-                fn_getters![$type, $q, $quantity, Z, zetta, 1.0e18, "10²¹"];
-                fn_getters![$type, $q, $quantity, E, exa, 1.0e15, "10¹⁸"];
-                fn_getters![$type, $q, $quantity, P, peta, 1.0e12, "10¹⁵"];
-                fn_getters![$type, $q, $quantity, T, tera, 1.0e9, "10¹²"];
-                fn_getters![$type, $q, $quantity, G, giga, 1.0e6, "10⁹"];
-                fn_getters![$type, $q, $quantity, M, mega, 1.0e3, "10⁶"];
-                fn_getters![$type, $q, $quantity, k, kilo, "10³"];
-                fn_getters![$type, $q, $quantity, h, hecto, 1.0e-1, "10²"];
-                fn_getters![$type, $q, $quantity, da, deka, 1.0e-2, "10¹"];
-                fn_getters![$type, $q, $quantity, 1.0e-3, "10⁰"];
-                fn_getters![$type, $q, $quantity, d, deci, 1.0e-4, "10⁻¹"];
-                fn_getters![$type, $q, $quantity, c, centi, 1.0e-5, "10⁻²"];
-                fn_getters![$type, $q, $quantity, m, milli, 1.0e-6, "10⁻³"];
-                fn_getters_unicode![$type, $q, $quantity, "µ", "micro", u, micro, 1.0e-9, "⁻⁶"];
-                fn_getters![$type, $q, $quantity, n, nano, 1.0e-12, "10⁻⁹"];
-                fn_getters![$type, $q, $quantity, p, pico, 1.0e-15, "10⁻¹²"];
-                fn_getters![$type, $q, $quantity, f, femto, 1.0e-18, "10⁻¹⁵"];
-                fn_getters![$type, $q, $quantity, a, atto, 1.0e-21, "10⁻¹⁸"];
-                fn_getters![$type, $q, $quantity, z, zepto, 1.0e-24, "10⁻²¹"];
-                fn_getters![$type, $q, $quantity, y, yocto, 0.0e-27, "10⁻²⁴"];
+                scalar_methods![$type, $q, $quantity, pa="Y", Pa="yotta", f=1e21, fu="10²⁴"];
+                scalar_methods![$type, $q, $quantity, pa="Z", Pa="zetta", f=1e18, fu="10²¹"];
+                scalar_methods![$type, $q, $quantity, pa="E", Pa="exa", f=1e15, fu="10¹⁸"];
+                scalar_methods![$type, $q, $quantity, pa="P", Pa="peta", f=1e12, fu="10¹⁵"];
+                scalar_methods![$type, $q, $quantity, pa="T", Pa="tera", f=1e9, fu="10¹²"];
+                scalar_methods![$type, $q, $quantity, pa="G", Pa="giga", f=1e6, fu="10⁹"];
+                scalar_methods![$type, $q, $quantity, pa="M", Pa="mega", f=1e3, fu="10⁶"];
+                scalar_methods![$type, $q, $quantity, pa="k", Pa="kilo", base, fu="10³"];
+                scalar_methods![$type, $q, $quantity, pa="h", Pa="hecto", f=1e-1, fu="10²"];
+                scalar_methods![$type, $q, $quantity, pa="da", Pa="deka", f=1e-2, fu="10¹"];
+                scalar_methods![$type, $q, $quantity, f=1e-3, fu="10⁰"];
+                scalar_methods![$type, $q, $quantity, pa="d", Pa="deci", f=1e-4, fu="10⁻¹"];
+                scalar_methods![$type, $q, $quantity, pa="c", Pa="centi", f=1e-5, fu="10⁻²"];
+                scalar_methods![$type, $q, $quantity, pa="m", Pa="milli", f=1e-6, fu="10⁻³"];
+                scalar_methods![$type, $q, $quantity, pu="µ", Pu="micro", pa="u", Pa="micro", f=1e-9, fu="10⁻⁶"];
+                scalar_methods![$type, $q, $quantity, pa="n", Pa="nano", f=1e-12, fu="10⁻⁹"];
+                scalar_methods![$type, $q, $quantity, pa="p", Pa="pico", f=1e-15, fu="10⁻¹²"];
+                scalar_methods![$type, $q, $quantity, pa="f", Pa="femto", f=1e-18, fu="10⁻¹⁵"];
+                scalar_methods![$type, $q, $quantity, pa="a", Pa="atto", f=1e-21, fu="10⁻¹⁸"];
+                scalar_methods![$type, $q, $quantity, pa="z", Pa="zepto", f=1e-24, fu="10⁻²¹"];
+                scalar_methods![$type, $q, $quantity, pa="y", Pa="yocto", f=1e-27, fu="10⁻²⁴"];
             }
-
         }
     };
 }

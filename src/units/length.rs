@@ -147,24 +147,24 @@ impl Length {
 
 /// # Non SI units conversions
 impl Length {
-    fn_both_unicode![
+    scalar_methods![
         Length,
-        "au",
-        "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
         au,
         astronomical_units,
-        Self::ASTRONOMICAL_UNIT.m
+        qu = "`au`",
+        Qu = "[`astronomical units`][Length::ASTRONOMICAL_UNIT]",
+        f = Self::ASTRONOMICAL_UNIT.m
     ];
 
-    fn_both_unicode![
+    scalar_methods![
         Length,
-        "`Å`",
-        "`ångströms`",
         A,
         angstroms,
-        metres,
-        1.0e10,
-        "10⁻¹⁰"
+        qu = "`Å`",
+        Qu = "`ångströms`",
+        f = 1.0e10,
+        fu = "10⁻¹⁰",
+        Bu = "metres"
     ];
 }
 
@@ -178,7 +178,7 @@ mod tests {
     #[test]
     fn length_constants() {
         assert_float_eq!(
-            0.0000000000162,
+            0.00000000001616255,
             Length::PLANCK.as_ym(),
             r2nd <= Magnitude::EPSILON
         );

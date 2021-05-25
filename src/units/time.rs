@@ -119,20 +119,20 @@ impl Time {
 
 /// # Non SI units conversions
 impl Time {
-    fn_both_unicode![Time, "`min`", "`minutes`", min, minutes, 60.];
-    fn_both_unicode![Time, "`h`", "`hours`", h, hours, 3600.];
-    fn_both_unicode![Time, "`d`", "`days`", d, days, 86_400.];
-    fn_both_unicode![Time, "`w`", "`weeks`", w, weeks, 604_800.];
-    fn_both_unicode![Time, "`y`", "`years`", y, years, days, 31_536e3, "365"];
-    fn_both_unicode![
+    scalar_methods![Time, min, minutes, f = 60.];
+    scalar_methods![Time, h, hours, f = 3600.];
+    scalar_methods![Time, d, days, f = 86_400.];
+    scalar_methods![Time, w, weeks, f = 604_800.];
+    scalar_methods![Time, y, years, f = 31_536e3, fu = "365", Bu = "days"];
+    scalar_methods![
         Time,
-        "`jy`",
-        "`julian years`",
         jy,
         julian_years,
-        days,
-        Time::JULIAN_YEAR.m,
-        "365.25"
+        qu = "`jy`",
+        Qu = "`julian years`",
+        f = Time::JULIAN_YEAR.m,
+        fu = "365.25",
+        Bu = "days"
     ];
 }
 

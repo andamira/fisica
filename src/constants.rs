@@ -1,4 +1,9 @@
+//! Physical constants
 //!
+//! Many [unit magnitudes][crate::units] have their own associated constants.
+//! E.g. [`Speed::SOUND`][crate::units::Speed::SOUND].
+//!
+//! The ones defined in this module, doesn't pertain to any magnitude.
 //!
 
 use crate::Magnitude;

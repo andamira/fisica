@@ -15,10 +15,7 @@ use crate::{Direction, Magnitude};
 /// - <https://en.wikipedia.org/wiki/Newton_(unit)>
 #[derive(Clone, Copy, Debug)]
 pub struct Force {
-    /// the magnitude
     pub m: Magnitude,
-
-    /// the vector
     pub d: Direction,
 }
 
