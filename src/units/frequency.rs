@@ -23,4 +23,4 @@ impl Frequency {
     }
 }
 
-impl_prefixes![Frequency, Hz, hertzs];
+impl_scalar_methods![Frequency, Hz, hertzs];

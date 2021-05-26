@@ -28,4 +28,4 @@ impl Charge {
 /// <https://en.wikipedia.org/wiki/Orders_of_magnitude_(charge)>
 impl Charge {}
 
-impl_prefixes![Charge, C, coulombs];
+impl_scalar_methods![Charge, C, coulombs];

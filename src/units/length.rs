@@ -168,7 +168,7 @@ impl Length {
     ];
 }
 
-impl_prefixes![Length, m, metres];
+impl_scalar_methods![Length, m, metres];
 
 #[cfg(test)]
 mod tests {

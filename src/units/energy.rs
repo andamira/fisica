@@ -73,7 +73,7 @@ impl Energy {
     }
 }
 
-impl_prefixes![Energy, J, joules];
+impl_scalar_methods![Energy, J, joules];
 
 #[cfg(test)]
 mod tests {

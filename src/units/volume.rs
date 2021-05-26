@@ -45,17 +45,16 @@ impl Volume {
     pub const LITRE: Self = Volume::new(1e-3);
 }
 
-// FIXME:bad conversion prefixes calc for squares and cubes
 // FIXME:nomenclature: cubic_metres, cubic_kilometres…
-// impl_prefixes![Volume, m3, metres_cubic];
+impl_scalar_methods_cubed![Volume, m3, metres_cubic];
 
-// #[cfg(test)]
-// mod tests {
-//     use {super::*, float_eq::assert_float_eq};
-//
-//     /// Checks the constants are defined as expected.
-//     #[test]
-//     fn volume_constants() {
-//         assert_float_eq!(1., Volume::LITRE.as_dm3(), r2nd <= Magnitude::EPSILON);
-//     }
-// }
+#[cfg(test)]
+mod tests {
+    use {super::*, float_eq::assert_float_eq};
+
+    /// Checks the constants are defined as expected.
+    #[test]
+    fn volume_constants() {
+        assert_float_eq!(1., Volume::LITRE.as_dm3(), r2nd <= Magnitude::EPSILON);
+    }
+}

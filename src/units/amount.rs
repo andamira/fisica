@@ -33,4 +33,4 @@ impl Amount {
     }
 }
 
-impl_prefixes![Amount, mol, moles];
+impl_scalar_methods![Amount, mol, moles];

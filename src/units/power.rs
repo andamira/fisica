@@ -51,7 +51,7 @@ impl Power {
     }
 }
 
-impl_prefixes![Power, W, watts];
+impl_scalar_methods![Power, W, watts];
 
 #[cfg(test)]
 mod tests {

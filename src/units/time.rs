@@ -136,7 +136,7 @@ impl Time {
     ];
 }
 
-impl_prefixes![Time, s, seconds];
+impl_scalar_methods![Time, s, seconds];
 
 #[cfg(test)]
 mod tests {

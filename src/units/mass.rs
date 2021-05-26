@@ -80,7 +80,7 @@ impl Mass {
     }
 }
 
-impl_prefixes_base_kilo![Mass, g, grams];
+impl_scalar_methods_base_kilo![Mass, g, grams];
 
 #[cfg(test)]
 mod tests {

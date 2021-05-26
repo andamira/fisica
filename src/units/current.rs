@@ -28,4 +28,4 @@ impl Current {
     }
 }
 
-impl_prefixes![Current, A, amperes];
+impl_scalar_methods![Current, A, amperes];

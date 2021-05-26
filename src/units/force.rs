@@ -129,7 +129,7 @@ impl Weight {
     }
 }
 
-impl_prefixes![Force, N, newtons];
+impl_scalar_methods![Force, N, newtons];
 
 #[cfg(test)]
 mod tests {

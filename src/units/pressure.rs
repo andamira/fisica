@@ -23,4 +23,4 @@ impl Pressure {
     }
 }
 
-impl_prefixes![Pressure, Pa, pascals];
+impl_scalar_methods![Pressure, Pa, pascals];

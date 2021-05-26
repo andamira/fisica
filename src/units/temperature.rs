@@ -23,4 +23,4 @@ impl Temperature {
     }
 }
 
-impl_prefixes![Temperature, K, kelvins];
+impl_scalar_methods![Temperature, K, kelvins];

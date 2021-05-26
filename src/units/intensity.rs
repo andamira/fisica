@@ -31,4 +31,4 @@ impl Intensity {
     }
 }
 
-impl_prefixes![Intensity, cd, candelas];
+impl_scalar_methods![Intensity, cd, candelas];
