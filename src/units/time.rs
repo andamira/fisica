@@ -119,10 +119,10 @@ impl Time {
 
 /// # Non SI units conversions
 impl Time {
-    scalar_methods![Time, min, minutes, f = 60.];
-    scalar_methods![Time, h, hours, f = 3600.];
-    scalar_methods![Time, d, days, f = 86_400.];
-    scalar_methods![Time, w, weeks, f = 604_800.];
+    scalar_methods![Time, min, minutes, f = 60., fu = "60", Bu = s];
+    scalar_methods![Time, h, hours, f = 3600., fu = "3600", Bu = s];
+    scalar_methods![Time, d, days, f = 86_400., fu = "86400", Bu = s];
+    scalar_methods![Time, w, weeks, f = 604_800., fu = "604800", Bu = s];
     scalar_methods![Time, y, years, f = 31_536e3, fu = "365", Bu = "days"];
     scalar_methods![
         Time,
