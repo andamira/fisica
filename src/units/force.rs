@@ -129,7 +129,7 @@ impl Weight {
     }
 }
 
-impl_scalar_methods![Force, N, newtons];
+impl_vector_methods![Force, N, newtons];
 
 #[cfg(test)]
 mod tests {

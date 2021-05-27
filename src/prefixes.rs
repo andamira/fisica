@@ -58,10 +58,10 @@ macro_rules! scalar_methods {
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "New `" $ty "` in " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $Bu ")."]
-            pub fn [<in_$pa $q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $f) }
+            pub fn [<in_$pa $q>](m: crate::Magnitude) -> Self { Self::new(m * $f) }
             #[inline]
             #[doc = "New `" $ty "` in " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $Bu ")."]
-            pub fn [<in_$Pa $Q>](q: crate::Magnitude) -> Self { Self::without_direction(q * $f) }
+            pub fn [<in_$Pa $Q>](m: crate::Magnitude) -> Self { Self::new(m * $f) }
             // getters
             #[inline]
             #[allow(non_snake_case)]
@@ -192,16 +192,16 @@ macro_rules! scalar_methods {
     };
 
     // ROOT RULE: const base unit, WITHOUT conversion factor
-    ($ty:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, pa=$pa:tt, Pa=$Pa:tt, base, fu=$fu:expr) => {
+    ($ty:ty, base, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, pa=$pa:tt, Pa=$Pa:tt, fu=$fu:expr) => {
         paste::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "New `" $ty "` in " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
-            pub const fn [<in_$pa $q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
+            pub const fn [<in_$pa $q>](m: crate::Magnitude) -> Self { Self::new(m) }
             #[inline]
             #[doc = "New `" $ty "` in " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
-            pub const fn [<in_$Pa $Q>](q: crate::Magnitude) -> Self { Self::without_direction(q) }
+            pub const fn [<in_$Pa $Q>](m: crate::Magnitude) -> Self { Self::new(m) }
             // getters
             #[inline]
             #[allow(non_snake_case)]
@@ -215,51 +215,287 @@ macro_rules! scalar_methods {
     // ALIAS: no need to specify: qu, Qu
     // useful for: the kilogram SI base unit
     // e.g.:
-    // scalar_methods![$ty, $q, $Q, pa="k", Pa="kilo", base, fu="10³"];
-    ($ty:ty, $q:ident, $Q:ident, pa=$pa:tt, Pa=$Pa:tt, base, fu=$fu:expr) => {
+    // scalar_methods![$ty, base, $q, $Q, pa="k", Pa="kilo", fu="10³"];
+    ($ty:ty, base, $q:ident, $Q:ident, pa=$pa:tt, Pa=$Pa:tt, fu=$fu:expr) => {
         scalar_methods![
             $ty,
+            base,
             $q,
             $Q,
             qu = $q,
             Qu = $Q,
             pa = $pa,
             Pa = $Pa,
-            base,
             fu = $fu
         ];
     };
     // ALIAS: no need to specify: pa, Pa
     // useful for: squared and cubed base units
     // e.g.:
-    // scalar_methods![$ty, $q, $Q, qu="m²", Qu="metres squared", base, fu="10⁰"];
-    ($ty:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, base, fu=$fu:expr) => {
+    // scalar_methods![$ty, base, $q, $Q, qu="m²", Qu="metres squared", fu="10⁰"];
+    ($ty:ty, base, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, fu=$fu:expr) => {
         scalar_methods![
             $ty,
+            base,
             $q,
             $Q,
             qu = $qu,
             Qu = $Qu,
             pa = "",
             Pa = "",
-            base,
             fu = $fu
         ];
     };
     // ALIAS: no need to specify: qu, Qu, pa, Pa
     // useful for: base SI units except the kilogram (metre, kelvin, pascal…)
     // e.g.:
-    // scalar_methods![$ty, $q, $Q, base, fu="10⁰"];
-    ($ty:ty, $q:ident, $Q:ident, base, fu=$fu:expr) => {
+    // scalar_methods![$ty, base, $q, $Q, fu="10⁰"];
+    ($ty:ty, base, $q:ident, $Q:ident, fu=$fu:expr) => {
         scalar_methods![
             $ty,
+            base,
             $q,
             $Q,
             qu = $q,
             Qu = $Q,
             pa = "",
             Pa = "",
+            fu = $fu
+        ];
+    };
+}
+
+/// Generates 2 constructors and 2 getters, for vector quantities.
+macro_rules! vector_methods {
+    // ROOT RULE: NON const, WITH conversion factor
+    //
+    // LEGEND:
+    // $ty = the type to impl the metods
+    // $q  = abbreviated quantity in ascii
+    // $Q  = quantity in ascii
+    // $qu = abbreviated quantity in unicode
+    // $Qu = quantity in unicode (or multiple words)
+    // $pa = abbreviated prefix in ascii
+    // $Pa = prefix in ascii
+    // $pu = abbreviated prefix in unicode
+    // $Pu = prefix in unicode
+    // $f  = conversion factor in number
+    // $fu = conversion factor in unicode
+    // $Bu = base unit for conversion, in unicode
+    //
+    // NOTE:
+    // - prefixes can be an empty string if you don't need them
+    // - The base unit of reference is usually the quantity in unicode
+    ($ty:ty, $q:tt, $Q:tt, qu=$qu:tt, Qu=$Qu:tt,
+     pu=$pu:tt, Pu=$Pu:tt, pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr, Bu=$Bu:tt) => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $ty "` in " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $Bu ")."]
+            pub fn [<in_$pa $q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m * $f, d) }
+            #[inline]
+            #[doc = "New `" $ty "` in " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $Bu ")."]
+            pub fn [<in_$Pa $Q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m * $f, d) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $ty "` as " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $Bu ")."]
+            pub fn [<as_$pa $q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m / $f, self.d) }
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $ty "` as " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $Bu ")."]
+            pub fn [<as_$Pa $Q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m / $f, self.d) }
+        }
+    };
+    // ALIAS: no need to specify: qu, Qu, Bu
+    // useful for: all non-base units, with unicode prefix
+    // e.g.:
+    // vector_methods![$ty, $q, $Q, pu="µ", Pu="micro", pa="u", Pa="micro", f=1e-6, fu="10⁻⁶"];
+    ($ty:ty, $q:ident, $Q:ident,
+     pu=$pu:tt, Pu=$Pu:tt, pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
+            $q,
+            $Q,
+            qu = $q,
+            Qu = $Q,
+            pu = $pa,
+            Pu = $Pa,
+            pa = $pa,
+            Pa = $Pa,
+            f = $f,
+            fu = $fu,
+            Bu = $q
+        ];
+    };
+    // ALIAS: no need to specify: pu, Pu, Bu
+    // useful for: squared/cubed non-base units, with ascii prefix
+    // e.g.:
+    // vector_methods![$ty, $q, $Q, qu="m²", pa="T", Pa="tera", f=1.0e-3, fu="10⁻³"];
+    ($ty:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt,
+     pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
+            $q,
+            $Q,
+            qu = $qu,
+            Qu = $Qu,
+            pu = $pa,
+            Pu = $Pa,
+            pa = $pa,
+            Pa = $Pa,
+            f = $f,
+            fu = $fu,
+            Bu = $qu
+        ];
+    };
+    // ALIAS: no need to specify: qu, Qu, pu, Pu, Bu
+    // useful for: all non-base units, with ascii prefix (doesn't support µ, micro)
+    // e.g.:
+    // vector_methods![$ty, $q, $Q, "m", "milli", 1.0e-3, "10⁻³"];
+    ($ty:ty, $q:ident, $Q:ident,
+     pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
+            $q,
+            $Q,
+            pu = $pa,
+            Pu = $Pa,
+            pa = $pa,
+            Pa = $Pa,
+            f = $f,
+            fu = $fu
+        ];
+    };
+    // ALIAS: no need to specify: pu, Pu, pa, Pa
+    // useful for: units WITHOUT prefix and unicode quantity (like Å, ångströms)
+    // e.g.:
+    // vector_methods![ Length, A, angstroms, "`Å`", "`ångströms`",
+    //   metres, 1.0e10, "10⁻¹⁰" ];
+    ($ty:ty, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, f=$f:expr, fu=$fu:expr,
+     Bu=$Bu:tt) => {
+        vector_methods![
+            $ty,
+            $q,
+            $Q,
+            qu = $qu,
+            Qu = $Qu,
+            pu = "",
+            Pu = "",
+            pa = "",
+            Pa = "",
+            f = $f,
+            fu = $fu,
+            Bu = $Bu
+        ];
+    };
+    // ALIAS: no need to specify: qu, Qu, pa, Pa, pu, Pu
+    // e.g.:
+    // vector_methods![Time, y, years, f=60., fu="365", Bu="days"];
+    ($ty:ty, $q:ident, $Q:ident, f=$f:expr, fu=$fu:tt, Bu=$Bu:tt) => {
+        vector_methods![
+            $ty,
+            $q,
+            $Q,
+            qu = $q,
+            Qu = $Q,
+            pu = "",
+            Pu = "",
+            pa = "",
+            Pa = "",
+            f = $f,
+            fu = $fu,
+            Bu = $Bu
+        ];
+    };
+    // ALIAS: no need to specify: qu, Qu, pa, Pa, pu, Pu, Bu
+    // useful for units WITHOUT prefixes, WITH conversion factor (grams)
+    // e.g.:
+    // vector_methods![$ty, $q, $Q, f=1e-3, fu="10⁰"];
+    ($ty:ty, $q:ident, $Q:ident, f=$f:expr, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
+            $q,
+            $Q,
+            pu = "",
+            Pu = "",
+            pa = "",
+            Pa = "",
+            f = $f,
+            fu = $fu
+        ];
+    };
+
+    // ROOT RULE: const base unit, WITHOUT conversion factor
+    ($ty:ty, base, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, pa=$pa:tt, Pa=$Pa:tt, fu=$fu:expr) => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $ty "` in " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
+            pub const fn [<in_$pa $q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m, d) }
+            #[inline]
+            #[doc = "New `" $ty "` in " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
+            pub const fn [<in_$Pa $Q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m, d) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $ty "` as " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
+            pub const fn [<as_$pa $q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m, self.d) }
+            #[inline]
+            #[doc = "Returns `" $ty "` as " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
+            pub const fn [<as_$Pa $Q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m, self.d) }
+        }
+    };
+    // ALIAS: no need to specify: qu, Qu
+    // useful for: the kilogram SI base unit
+    // e.g.:
+    // vector_methods![$ty, base, $q, $Q, pa="k", Pa="kilo", fu="10³"];
+    ($ty:ty, base, $q:ident, $Q:ident, pa=$pa:tt, Pa=$Pa:tt, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
             base,
+            $q,
+            $Q,
+            qu = $q,
+            Qu = $Q,
+            pa = $pa,
+            Pa = $Pa,
+            fu = $fu
+        ];
+    };
+    // ALIAS: no need to specify: pa, Pa
+    // useful for: squared and cubed base units
+    // e.g.:
+    // vector_methods![$ty, base, $q, $Q, qu="m²", Qu="metres squared", fu="10⁰"];
+    ($ty:ty, base, $q:ident, $Q:ident, qu=$qu:tt, Qu=$Qu:tt, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
+            base,
+            $q,
+            $Q,
+            qu = $qu,
+            Qu = $Qu,
+            pa = "",
+            Pa = "",
+            fu = $fu
+        ];
+    };
+    // ALIAS: no need to specify: qu, Qu, pa, Pa
+    // useful for: base SI units except the kilogram (metre, kelvin, pascal…)
+    // e.g.:
+    // vector_methods![$ty, base, $q, $Q, fu="10⁰"];
+    ($ty:ty, base, $q:ident, $Q:ident, fu=$fu:expr) => {
+        vector_methods![
+            $ty,
+            base,
+            $q,
+            $Q,
+            qu = $q,
+            Qu = $Q,
+            pa = "",
+            Pa = "",
             fu = $fu
         ];
     };
@@ -286,7 +522,7 @@ macro_rules! impl_scalar_methods {
                 scalar_methods![$ty, $q, $Q, pa="k", Pa="kilo", f=1e3, fu="10³"];
                 scalar_methods![$ty, $q, $Q, pa="h", Pa="hecto", f=1e2, fu="10²"];
                 scalar_methods![$ty, $q, $Q, pa="da", Pa="deka", f=1e1, fu="10¹"];
-                scalar_methods![$ty, $q, $Q, base, fu="10⁰"];
+                scalar_methods![$ty, base, $q, $Q, fu="10⁰"];
                 scalar_methods![$ty, $q, $Q, pa="d", Pa="deci", f=1e-1, fu="10⁻¹"];
                 scalar_methods![$ty, $q, $Q, pa="c", Pa="centi", f=1e-2, fu="10⁻²"];
                 scalar_methods![$ty, $q, $Q, pa="m", Pa="milli", f=1e-3, fu="10⁻³"];
@@ -321,7 +557,7 @@ macro_rules! impl_scalar_methods_base_kilo {
                 scalar_methods![$ty, $q, $Q, pa="T", Pa="tera", f=1e9, fu="10¹²"];
                 scalar_methods![$ty, $q, $Q, pa="G", Pa="giga", f=1e6, fu="10⁹"];
                 scalar_methods![$ty, $q, $Q, pa="M", Pa="mega", f=1e3, fu="10⁶"];
-                scalar_methods![$ty, $q, $Q, pa="k", Pa="kilo", base, fu="10³"];
+                scalar_methods![$ty, base, $q, $Q, pa="k", Pa="kilo", fu="10³"];
                 scalar_methods![$ty, $q, $Q, pa="h", Pa="hecto", f=1e-1, fu="10²"];
                 scalar_methods![$ty, $q, $Q, pa="da", Pa="deka", f=1e-2, fu="10¹"];
                 scalar_methods![$ty, $q, $Q, f=1e-3, fu="10⁰"];
@@ -343,7 +579,7 @@ macro_rules! impl_scalar_methods_base_kilo {
 
 /// Generates SI prefixes constructors and converter methods (squared)
 macro_rules! impl_scalar_methods_squared {
-    ($ty:ty, $q:expr, $Q:expr, qu=$qu:expr, Qu=$Qu:expr) => {
+    ($ty:ty, $q:ident, $Q:ident, qu=$qu:literal, Qu=$Qu:literal) => {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             ///
@@ -373,7 +609,7 @@ macro_rules! impl_scalar_methods_squared {
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu, pa="k", Pa="kilo", f=1e6, fu="10⁶"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu, pa="h", Pa="hecto", f=1e4, fu="10⁴"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu, pa="da", Pa="deka", f=1e2, fu="10²"];
-                scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu, base, fu="10⁰"];
+                scalar_methods![$ty, base, $q, $Q, qu=$qu, Qu=$Qu, fu="10⁰"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu, pa="d", Pa="deci", f=1e-2, fu="10⁻²"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu,
                     pa="c", Pa="centi", f=1e-4, fu="10⁻⁴"];
@@ -396,16 +632,15 @@ macro_rules! impl_scalar_methods_squared {
             }
         }
     };
-
     // ALIAS: no need to specify: Qu
-    ($ty:ty, $q:expr, $Q:expr, qu=$qu:expr) => {
+    ($ty:ty, $q:ident, $Q:ident, qu=$qu:literal) => {
         impl_scalar_methods_squared![$ty, $q, $Q, qu = $qu, Qu = $Q];
     };
 }
 
 /// Generates SI prefixes constructors and converter methods (cubed)
 macro_rules! impl_scalar_methods_cubed {
-    ($ty:ty, $q:expr, $Q:expr, qu=$qu:expr, Qu=$Qu:expr) => {
+    ($ty:ty, $q:ident, $Q:ident, qu=$qu:literal, Qu=$Qu:literal) => {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             ///
@@ -437,7 +672,7 @@ macro_rules! impl_scalar_methods_cubed {
                     pa="h", Pa="hecto", f=1e6, fu="10⁶"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu,
                     pa="da", Pa="deka", f=1e3, fu="10³"];
-                scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu, base, fu="10⁰"];
+                scalar_methods![$ty, base, $q, $Q, qu=$qu, Qu=$Qu, fu="10⁰"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu,
                     pa="d", Pa="deci", f=1e-3, fu="10⁻³"];
                 scalar_methods![$ty, $q, $Q, qu=$qu, Qu=$Qu,
@@ -461,10 +696,47 @@ macro_rules! impl_scalar_methods_cubed {
             }
         }
     };
-
     // ALIAS: no need to specify: Qu
-    ($ty:ty, $q:expr, $Q:expr, qu=$qu:expr) => {
+    ($ty:ty, $q:ident, $Q:ident, qu=$qu:literal) => {
         impl_scalar_methods_cubed![$ty, $q, $Q, qu = $qu, Qu = $Q];
+    };
+}
+
+/// Generates SI prefixes constructors and converter methods
+macro_rules! impl_vector_methods {
+    ($ty:ty, $q:ident, $Q:ident) => {
+        paste::paste! {
+            /// # SI prefixes constructors: `in_*` & converters `as_*`
+            #[doc = "**The `" $ty "` quantity is internally stored in `" $Q "`**."]
+            #[doc = "- base *const* constructors: [`in_" $q "`](" $ty "#method.in_" "),"$q]
+            #[doc = "[`in_" $Q "`](" $ty "#method.in_" $Q ")"]
+            #[doc = "- base *const* converters: [`as_" $q "`](" $ty "#method.as_" "),"$q]
+            #[doc = "[`as_" $Q "`](" $ty "#method.as_" $Q ")"]
+            impl $ty {
+                vector_methods![$ty, $q, $Q, pa="Y", Pa="yotta", f=1e24, fu="10²⁴"];
+                vector_methods![$ty, $q, $Q, pa="Z", Pa="zetta", f=1e21, fu="10²¹"];
+                vector_methods![$ty, $q, $Q, pa="E", Pa="exa", f=1e18, fu="10¹⁸"];
+                vector_methods![$ty, $q, $Q, pa="P", Pa="peta", f=1e15, fu="10¹⁵"];
+                vector_methods![$ty, $q, $Q, pa="T", Pa="tera", f=1e12, fu="10¹²"];
+                vector_methods![$ty, $q, $Q, pa="G", Pa="giga", f=1e9, fu="10⁹"];
+                vector_methods![$ty, $q, $Q, pa="M", Pa="mega", f=1e6, fu="10⁶"];
+                vector_methods![$ty, $q, $Q, pa="k", Pa="kilo", f=1e3, fu="10³"];
+                vector_methods![$ty, $q, $Q, pa="h", Pa="hecto", f=1e2, fu="10²"];
+                vector_methods![$ty, $q, $Q, pa="da", Pa="deka", f=1e1, fu="10¹"];
+                vector_methods![$ty, base, $q, $Q, fu="10⁰"];
+                vector_methods![$ty, $q, $Q, pa="d", Pa="deci", f=1e-1, fu="10⁻¹"];
+                vector_methods![$ty, $q, $Q, pa="c", Pa="centi", f=1e-2, fu="10⁻²"];
+                vector_methods![$ty, $q, $Q, pa="m", Pa="milli", f=1e-3, fu="10⁻³"];
+                vector_methods![$ty, $q, $Q, pu="µ", Pu="micro",
+                    pa="u", Pa="micro", f=1e-6, fu="10⁻⁶"];
+                vector_methods![$ty, $q, $Q, pa="n", Pa="nano", f=1e-9, fu="10⁻⁹"];
+                vector_methods![$ty, $q, $Q, pa="p", Pa="pico", f=1e-12, fu="10⁻¹²"];
+                vector_methods![$ty, $q, $Q, pa="f", Pa="femto", f=1e-15, fu="10⁻¹⁵"];
+                vector_methods![$ty, $q, $Q, pa="a", Pa="atto", f=1e-18, fu="10⁻¹⁸"];
+                vector_methods![$ty, $q, $Q, pa="z", Pa="zepto", f=1e-21, fu="10⁻²¹"];
+                vector_methods![$ty, $q, $Q, pa="y", Pa="yocto", f=1e-24, fu="10⁻²⁴"];
+            }
+        }
     };
 }
 
