@@ -27,5 +27,15 @@ impl Density {
     }
 }
 
-// TODO: prefixes
-// impl_prefixes![Density, , ];
+impl_scalar_methods_2units_base_kilo![
+    Density,
+    q1a = g,
+    q2a = m3,
+    q1u = "g",
+    q2u = "m³",
+    Q1a = grams,
+    Ja = per,
+    Q2a = metre_cubed,
+    Q1u = "grams",
+    Q2u = "metre cubed"
+];

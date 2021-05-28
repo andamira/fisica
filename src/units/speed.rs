@@ -151,8 +151,14 @@ impl Speed {
     pub const LIGHT_SQUARED: Self = Speed::new(89_875_517_873_681_764.);
 }
 
-// TODO: prefixes
-// impl_prefixes![Speed, km_s, kilometers_second];
+impl_scalar_methods_2units![
+    Speed,
+    q1a = m,
+    q2a = s,
+    Q1a = metres,
+    Ja = per,
+    Q2a = second
+];
 
 #[cfg(test)]
 mod tests {
