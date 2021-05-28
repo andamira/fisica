@@ -149,24 +149,24 @@ impl Length {
 impl Length {
     scalar_methods![
         Length,
-        au,
-        astronomical_units,
+        qa = au,
+        Qa = astronomical_units,
         qu = "au",
         Qu = "[astronomical units][Length::ASTRONOMICAL_UNIT]",
         f = Self::ASTRONOMICAL_UNIT.m,
         fu = "149.5978707",
-        Bu = "Tm"
+        bu = "Tm"
     ];
 
     scalar_methods![
         Length,
-        A,
-        angstroms,
+        qa = A,
+        Qa = angstroms,
         qu = "Å",
         Qu = "ångströms",
         f = 1.0e10,
         fu = "10⁻¹⁰",
-        Bu = "metres"
+        bu = "metres"
     ];
 }
 

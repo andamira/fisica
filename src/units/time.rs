@@ -119,20 +119,34 @@ impl Time {
 
 /// # Non SI units conversions
 impl Time {
-    scalar_methods![Time, min, minutes, f = 60., fu = "60", Bu = s];
-    scalar_methods![Time, h, hours, f = 3600., fu = "3600", Bu = s];
-    scalar_methods![Time, d, days, f = 86_400., fu = "86400", Bu = s];
-    scalar_methods![Time, w, weeks, f = 604_800., fu = "604800", Bu = s];
-    scalar_methods![Time, y, years, f = 31_536e3, fu = "365", Bu = "days"];
+    scalar_methods![Time, qa = min, Qa = minutes, f = 60., fu = "60", bu = s];
+    scalar_methods![Time, qa = h, Qa = hours, f = 3600., fu = "3600", bu = s];
+    scalar_methods![Time, qa = d, Qa = days, f = 86_400., fu = "86400", bu = s];
     scalar_methods![
         Time,
-        jy,
-        julian_years,
+        qa = w,
+        Qa = weeks,
+        f = 604_800.,
+        fu = "604800",
+        bu = s
+    ];
+    scalar_methods![
+        Time,
+        qa = y,
+        Qa = years,
+        f = 31_536e3,
+        fu = "365",
+        bu = "days"
+    ];
+    scalar_methods![
+        Time,
+        qa = jy,
+        Qa = julian_years,
         qu = "`jy`",
         Qu = "`julian years`",
         f = Time::JULIAN_YEAR.m,
         fu = "365.25",
-        Bu = "days"
+        bu = "days"
     ];
 }
 

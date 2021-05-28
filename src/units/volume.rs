@@ -29,13 +29,13 @@ impl Volume {
 impl Volume {
     scalar_methods![
         Volume,
-        l,
-        litres,
+        qa = l,
+        Qa = litres,
         qu = "l",
         Qu = "[`litres`][Volume::LITRE]",
         f = Self::LITRE.m,
         fu = 1,
-        Bu = "dm³"
+        bu = "dm³"
     ];
 }
 
