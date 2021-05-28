@@ -251,18 +251,27 @@ macro_rules! scalar_methods_2units {
     //
     // LEGEND:
     // $ty = the type to impl the metods
-    // $q  = abbreviated quantity in ascii
-    // $Q  = quantity in ascii
-    // $qu = abbreviated quantity in unicode
-    // $Qu = quantity in unicode (or multiple words)
-    // $pa = abbreviated prefix in ascii
-    // $Pa = prefix in ascii
-    // $pu = abbreviated prefix in unicode
-    // $Pu = prefix in unicode
+    // $q1a  = abbreviated 1st quantity in ascii
+    // $q2a  = abbreviated 2nd quantity in ascii
+    // $Q1a  = 1st quantity in ascii
+    // $Q2a  = 2nd quantity in ascii
+    // $q1u = abbreviated 1st quantity in unicode
+    // $q2u = abbreviated 2nd quantity in unicode
+    // $Q1u = 1st quantity in unicode (or multiple words)
+    // $Q2u = 2nd quantity in unicode (or multiple words)
+    // $p1a = abbreviated 1st prefix in ascii
+    // $p2a = abbreviated 2nd prefix in ascii
+    // $P1a = 1st prefix in ascii
+    // $P2a = 2nd prefix in ascii
+    // $p1u = abbreviated 1st prefix in unicode
+    // $p2u = abbreviated 2nd prefix in unicode
+    // $P1u = 1st prefix in unicode
+    // $P2u = 2nd prefix in unicode
     // $f  = conversion factor in number
     // $fu = conversion factor in unicode
-    // $Bu = base unit for conversion, in unicode
-    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
+    // $b1u = first base unit for conversion, in unicode
+    // $b2u = second base unit for conversion, in unicode
+    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident,
      q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt,
@@ -291,9 +300,9 @@ macro_rules! scalar_methods_2units {
     // ALIAS: no need to specify: q1u, q2u, Q1u, Q2u, p1u, p2u, P1u, P2u
     //
     // e.g.:
-    // scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+    // scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
     //   p1a="T", p2a="", P1a="tera", P2a="", f=1e12, fu="10¹²"];
-    ($ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
+    ($ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt, f=$f:expr, fu=$fu:expr,
      b1u=$b1u:tt, b2u=$b2u:tt) => {
         scalar_methods_2units![
@@ -301,8 +310,8 @@ macro_rules! scalar_methods_2units {
             q1a=$q1a,
             q2a=$q2a,
             Q1a=$Q1a,
-            Ja=$Ja,
             Q2a=$Q2a,
+            Ja=$Ja,
             q1u=$q1a,
             q2u=$q2a,
             Q1u=$Q1a,
@@ -324,10 +333,10 @@ macro_rules! scalar_methods_2units {
     // ALIAS: no need to specify: q1u, q2u, Q1u, Q2u
     //
     // e.g.:
-    // scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+    // scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
     //     p1a="u", p2a="", P1a="micro", P2a="", p1u="µ", p2u="", P1u="micro", P2u="",
     //     f=1e-6, fu="10⁻⁶", b1u=$q1a, b2u=$q2a];
-    ($ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
+    ($ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt,
      f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt) => {
@@ -336,8 +345,8 @@ macro_rules! scalar_methods_2units {
             q1a=$q1a,
             q2a=$q2a,
             Q1a=$Q1a,
-            Ja=$Ja,
             Q2a=$Q2a,
+            Ja=$Ja,
             q1u=$q1a,
             q2u=$q2a,
             Q1u=$Q1a,
@@ -358,9 +367,7 @@ macro_rules! scalar_methods_2units {
     };
     // ALIAS: no need to specify: p1u, p2u, P1u, P2u
     // useful for density normal units
-    //
-    // e.g.:
-    ($ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
+    ($ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident,
      q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt) => {
@@ -369,8 +376,8 @@ macro_rules! scalar_methods_2units {
             q1a=$q1a,
             q2a=$q2a,
             Q1a=$Q1a,
-            Ja=$Ja,
             Q2a=$Q2a,
+            Ja=$Ja,
             q1u=$q1u,
             q2u=$q2u,
             Q1u=$Q1u,
@@ -392,8 +399,8 @@ macro_rules! scalar_methods_2units {
 
     // ROOT RULE: const base unit, WITHOUT conversion factor
     //
-    [$ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
-     q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
+    [$ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident,
+     Ja=$Ja:ident, q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt, fu=$fu:expr] => {
         paste::paste! {
@@ -421,15 +428,16 @@ macro_rules! scalar_methods_2units {
     };
     // ALIAS: no need to specify: p1a, p2a, P1a, P2a, p1u, p2u, P1u, P2u, f
     // useful for: speed base unit
-    ($ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident, fu=$fu:tt) => {
+    ($ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident,
+     Ja=$Ja:ident, fu=$fu:tt) => {
         scalar_methods_2units![
             $ty,
             base,
             q1a=$q1a,
             q2a=$q2a,
             Q1a=$Q1a,
-            Ja=$Ja,
             Q2a=$Q2a,
+            Ja=$Ja,
             q1u=$q1a,
             q2u=$q2a,
             Q1u=$Q1a,
@@ -447,31 +455,18 @@ macro_rules! scalar_methods_2units {
     };
     // ALIAS: no need to specify: p1u, p2u, P1u, P2u, f
     // useful for: density base unit
-    //
-    // WORKS:
-    // scalar_methods_2units![$ty, base, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a, fu="10⁰"];
-    //
-    // DOESNT WORK:
-    // scalar_methods_2units![$ty, base, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
-    //     q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u,
-    //     p1a="k", p2a="", P1a="kilo", P2a="", fu="10³"];
-
-    ($ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
-     q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
+    ($ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident,
+     Ja=$Ja:ident, q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
-     //p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt,
      fu=$fu:expr) => {
-    // ($ty:ty, base, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident,
-    //  q1u=$q1u:ident, q2u=$q2u:ident, Q1u=$Q1u:ident, Q2u=$Q2u:ident,
-    //  p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt, fu=$fu:tt) => {
         scalar_methods_2units![
             $ty,
             base,
             q1a=$q1a,
             q2a=$q2a,
             Q1a=$Q1a,
-            Ja=$Ja,
             Q2a=$Q2a,
+            Ja=$Ja,
             q1u=$q1u,
             q2u=$q2u,
             Q1u=$Q1u,
@@ -927,7 +922,7 @@ macro_rules! impl_scalar_methods_cubed {
 ///
 // use for: speed
 macro_rules! impl_scalar_methods_2units {
-    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident] => {
+    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident] => {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `" $Q1a " " $Ja " " $Q2a "` (`" $q1a "/" $q2a "`)**." ]
@@ -937,47 +932,47 @@ macro_rules! impl_scalar_methods_2units {
             #[doc = "[`as_" $Q1a _ $Q2a "`](" $ty "#method.as_" $Q1a _ $Q2a ")"]
             impl $ty {
                 paste::paste! {
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="Y", p2a="", P1a="yotta", P2a="", f=1e24, fu="10²⁴", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="Z", p2a="", P1a="zetta", P2a="", f=1e21, fu="10²¹", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="E", p2a="", P1a="exa", P2a="", f=1e18, fu="10¹⁸", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="P", p2a="", P1a="peta", P2a="", f=1e15, fu="10¹⁵", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="T", p2a="", P1a="tera", P2a="", f=1e12, fu="10¹²", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="G", p2a="", P1a="giga", P2a="", f=1e9, fu="10⁹", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="M", p2a="", P1a="mega", P2a="", f=1e6, fu="10⁶", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="k", p2a="", P1a="kilo", P2a="", f=1e3, fu="10³", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="h", p2a="", P1a="hecto", P2a="", f=1e2, fu="10²", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="da", p2a="", P1a="deka", P2a="", f=1e1, fu="10²", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, base, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a, fu="10⁰"];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, base, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja, fu="10⁰"];
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="d", p2a="", P1a="deci", P2a="", f=1e-1, fu="10⁻¹", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="c", p2a="", P1a="centi", P2a="", f=1e-2, fu="10⁻²", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="m", p2a="", P1a="milli", P2a="", f=1e-3, fu="10⁻³", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="u", p2a="", P1a="micro", P2a="", p1u="µ", p2u="", P1u="micro", P2u="",
                         f=1e-6, fu="10⁻⁶", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="n", p2a="", P1a="nano", P2a="", f=1e-9, fu="10⁻⁹", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="p", p2a="", P1a="pico", P2a="", f=1e-12, fu="10⁻¹²", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="f", p2a="", P1a="femto", P2a="", f=1e-15, fu="10⁻¹⁵", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="a", p2a="", P1a="atto", P2a="", f=1e-18, fu="10⁻¹⁸", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="z", p2a="", P1a="zepto", P2a="", f=1e-21, fu="10⁻²¹", b1u=$q1a, b2u=$q2a];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         p1a="y", p2a="", P1a="yocto", P2a="", f=1e-24, fu="10⁻²⁴", b1u=$q1a, b2u=$q2a];
                 }
             }
@@ -991,7 +986,7 @@ macro_rules! impl_scalar_methods_2units {
 // use for: density, (vector versions: moment of inertia, linear & angular momentum…)
 macro_rules! impl_scalar_methods_2units_base_kilo {
     [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, q1u=$q1u:tt, q2u=$q2u:tt,
-     Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident, Q1u=$Q1u:tt, Q2u=$Q2u:tt] => {
+     Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident, Q1u=$Q1u:tt, Q2u=$Q2u:tt] => {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q1u " " $Ja " " $Q2u
@@ -1002,69 +997,68 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
             #[doc = "[`as_kilo" $Q1a _ $Q2a "`](" $ty "#method.as_kilo" $Q1a _ $Q2a ")"]
             impl $ty {
                 paste::paste! {
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="Y", p2a="",
                         P1a="yotta", P2a="", f=1e21, fu="10²⁴", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="Z", p2a="",
                         P1a="zetta", P2a="", f=1e18, fu="10²¹", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="E", p2a="",
                         P1a="exa", P2a="", f=1e15, fu="10¹⁸", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="P", p2a="",
                         P1a="peta", P2a="", f=1e12, fu="10¹⁵", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="T", p2a="",
                         P1a="tera", P2a="", f=1e9, fu="10¹²", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="G", p2a="",
                         P1a="giga", P2a="", f=1e6, fu="10⁹", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="M", p2a="",
                         P1a="mega", P2a="", f=1e3, fu="10⁶", b1u=$q1u, b2u=$q2u];
-                    // TODO:
-                    scalar_methods_2units![$ty, base, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, base, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u,
                         p1a="k", p2a="", P1a="kilo", P2a="", fu="10³"];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="h", p2a="",
                         P1a="hecto", P2a="", f=1e-1, fu="10²", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="da", p2a="",
                         P1a="deka", P2a="", f=1e-2, fu="10¹", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="", p2a="",
                         P1a="", P2a="", f=1e-3, fu="10⁰", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="d", p2a="",
                         P1a="deci", P2a="", f=1e-4, fu="10⁻¹", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="c", p2a="",
                         P1a="centi", P2a="", f=1e-5, fu="10⁻²", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="m", p2a="",
                         P1a="milli", P2a="", f=1e-6, fu="10⁻³", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="u", p2a="",
                         P1a="micro", P2a="", p1u="µ", p2u="", P1u="micro", P2u="",
                         f=1e-9, fu="10⁻⁶", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="n", p2a="",
                         P1a="nano", P2a="", f=1e-12, fu="10⁻⁹", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="p", p2a="",
                         P1a="pico", P2a="", f=1e-15, fu="10⁻¹²", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="f", p2a="",
                         P1a="femto", P2a="", f=1e-18, fu="10⁻¹⁵", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="a", p2a="",
                         P1a="atto", P2a="", f=1e-21, fu="10⁻¹⁸", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="z", p2a="",
                         P1a="zepto", P2a="", f=1e-24, fu="10⁻²¹", b1u=$q1u, b2u=$q2u];
-                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Ja=$Ja, Q2a=$Q2a,
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="y", p2a="",
                         P1a="yocto", P2a="", f=1e-27, fu="10⁻²⁴", b1u=$q1u, b2u=$q2u];
                 }
@@ -1072,7 +1066,7 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
         }
     };
 
-    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Ja=$Ja:ident, Q2a=$Q2a:ident] => {
+    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident] => {
         impl_scalar_methods_2units_base_kilo![
             $ty,
             q1a=$q1a,
@@ -1080,8 +1074,8 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
             q1u=$q1a,
             q2u=$q2a,
             Q1a=$Q1a,
-            Ja=$Ja,
             Q2a=$Q2a,
+            Ja=$Ja,
             Q1u=$Q1a,
             Q2u=$Q2a
         ];

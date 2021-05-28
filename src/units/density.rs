@@ -34,8 +34,8 @@ impl_scalar_methods_2units_base_kilo![
     q1u = "g",
     q2u = "m³",
     Q1a = grams,
-    Ja = per,
     Q2a = metre_cubed,
+    Ja = per,
     Q1u = "grams",
     Q2u = "metre cubed"
 ];

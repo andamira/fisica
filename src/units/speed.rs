@@ -156,8 +156,8 @@ impl_scalar_methods_2units![
     q1a = m,
     q2a = s,
     Q1a = metres,
-    Ja = per,
-    Q2a = second
+    Q2a = second,
+    Ja = per
 ];
 
 #[cfg(test)]

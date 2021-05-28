@@ -33,7 +33,5 @@ impl Area {
     }
 }
 
+// FIXME:nomenclature: square_metres, square_kilometres…
 impl_scalar_methods_squared![Area, m2, metres_squared, qu = "m²", Qu = "metres squared"];
-
-// WIP fixing word order
-// impl_scalar_methods_squared![Area, m2, metres, Qpref=square, qu = "m²", Qu = "metres squared"];
