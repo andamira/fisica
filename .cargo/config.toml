@@ -16,3 +16,6 @@ do = "doc --no-deps --open"
 
 # TEST
 t = "test -- --nocapture"
+
+[build]
+rustdocflags = [ "--html-in-header", "./src/docs-header.html"]
