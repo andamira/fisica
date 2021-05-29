@@ -74,17 +74,17 @@
 //! $$
 //!
 
-// f64, Dvec3, Dquat, DMat3
-// f32, Vec3, Quat, Mat3
+// f64 → Dvec3, Dquat, DMat3
+// f32 → Vec3, Quat, Mat3
+
+mod vectors;
+pub use vectors::{Direction, Position};
 
 /// The floating point type used for magnitudes
 pub type Magnitude = f64;
 
-/// Direction
-pub type Direction = glam::DVec3;
-
-/// Position
-pub type Position = glam::DVec3;
+// The vector type to use
+pub(crate) type V3 = glam::DVec3;
 
 /// Orientation
 pub type Orientation = glam::DQuat;
