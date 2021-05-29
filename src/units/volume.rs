@@ -47,8 +47,15 @@ impl Volume {
     pub const LITRE: Self = Volume::new(1e-3);
 }
 
-// FIXME:nomenclature: cubic_metres, cubic_kilometres…
-impl_scalar_methods_cubed![Volume, m3, metres_cubed, qu = "m³", Qu = "metres cubed"];
+impl_scalar_methods_cubed![
+    Volume,
+    qa = m3,
+    QaL = cubic_,
+    QaM = metres,
+    qu = "m³",
+    QuL = "cubic",
+    QuM = "metres"
+];
 
 #[cfg(test)]
 mod tests {

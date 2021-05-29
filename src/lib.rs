@@ -4,10 +4,10 @@
 // - [feature(const_fn_floating_point_arithmetic)](https://github.com/rust-lang/rust/issues/57241)
 // - [handle impl section of type definitions](https://github.com/rust-lang/rust/issues/32077)
 
+#[macro_use]
+pub mod auto_impls;
 pub mod constants;
 pub mod engine;
-#[macro_use]
-mod prefixes;
 pub mod units;
 
 // f64, Dvec3, Dquat, DMat3
