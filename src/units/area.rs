@@ -33,7 +33,7 @@ impl Area {
     }
 }
 
-impl_scalar_methods_squared![
+impl_scalar_methods_square![
     Area,
     qa = m2,
     QaL = square_,

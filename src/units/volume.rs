@@ -47,7 +47,7 @@ impl Volume {
     pub const LITRE: Self = Volume::new(1e-3);
 }
 
-impl_scalar_methods_cubed![
+impl_scalar_methods_cubic![
     Volume,
     qa = m3,
     QaL = cubic_,

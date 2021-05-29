@@ -3,37 +3,37 @@
 #[cfg(test)]
 mod tests;
 
-// TODO WIP:
+// TODO:
 // 1. support compound prefixes, for Speed, Momentum, etc.
 //   - all combinations? so either of the 2 units could be scaled?
 //      21×21=441 methods!! maybe hide them from the docs?
-//   - there can be a single factor argument
+//   - use a single factor argument
 //
 // TODO: copy what's been done with QaL QaM to 2 units... Q1aL, Q1aM, Q2aL, Q2aM…
 //
-// TODO: macro_rules! impl_vector_methods_two_units {
+// TODO: macro_rules! impl_vector_methods_two_units
 
 /// Generates 2 constructors and 2 getters, for scalar quantities.
 macro_rules! scalar_methods {
     // ROOT RULE: NON const, WITH conversion factor
     //
     // LEGEND:
-    // $ty = the type to impl the metods
-    // $qa  = abbreviated quantity in ascii
-    // $QaL = (left) quantity in ascii
-    // $QaM = (middle) quantity in ascii (will have the prefix applied)
-    // $qu = abbreviated quantity in unicode
-    // $QuL = (left) quantity in unicode (or multiple words)
-    // $QuM = (middle) quantity in unicode (or multiple words) (will have the prefix applied)
-    // $pa = abbreviated prefix in ascii
-    // $Pa = prefix in ascii
-    // $pu = abbreviated prefix in unicode
-    // $Pu = prefix in unicode
-    // $f  = conversion factor in number
-    // $fu = conversion factor in unicode
-    // $bu = base unit for conversion, in unicode
+    // $ty = the type to impl the metods: `Volume`
+    // $qa  = abbreviated quantity in ascii:  `m3`
+    // $QaL = (left) quantity in ascii `cubic`
+    // $QaM = (middle) quantity in ascii (will have the prefix applied) `metres`
+    // $qu = abbreviated quantity in unicode `m³`
+    // $QuL = (left) quantity in unicode `cubic`
+    // $QuM = (middle) quantity in unicode (will have the prefix applied) `metres`
+    // $pa = abbreviated prefix in ascii `u`
+    // $Pa = prefix in ascii: `micro`
+    // $pu = abbreviated prefix in unicode `µ`
+    // $Pu = prefix in unicode `micro`
+    // $f  = conversion factor in number `1e12`
+    // $fu = conversion factor in unicode `10¹²`
+    // $bu = base unit for conversion, in unicode `m`
     //
-    // NOTE:
+    // Notes:
     // - prefixes and left quantity can be an empty string if you don't need them
     // - The base unit of reference is usually the quantity in unicode
     // - If $QaL is provided, it must end with underscore '_', (not $QuL)
@@ -60,11 +60,9 @@ macro_rules! scalar_methods {
         }
     };
     // ALIAS: no need to specify: pu, Pu, bu
-    // useful for: squared/cubed non-base units, with ascii prefix
+    // useful for: square/cubic non-base units, with ascii prefix
     // e.g.:
     // scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
-//}
-
     //     pa="c", Pa="centi", f=1e-4, fu="10⁻⁴"];
     ($ty:ty, qa=$qa:ident, QaL=$QaL:ident, QaM=$QaM:ident, qu=$qu:tt, QuL=$QuL:tt, QuM=$QuM:tt,
      pa=$pa:tt, Pa=$Pa:tt, f=$f:expr, fu=$fu:expr) => {
@@ -235,7 +233,7 @@ macro_rules! scalar_methods {
         }
     };
     // ALIAS: no need to specify: pa, Pa
-    // useful for: squared and cubed base units
+    // useful for: square and cubed base units
     // e.g.:
     ($ty:ty, base, qa=$q:ident, QaL=$QaL:tt, QaM=$QaM:ident, qu=$qu:tt, QuL=$QuL:tt, QuM=$QuM:tt,
      fu=$fu:expr) => {
@@ -608,7 +606,7 @@ macro_rules! vector_methods {
         ];
     };
     // // ALIAS: no need to specify: pu, Pu, bu
-    // // useful for: squared/cubed non-base units, with ascii prefix
+    // // useful for: square/cubic non-base units, with ascii prefix
     // // e.g.:
     // // vector_methods![$ty, $q, $Q, qu="m²", pa="T", Pa="tera", f=1.0e-3, fu="10⁻³"];
     // ($ty:ty, qa=$q:ident, Qa=$Q:ident, qu=$qu:tt, Qu=$Qu:tt,
@@ -744,9 +742,7 @@ macro_rules! vector_methods {
         ];
     };
     // ALIAS: no need to specify: pa, Pa
-    // useful for: squared and cubed base units
-    // e.g.:
-    // vector_methods![$ty, base, $q, $Q, qu="m²", Qu="metres squared", fu="10⁰"];
+    // useful for: square and cubic base units
     // ($ty:ty, base, qa=$q:ident, Qa=$Q:ident, qu=$qu:tt, Qu=$Qu:tt, fu=$fu:expr) => {
     //     vector_methods![
     //         $ty,
@@ -855,13 +851,13 @@ macro_rules! impl_scalar_methods_base_kilo {
     };
 }
 
-/// Generates SI prefixes constructors and converter methods (squared)
-macro_rules! impl_scalar_methods_squared {
+/// Generates SI prefixes constructors and converter methods (square)
+macro_rules! impl_scalar_methods_square {
     [$ty:ty, qa=$qa:ident, QaL=$QaL:ident, QaM=$QaM:ident, qu=$qu:tt, QuL=$QuL:tt, QuM=$QuM:tt] => {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             ///
-            /// The units are squared (10² for 1 step, 10⁶ for 3 steps)
+            /// The units are square (10² for 1 step, 10⁶ for 3 steps)
             ///
             #[doc = "**The `" $ty "` quantity is internally stored in `" $QuL " " $QuM "` (`" $qu "`)**."]
             #[doc = "- base *const* constructors: [`in_" $qa "`](" $ty "#method.in_" $qa ")," ]
@@ -915,13 +911,13 @@ macro_rules! impl_scalar_methods_squared {
     };
 }
 
-/// Generates SI prefixes constructors and converter methods (cubed)
-macro_rules! impl_scalar_methods_cubed {
+/// Generates SI prefixes constructors and converter methods (cubic)
+macro_rules! impl_scalar_methods_cubic {
     [$ty:ty, qa=$qa:ident, QaL=$QaL:tt, QaM=$QaM:ident, qu=$qu:literal, QuL=$QuL:tt, QuM=$QuM:tt] => {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             ///
-            /// The units are cubed (10³ for 1 step, 10⁹ for 3 steps)
+            /// The units are cubic (10³ for 1 step, 10⁹ for 3 steps)
             ///
             #[doc = "**The `" $ty "` quantity is internally stored in `" $QuL " " $QuM "` (`" $qu "`)**."]
             #[doc = "- base *const* constructors: [`in_" $qa "`](" $ty "#method.in_" $qa ")," ]
@@ -975,7 +971,7 @@ macro_rules! impl_scalar_methods_cubed {
     };
     // ALIAS: no need to specify: Qu
     ($ty:ty, $q:ident, $Q:ident, qu=$qu:literal) => {
-        impl_scalar_methods_cubed![$ty, $q, $Q, qu = $qu, Qu = $Q];
+        impl_scalar_methods_cubic![$ty, $q, $Q, qu = $qu, Qu = $Q];
     };
 }
 
