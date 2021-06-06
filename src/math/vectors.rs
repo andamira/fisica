@@ -1,5 +1,3 @@
-//use std::ops::{Deref, DerefMut};
-
 use std::{
     fmt,
     ops::{Add, Sub, SubAssign, Mul, MulAssign, AddAssign}
@@ -49,6 +47,7 @@ impl Direction {
         self.v.to_array()[2]
     }
 
+    /// Returns the `Magnitude` of the current `Direction`.
     ///
     /// $$
     /// d = |\bm{a}| = \sqrt{x^2 + y^2 + z^2}
@@ -57,9 +56,9 @@ impl Direction {
         self.v.length()
     }
 
-    /// Returns the square of the [`Magnitude`].
+    /// Returns the square of the `Magnitude` of the current `Direction`.
     ///
-    /// Thisd is faster than getting the `Magnitude` since we avoid having to
+    /// This is faster than getting the `Magnitude` since we avoid having to
     /// calculate the square root of the sum of the vector components.
     /// This can be useful if we just need to compare magnitudes.
     ///
@@ -104,7 +103,7 @@ impl Direction {
     /// Returns the dot product.
     ///
     /// Also known as the *scalar product*. It allows us to calculate the
-    /// [Magnitude] of one vector in the direction of another.
+    /// `Magnitude` of one vector in the direction of another.
     ///
     /// $$
     /// \bm{a}\cdot\bm{b} = 
@@ -190,18 +189,3 @@ impl fmt::Display for Direction {
         write!(f, "{}", self.v)
     }
 }
-
-
-// impl Deref for Direction {
-//     type Target = V3;
-//
-//     fn deref(&self) -> &Self::Target {
-//         &self.v
-//     }
-// }
-//
-// impl DerefMut for Direction {
-//     fn deref_mut(&mut self) -> &mut Self::Target {
-//         &mut self.v
-//     }
-// }

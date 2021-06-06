@@ -5,13 +5,13 @@
 //!
 //! The ones defined in this module, doesn't pertain to any magnitude.
 //!
+//! - <https://en.wikipedia.org/wiki/Physical_constant>
+//! - <https://en.wikipedia.org/wiki/List_of_physical_constants>
+//! - <https://en.wikipedia.org/wiki/Dimensionless_physical_constant>
+
+/!
 
 use crate::Magnitude;
-
-// CONSTANTS
-//
-// https://en.wikipedia.org/wiki/Physical_constant
-// https://en.wikipedia.org/wiki/List_of_physical_constants
 
 /// The [Coulomb constant][0], the electric force constant,
 /// or the electrostatic constant.

@@ -25,8 +25,8 @@
 //!
 //! A change of position can be split into two elements: $\bm{a} = d\bm{n}$.
 //! Where $d$ is the directionless [Magnitude] of the change (a scalar),
-//! and $\bm{n}$ is the *unit vector* that represents the [Direction]
-//! (which has a magnitude of 1).
+//! and $\bm{n}$ is the *unit vector* that represents the [Direction],
+//! with a magnitude of 1.
 //!
 //!
 //! To find $d$ (where $|\bm{a}|$ is the magnitude of the vector)
