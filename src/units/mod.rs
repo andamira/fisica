@@ -40,24 +40,24 @@ pub use time::Time;
 
 // scalar
 
-mod area;
+mod area; // Length²
 mod charge;
 mod density;
 mod energy;
 mod frequency;
 mod power;
 mod pressure;
-mod speed;
-mod volume;
+mod speed; // Length / Time
+mod volume; // Length³
 
 // vector
 
-mod acceleration;
+mod acceleration; // Length / Time²
 mod force;
-mod gfs;
-mod moment;
-mod momentum;
-mod velocity;
+mod gfs; // Force × Mass
+mod moment; // Force × Length
+mod momentum; // Mass × Length / Time
+mod velocity; // Length / Time
 
 pub use acceleration::Acceleration;
 pub use area::Area;
@@ -185,7 +185,7 @@ impl_unit!(Pressure, "Pa", "pascal", "pascals", pascals);
 impl_unit!(
     Speed,
     "m/s",
-    "meter per second",
+    "metre per second",
     "metres per second",
     metres_per_second
 );
@@ -221,4 +221,11 @@ impl_unit!(
     "kilogram metre per second",
     "kilograms metres per second",
     kilograms_metres_per_second
+);
+impl_unit!(
+    Velocity,
+    "m/s",
+    "metre per second",
+    "metres per second",
+    metres_per_second
 );

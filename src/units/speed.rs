@@ -5,6 +5,8 @@ use crate::units::{Distance, Length, Time};
 use crate::Magnitude;
 
 /// How fast something is moving, in `m/s` ([`Distance`] per [`Time`]).
+///
+/// This is a scalar unit.
 #[derive(Clone, Copy, Debug)]
 pub struct Speed {
     pub m: Magnitude,

@@ -12,6 +12,7 @@ use crate::{Direction, Magnitude};
 /// It makes an object rotate around a fixed point called a pivot.
 ///
 /// <https://en.wikipedia.org/wiki/Moment_(physics)>
+#[derive(Clone, Copy, Debug)]
 pub struct Moment {
     pub d: Direction,
 }
@@ -64,7 +65,14 @@ impl Moment {
     }
 }
 
-// TODO: impl_vector_methods_three_units![Moment, Nkg, ];
+impl_vector_methods_2units![
+    Moment,
+    q1a = N,
+    q2a = m,
+    Q1a = newtons,
+    Q2a = metre,
+    Ja = per
+];
 
 #[cfg(test)]
 mod tests {

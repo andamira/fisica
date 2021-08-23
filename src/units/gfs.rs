@@ -66,4 +66,4 @@ impl GravitationalFieldStrength {
     }
 }
 
-// TODO: impl_vector_methods_two_units![GravitationalFieldStrength, , ];
+// TODO: impl_vector_methods_2units![GravitationalFieldStrength, , ];

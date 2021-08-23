@@ -7,9 +7,9 @@ use crate::Direction;
 
 /// How fast something is moving in a particular direction, in `m/s`.
 ///
-/// This is a vector magnitude.
+/// This is a vector unit.
+#[derive(Clone, Copy, Debug)]
 pub struct Velocity {
-    /// Vector
     pub d: Direction,
 }
 
@@ -51,7 +51,14 @@ impl Speed {
     // }
 }
 
-// TODO: impl_vector_methods_two_units![Speed, km_s, kilometers_second];
+impl_vector_methods_2units![
+    Velocity,
+    q1a = m,
+    q2a = s,
+    Q1a = metres,
+    Q2a = second,
+    Ja = per
+];
 
 // #[cfg(test)]
 // mod tests {

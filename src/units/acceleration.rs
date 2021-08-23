@@ -74,7 +74,18 @@ impl Acceleration {
     }
 }
 
-// TODO: impl_vector_methods_two_units![Acceleration, km_s2, kilometers_second_squared];
+impl_vector_methods_2units![
+    Acceleration,
+    q1a = m,
+    q2a = s2,
+    Q1a = metres,
+    Q2a = second_squared,
+    Ja = per,
+    q1u = "m",
+    q2u = "s²",
+    Q1u = "metres",
+    Q2u = "second squared"
+];
 
 #[cfg(test)]
 mod tests {
