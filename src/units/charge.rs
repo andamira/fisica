@@ -27,13 +27,13 @@ impl Charge {
 ///
 /// <https://en.wikipedia.org/wiki/Orders_of_magnitude_(charge)>
 impl Charge {
-    /// (10e-19) The [elementary] charge of the [proton][0].
+    /// (10e-19) The [elementary charge][1] of the [proton][0].
     ///
     /// [0]: https://en.wikipedia.org/wiki/Proton
     /// [1]: https://en.wikipedia.org/wiki/Elementary_charge
     pub const PROTON: Self = Self::new(1.602176634e-19);
 
-    /// (10e-19) The [elementary] charge of the [electron][0].
+    /// (10e-19) The [elementary charge][1] of the [electron][0].
     ///
     /// [0]: https://en.wikipedia.org/wiki/Electron
     /// [1]: https://en.wikipedia.org/wiki/Elementary_charge

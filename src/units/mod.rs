@@ -9,10 +9,12 @@ use crate::Magnitude;
 use core::fmt;
 
 // Base quantities
+//
 // - https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
 // - https://en.wikipedia.org/wiki/Physical_quantity#Base_quantities
-
+//
 // The 7 base units
+//
 // - https://en.wikipedia.org/wiki/2019_redefinition_of_the_SI_base_units
 
 mod amount;
@@ -32,24 +34,30 @@ pub use temperature::Temperature;
 pub use time::Time;
 
 // Derived quantities
+//
 // - https://en.wikipedia.org/wiki/International_System_of_Quantities#Derived_quantities
 // - https://en.wikipedia.org/wiki/Physical_quantity#General_derived_quantities
 
-mod acceleration;
+// scalar
+
 mod area;
 mod charge;
 mod density;
 mod energy;
-mod force;
 mod frequency;
-mod gfs;
-mod moment;
-mod momentum;
 mod power;
 mod pressure;
 mod speed;
-mod velocity;
 mod volume;
+
+// vector
+
+mod acceleration;
+mod force;
+mod gfs;
+mod moment;
+mod momentum;
+mod velocity;
 
 pub use acceleration::Acceleration;
 pub use area::Area;
@@ -66,6 +74,8 @@ pub use pressure::Pressure;
 pub use speed::Speed;
 pub use velocity::Velocity;
 pub use volume::Volume;
+
+// thematic sub-modules
 
 /// Units for kinematics.
 ///
@@ -97,10 +107,10 @@ pub trait Unit {
     fn unit() -> String;
 
     /// Returns the unit in long format, singular.
-    fn unit_long_p(&self) -> String;
+    fn unit_long_s(&self) -> String;
 
     /// Returns the unit in long format, plural.
-    fn unit_long_s(&self) -> String;
+    fn unit_long_p(&self) -> String;
 
     /// Returns the unit in long format, singular if magnitude == 1, plural otherwise.
     fn unit_long(&self) -> String;
@@ -164,9 +174,14 @@ impl_unit!(Amount, "mol", "mole", "moles", moles);
 
 // derived units
 
+// scalar
+
 impl_unit!(Area, "m²", "square metre", "square metres", square_metres);
-impl_unit!(Volume, "m³", "cubic metre", "cubic metres", cubic_metres);
-impl_unit!(Force, "N", "newton", "newtons", newtons);
+impl_unit!(Charge, "C", "coulomb", "coulombs", coulombs);
+impl_unit!(Energy, "J", "joule", "joules", joules);
+impl_unit!(Frequency, "Hz", "hertz", "hertzs", hertzs);
+impl_unit!(Power, "W", "watt", "watts", watts);
+impl_unit!(Pressure, "Pa", "pascal", "pascals", pascals);
 impl_unit!(
     Speed,
     "m/s",
@@ -174,6 +189,10 @@ impl_unit!(
     "metres per second",
     metres_per_second
 );
+impl_unit!(Volume, "m³", "cubic metre", "cubic metres", cubic_metres);
+
+// vector
+
 impl_unit!(
     Acceleration,
     "m/s²",
@@ -181,18 +200,7 @@ impl_unit!(
     "metres per second squared",
     metres_per_second_squared
 );
-impl_unit!(Frequency, "Hz", "hertz", "hertzs", hertzs);
-impl_unit!(
-    Momentum,
-    "kg m/s",
-    "kilogram metre per second",
-    "kilograms metres per second",
-    kilograms_metres_per_second
-);
-impl_unit!(Pressure, "Pa", "pascal", "pascals", pascals);
-impl_unit!(Energy, "J", "joule", "joules", joules);
-impl_unit!(Power, "W", "watt", "watts", watts);
-impl_unit!(Charge, "C", "coulomb", "coulombs", coulombs);
+impl_unit!(Force, "N", "newton", "newtons", newtons);
 impl_unit!(
     GravitationalFieldStrength,
     "N/kg",
@@ -206,4 +214,11 @@ impl_unit!(
     "newton per metre",
     "newtons per metre",
     newtons_per_metre
+);
+impl_unit!(
+    Momentum,
+    "kg m/s",
+    "kilogram metre per second",
+    "kilograms metres per second",
+    kilograms_metres_per_second
 );

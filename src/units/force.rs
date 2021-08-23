@@ -137,12 +137,16 @@ mod tests {
     #[test]
     fn force_formulas() {
         // Force, Acceleration & Mass
-        let force =
-            Force::from_mass_acceleration(Mass::new(5.), Acceleration::new(Direction::new(2., 0., 0.)));
+        let force = Force::from_mass_acceleration(
+            Mass::new(5.),
+            Acceleration::new(Direction::new(2., 0., 0.)),
+        );
         assert_float_eq!(10., force.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             5.,
-            force.calc_mass(Acceleration::new(Direction::new(2., 0., 0.))).m(),
+            force
+                .calc_mass(Acceleration::new(Direction::new(2., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(

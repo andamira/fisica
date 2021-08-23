@@ -64,7 +64,7 @@ impl Moment {
     }
 }
 
-// impl_prefixes![Moment, Nkg, ];
+// TODO: impl_vector_methods_three_units![Moment, Nkg, ];
 
 #[cfg(test)]
 mod tests {

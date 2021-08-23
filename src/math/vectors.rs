@@ -2,7 +2,7 @@
 
 use std::{
     fmt,
-    ops::{Add, Div, DivAssign, Sub, SubAssign, Mul, MulAssign, AddAssign}
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };
 
 use super::{Magnitude, V3};
@@ -30,7 +30,7 @@ impl Direction {
     /// New `Direction`.
     pub fn new(x: Magnitude, y: Magnitude, z: Magnitude) -> Self {
         Self {
-            v: V3::new(x, y, z)
+            v: V3::new(x, y, z),
         }
     }
 
@@ -82,7 +82,9 @@ impl Direction {
     /// \frac{\bm{a}}{|\bm{a}|}
     /// $$
     pub fn normalize(&self) -> Direction {
-        Self { v: self.v.normalize() }
+        Self {
+            v: self.v.normalize(),
+        }
     }
 
     /// Returns the cross product.
@@ -91,7 +93,7 @@ impl Direction {
     /// orthogonal to both vectors.
     ///
     /// $$
-    /// \bm{a}\times\bm{b} = 
+    /// \bm{a}\times\bm{b} =
     /// \begin{bmatrix} a_x \cr a_y \cr a_z \end{bmatrix} \times
     /// \begin{bmatrix} b_x \cr b_y \cr b_z \end{bmatrix} =
     /// \begin{bmatrix}
@@ -101,7 +103,9 @@ impl Direction {
     /// \end{bmatrix}
     /// $$
     pub fn cross(&self, other: Self) -> Self {
-        Self { v: self.v.cross(other.v) }
+        Self {
+            v: self.v.cross(other.v),
+        }
     }
 
     /// Returns the dot product.
@@ -110,7 +114,7 @@ impl Direction {
     /// `Magnitude` of one vector in the direction of another.
     ///
     /// $$
-    /// \bm{a}\cdot\bm{b} = 
+    /// \bm{a}\cdot\bm{b} =
     /// \begin{bmatrix} a_x \cr a_y \cr a_z \end{bmatrix} \cdot
     /// \begin{bmatrix} b_x \cr b_y \cr b_z \end{bmatrix} =
     /// a_x b_x + a_y b_y + a_z b_z
@@ -133,7 +137,6 @@ impl Direction {
     /// All ones.
     pub const ONE: Self = Self { v: V3::ONE };
 }
-
 
 // Vector addition
 impl Add for Direction {
@@ -175,16 +178,12 @@ impl Mul<Magnitude> for Direction {
     type Output = Self;
 
     fn mul(self, other: Magnitude) -> Self {
-        Self {
-            v: self.v * other,
-        }
+        Self { v: self.v * other }
     }
 }
 impl MulAssign<Magnitude> for Direction {
     fn mul_assign(&mut self, other: Magnitude) {
-        *self = Self {
-            v: self.v * other,
-        };
+        *self = Self { v: self.v * other };
     }
 }
 
@@ -193,16 +192,12 @@ impl Div<Magnitude> for Direction {
     type Output = Self;
 
     fn div(self, other: Magnitude) -> Self {
-        Self {
-            v: self.v / other,
-        }
+        Self { v: self.v / other }
     }
 }
 impl DivAssign<Magnitude> for Direction {
     fn div_assign(&mut self, other: Magnitude) {
-        *self = Self {
-            v: self.v / other,
-        };
+        *self = Self { v: self.v / other };
     }
 }
 

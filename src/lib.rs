@@ -8,7 +8,7 @@
 //   https://github.com/rust-lang/rust/issues/32077
 
 #[macro_use]
-pub mod auto_impls;
+mod auto_impls;
 pub mod constants;
 pub mod engine;
 pub mod math;

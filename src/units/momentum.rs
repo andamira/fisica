@@ -25,4 +25,4 @@ impl Momentum {
     }
 }
 
-// TODO: impl_vector_prefixes![Momentum, , ];
+// TODO: impl_vector_methods_three_units![Momentum, , ];
