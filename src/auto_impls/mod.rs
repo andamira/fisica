@@ -786,9 +786,9 @@ macro_rules! vector_methods {
 /// Generates 2 constructors and 2 getters, for vector quantities with 2 units.
 ///
 /// This is macro is called by:
-/// - impl_vector_methods_2units (Acceleration, Moment, Momentum, Velocity)
-/// - impl_vector_methods_2units_kilo (GravitationalFieldStrength)
+/// - impl_vector_methods_2units (Acceleration, GravitationalFieldStrength, Moment, Velocity)
 ///
+// TODO: - impl_vector_methods_2units_2base_kilo (GravitationalFieldStrength)
 macro_rules! vector_methods_2units {
     // ROOT RULE: NON const, WITH conversion factor
     //
@@ -1023,6 +1023,243 @@ macro_rules! vector_methods_2units {
             p2u=$p2a,
             P1u=$P1a,
             P2u=$P2a,
+            fu=$fu
+        ];
+    };
+}
+
+/// Generates 2 constructors and 2 getters, for vector quantities with 3 units.
+///
+/// This is macro is called by:
+/// - impl_vector_methods_3units_1base_kilo (Momentum)
+///
+// WIP
+macro_rules! vector_methods_3units {
+    // ROOT RULE: NON const, WITH conversion factor
+    //
+    // LEGEND:
+    // $ty = the type to impl the metods
+    // $q1a  = abbreviated 1st quantity in ascii
+    // $q2a  = abbreviated 2nd quantity in ascii
+    // $q3a  = abbreviated 3rd quantity in ascii
+    // $Q1a  = 1st quantity in ascii
+    // $Q2a  = 2nd quantity in ascii
+    // $Q3a  = 3rd quantity in ascii
+    // $Ja1  = joiner between 1st and 2nd quantities in ascii (per, …)
+    // $Ja2  = joiner between 2nd and 3rd quantities in ascii (per, …)
+    // $q1u = abbreviated 1st quantity in unicode
+    // $q2u = abbreviated 2nd quantity in unicode
+    // $q3u = abbreviated 3rd quantity in unicode
+    // $Q1u = 1st quantity in unicode (or multiple words)
+    // $Q2u = 2nd quantity in unicode (or multiple words)
+    // $Q3u = 3rd quantity in unicode (or multiple words)
+    // $p1a = abbreviated 1st prefix in ascii
+    // $p2a = abbreviated 2nd prefix in ascii
+    // $p3a = abbreviated 3rd prefix in ascii
+    // $P1a = 1st prefix in ascii
+    // $P2a = 2nd prefix in ascii
+    // $P3a = 3rd prefix in ascii
+    // $p1u = abbreviated 1st prefix in unicode
+    // $p2u = abbreviated 2nd prefix in unicode
+    // $p3u = abbreviated 3rd prefix in unicode
+    // $P1u = 1st prefix in unicode
+    // $P2u = 2nd prefix in unicode
+    // $P3u = 3rd prefix in unicode
+    // $f  = conversion factor in number
+    // $fu = conversion factor in unicode
+    // $b1u = first base unit for conversion, in unicode
+    // $b2u = second base unit for conversion, in unicode
+    // $b3u = third base unit for conversion, in unicode
+    [$ty:ty,
+     q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident,
+     Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident,
+     Ja1=$Ja1:tt, Ja2=$Ja2:tt,
+     q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
+     p1a=$p1a:tt, p2a=$p2a:tt, p3a=$p3a:tt, P1a=$P1a:tt, P2a=$P2a:tt, P3a=$P3a:tt,
+     p1u=$p1u:tt, p2u=$p2u:tt, p3u=$p3u:tt, P1u=$P1u:tt, P2u=$P2u:tt, P3u=$P3u:tt,
+     f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt, b3u=$b3u:tt] => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $ty "` in " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u " " $p2u $q2u "/" $p3u $q3u ") (" $fu " " $b1u " " $b2u "/" $b3u ")." ]
+            pub fn [<in_$p1a $q1a _$p2a $q2a _$p3a $q3a>](d: crate::Direction) -> Self { Self::new(d * $f) }
+            #[inline]
+            #[doc = "New `" $ty "` in " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u " " $p2u $q2u "/" $p3u $q3u ") (" $fu " " $b1u " " $b2u "/" $b3u ")." ]
+            pub fn [<in_$P1a $Q1a _$P2a $Q2a _$P3a $Q3a>](d: crate::Direction) -> Self { Self::new(d * $f) }
+            // // getters
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u " " $p2u $q2u "/" $p3u $q3u ") (" $fu " " $b1u " " $b2u "/" $b3u ")." ]
+            pub fn [<as_$p1a $q1a _$p2a $q2a _$p3a $q3a>](&self) -> crate::Direction { self.d / $f }
+            #[inline]
+            #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u " " $p2u $q2u "/" $p3u $q3u ") (" $fu " " $b1u " " $b2u "/" $b3u ")." ]
+            pub fn [<as_$P1a $Q1a _$P2a $Q2a _$P3a $Q3a>](&self) -> crate::Direction { self.d / $f }
+        }
+    };
+    // WIP
+    // ALIAS: no need to specify: p2a, P2a, p3a, P3a, p2u, p3u, P2u, P3u,
+    //
+    // e.g.:
+    // vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja1=$Ja1,
+    //     p1a="u", P1a="micro", p1u="µ", p2u="", P1u="micro", P2u="",
+    //     f=1e-6, fu="10⁻⁶", b1u=$q1a, b2u=$q2a];
+    ($ty:ty,
+     q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident,
+     Ja1=$Ja1:tt, Ja2=$Ja2:tt,
+     q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
+     p1a=$p1a:tt, P1a=$P1a:tt, p1u=$p1u:tt, P1u=$P1u:tt,
+     f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt, b3u=$b3u:tt) => {
+        vector_methods_3units![
+            $ty,
+            q1a=$q1a,
+            q2a=$q2a,
+            q3a=$q3a,
+            Q1a=$Q1a,
+            Q2a=$Q2a,
+            Q3a=$Q3a,
+            Ja1=$Ja1,
+            Ja2=$Ja2,
+            q1u=$q1u,
+            q2u=$q2u,
+            q3u=$q3u,
+            Q1u=$Q1u,
+            Q2u=$Q2u,
+            Q3u=$Q3u,
+            p1a=$p1a,
+            p2a="",
+            p3a="",
+            P1a=$P1a,
+            P2a="",
+            P3a="",
+            p1u=$p1u,
+            p2u="",
+            p3u="",
+            P1u=$P1u,
+            P2u="",
+            P3u="",
+            f=$f,
+            fu=$fu,
+            b1u=$b1u,
+            b2u=$b2u,
+            b3u=$b3u
+        ];
+    };
+    // ALIAS: no need to specify: p2a, P2a, p3a, P3a, p1u, p2u, p3u, P1u, P2u, P3u,
+    // useful for density normal units (without 2nd & 3d prefixes)
+    ($ty:ty,
+     q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident,
+     Ja1=$Ja1:tt, Ja2=$Ja2:tt,
+     q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
+     p1a=$p1a:tt, P1a=$P1a:tt,
+     f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt, b3u=$b3u:tt) => {
+        vector_methods_3units![
+            $ty,
+            q1a=$q1a,
+            q2a=$q2a,
+            q3a=$q3a,
+            Q1a=$Q1a,
+            Q2a=$Q2a,
+            Q3a=$Q3a,
+            Ja1=$Ja1,
+            Ja2=$Ja2,
+            q1u=$q1u,
+            q2u=$q2u,
+            q3u=$q3u,
+            Q1u=$Q1u,
+            Q2u=$Q2u,
+            Q3u=$Q3u,
+            p1a=$p1a,
+            p2a="",
+            p3a="",
+            P1a=$P1a,
+            P2a="",
+            P3a="",
+            p1u=$p1a,
+            p2u="",
+            p3u="",
+            P1u=$P1a,
+            P2u="",
+            P3u="",
+            f=$f,
+            fu=$fu,
+            b1u=$b1u,
+            b2u=$b2u,
+            b3u=$b3u
+        ];
+    };
+
+    // ROOT RULE: const base unit, WITHOUT conversion factor
+    //
+    [$ty:ty, base,
+     q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident,
+     Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident,
+     Ja1=$Ja1:tt, Ja2=$Ja2:tt,
+     q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
+     p1a=$p1a:tt, p2a=$p2a:tt, p3a=$p3a:tt, P1a=$P1a:tt, P2a=$P2a:tt, P3a=$P3a:tt,
+     p1u=$p1u:tt, p2u=$p2u:tt, p3u=$p3u:tt, P1u=$P1u:tt, P2u=$P2u:tt, P3u=$P3u:tt, fu=$fu:expr] => {
+        paste::paste! {
+            // constructors
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "New `" $ty "` in " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u " " $p2u $q2u "/" $p3u $q3u ") (base unit, " $fu " " $q1u "/" $q2u ")." ]
+            pub const fn [<in_$p1a $q1a _$p2a $q2a _$p3a $q3a>](d: crate::Direction) -> Self { Self::new(d) }
+            #[inline]
+            #[doc = "New `" $ty "` in " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u " " $p2u $q2u "/" $p3u $q3u ") (base unit, " $fu " " $q1u "/" $q2u ")." ]
+            pub const fn [<in_$P1a $Q1a _$P2a $Q2a _$P3a $Q3a>](d: crate::Direction) -> Self { Self::new(d) }
+            // getters
+            #[inline]
+            #[allow(non_snake_case)]
+            #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " " $Ja2 " " $P3u $Q3u
+            " (" $p1u $q1u "/" $p2u $q2u ") (base unit, " $fu " " $q1u " " $q2u "/" $q3u ")." ]
+            pub const fn [<as_$p1a $q1a _$p2a $q2a _$p3a $q3a>](&self) -> crate::Direction { self.d }
+            #[inline]
+            #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja1 " " $P2u $Q2u " (" $p1u $q1u "/" $p2u $q2u
+                ") (base unit, " $fu " " $q1u "/" $q2u ")." ]
+            pub const fn [<as_$P1a $Q1a _$P2a $Q2a _$P3a $Q3a>](&self) -> crate::Direction { self.d }
+        }
+    };
+    // ALIAS: no need to specify: p2a, p3a, P1a, P3a, p1u, p2u, p3u, P1u, P2u, P3u, f
+    // useful for: speed base unit
+    ($ty:ty, base,
+     q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident,
+     Ja1=$Ja1:tt, Ja2=$Ja2:tt,
+     q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
+     p1a=$p1a:tt, P1a=$P1a:tt, fu=$fu:expr) => {
+        vector_methods_3units![
+            $ty,
+            base,
+            q1a=$q1a,
+            q2a=$q2a,
+            q3a=$q3a,
+            Q1a=$Q1a,
+            Q2a=$Q2a,
+            Q3a=$Q3a,
+            Ja1=$Ja1,
+            Ja2=$Ja2,
+            q1u=$q1u,
+            q2u=$q2u,
+            q3u=$q3u,
+            Q1u=$Q1u,
+            Q2u=$Q2u,
+            Q3u=$Q3u,
+            p1a=$p1a,
+            p2a="",
+            p3a="",
+            P1a=$P1a,
+            P2a="",
+            P3a="",
+            p1u=$p1a,
+            p2u="",
+            p3u="",
+            P1u=$P1a,
+            P2u="",
+            P3u="",
             fu=$fu
         ];
     };
@@ -1390,7 +1627,7 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
             }
         }
     };
-
+    // ALIAS: no need to specify: q1u, q2u, Q1u, Q2u
     [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident] => {
         impl_scalar_methods_2units_base_kilo![
             $ty,
@@ -1508,7 +1745,7 @@ macro_rules! impl_vector_methods_2units {
             }
         }
     };
-    // ALIAS: no need to specify: Qu*
+    // ALIAS: no need to specify: q1u, q2u, Q1u, Q2u
     [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident] => {
         impl_vector_methods_2units![
             $ty,
@@ -1521,6 +1758,125 @@ macro_rules! impl_vector_methods_2units {
             q2u=$q2a,
             Q1u=$Q1a,
             Q2u=$Q2a
+        ];
+    };
+}
+
+/// Generates SI prefixes constructors and converter methods
+/// (3 units, with kilo prefix on the 1st base unit)
+///
+/// Used for: Momentum
+///
+macro_rules! impl_vector_methods_3units_1base_kilo {
+    [$ty:ty,
+     q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident, q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt,
+     Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
+     Ja1=$Ja1:tt, Ja2=$Ja2:tt] => {
+        paste::paste! {
+            /// # SI prefixes constructors: `in_*` & converters `as_*`
+            #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q1u " " $Ja1 " " $Q2u
+                "` (`" $q1u "/" $q2u "`)**." ]
+            #[doc = "- base *const* constructors: [`in_k" $q1a _$q2a _$q3a "`](" $ty "#method.in_k" $q1a _$q2a _$q3a ")," ]
+            #[doc = "[`in_kilo" $Q1a _$Q2a _$Q3a"`](" $ty "#method.in_kilo" $Q1a _$Q2a _$Q3a ")"]
+            #[doc = "- base *const* converters: [`as_k" $q1a _$q2a _$q3a "`](" $ty "#method.as_k" $q1a _$q2a _$q3a")," ]
+            #[doc = "[`as_kilo" $Q1a _$Q2a _$Q3a "`](" $ty "#method.as_kilo" $Q1a _$Q2a _$Q3a ")"]
+            impl $ty {
+                paste::paste! {
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="Y", P1a="yotta", f=1e21, fu="10²⁴", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="Z", P1a="zetta", f=1e18, fu="10²¹", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="E", P1a="exa", f=1e15, fu="10¹⁸", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="P", P1a="peta", f=1e12, fu="10¹⁵", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="T", P1a="tera", f=1e9, fu="10¹²", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="G", P1a="giga", f=1e6, fu="10⁹", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="M", P1a="mega", f=1e3, fu="10⁶", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+
+                    // kilo, base
+                    vector_methods_3units![$ty, base, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="k", P1a="kilo", fu="10³"];
+
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="h", P1a="hecto", f=1e-1, fu="10²", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="da", P1a="deka", f=1e-2, fu="10¹", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+
+                    // no prefix
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="", P1a="", f=1e-3, fu="10⁰", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="d", P1a="deci", f=1e-4, fu="10⁻¹", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="c", P1a="centi", f=1e-5, fu="10⁻²", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="m", P1a="milli", f=1e-6, fu="10⁻³", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+
+                    // micro
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="u", P1a="micro", p1u="µ", P1u="micro", f=1e-9, fu="10⁻⁶", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="n", P1a="nano", f=1e-12, fu="10⁻⁹", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="p", P1a="pico", f=1e-15, fu="10⁻¹²", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="f", P1a="femto", f=1e-18, fu="10⁻¹⁵", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="a", P1a="atto", f=1e-21, fu="10⁻¹⁸", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="z", P1a="zepto", f=1e-24, fu="10⁻²¹", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="y", P1a="yocto", f=1e-27, fu="10⁻²⁴", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                }
+            }
+        }
+    };
+
+    [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident,
+     Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident, Ja1=$Ja1:tt, Ja2=$Ja2:tt] => {
+        impl_vector_methods_3units_1base_kilo![
+            $ty,
+            q1a=$q1a,
+            q2a=$q2a,
+            q3a=$q3a,
+            q1u=$q1a,
+            q2u=$q2a,
+            q3u=$q3a,
+            Q1a=$Q1a,
+            Q2a=$Q2a,
+            Q3a=$Q3a,
+            Q1u=$Q1a,
+            Q2u=$Q2a,
+            Q3u=$Q3a,
+            Ja1=$Ja1,
+            Ja2=$Ja2
         ];
     };
 }

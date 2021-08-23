@@ -66,4 +66,12 @@ impl GravitationalFieldStrength {
     }
 }
 
-// TODO: impl_vector_methods_2units![GravitationalFieldStrength, , ];
+// TODO: impl_vector_methods_2units_2base_kilo![
+impl_vector_methods_2units![
+    GravitationalFieldStrength,
+    q1a = N,
+    q2a = kg,
+    Q1a = newtons,
+    Q2a = kilogram,
+    Ja = per
+];

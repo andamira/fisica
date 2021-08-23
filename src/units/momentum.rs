@@ -25,4 +25,14 @@ impl Momentum {
     }
 }
 
-// TODO: impl_vector_methods_three_units![Momentum, , ];
+impl_vector_methods_3units_1base_kilo![
+    Momentum,
+    q1a = g,
+    q2a = m,
+    q3a = s,
+    Q1a = grams,
+    Q2a = metres,
+    Q3a = second,
+    Ja1 = "",
+    Ja2 = per
+];
