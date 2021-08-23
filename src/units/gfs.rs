@@ -6,67 +6,64 @@ use crate::{Direction, Magnitude};
 /// in `N/kg`.
 #[derive(Clone, Copy, Debug)]
 pub struct GravitationalFieldStrength {
-    pub m: Magnitude,
     pub d: Direction,
 }
 
 /// (== [`GravitationalFieldStrength`])
 pub type Gfs = GravitationalFieldStrength;
 
-/// # Constructors
 impl GravitationalFieldStrength {
-    /// new GravitationalFieldStrength
+    /// New GravitationalFieldStrength
     #[inline]
-    pub const fn new(m: Magnitude, d: Direction) -> Self {
-        Self { m, d }
+    pub const fn new(d: Direction) -> Self {
+        Self { d }
     }
 
-    /// new GravitationalFieldStrength with undefined direction
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m, Direction::ZERO)
+    pub fn m(&self) -> Magnitude {
+        self.d.magnitude()
     }
 }
 
 /// # `Length` constants by order of magnitude
 impl GravitationalFieldStrength {
-    pub const fn in_mercury() -> Self {
-        Self::without_direction(3.8)
+    pub fn in_mercury() -> Self {
+        Self::new(Direction::new(0., 3.8, 0.))
     }
-    pub const fn in_venus() -> Self {
-        Self::without_direction(8.8)
+    pub fn in_venus() -> Self {
+        Self::new(Direction::new(0., 8.8, 0.))
     }
-    pub const fn in_earth() -> Self {
-        Self::without_direction(9.8)
+    pub fn in_earth() -> Self {
+        Self::new(Direction::new(0., 9.8, 0.))
     }
-    pub const fn in_mars() -> Self {
-        Self::without_direction(3.8)
+    pub fn in_mars() -> Self {
+        Self::new(Direction::new(0., 3.8, 0.))
     }
-    pub const fn in_jupiter() -> Self {
-        Self::without_direction(25.)
+    pub fn in_jupiter() -> Self {
+        Self::new(Direction::new(0., 25., 0.))
     }
-    pub const fn in_saturn() -> Self {
-        Self::without_direction(10.4)
+    pub fn in_saturn() -> Self {
+        Self::new(Direction::new(0., 10.4, 0.))
     }
-    pub const fn in_uranus() -> Self {
-        Self::without_direction(10.4)
+    pub fn in_uranus() -> Self {
+        Self::new(Direction::new(0., 10.4, 0.))
     }
-    pub const fn in_neptune() -> Self {
-        Self::without_direction(13.8)
+    pub fn in_neptune() -> Self {
+        Self::new(Direction::new(0., 13.8, 0.))
     }
-    pub const fn in_moon() -> Self {
-        Self::without_direction(1.6)
+    pub fn in_moon() -> Self {
+        Self::new(Direction::new(0., 1.6, 0.))
     }
-    pub const fn in_pluto() -> Self {
-        Self::without_direction(0.49)
+    pub fn in_pluto() -> Self {
+        Self::new(Direction::new(0., 0.49, 0.))
     }
-    pub const fn in_ceres() -> Self {
-        Self::without_direction(0.27)
+    pub fn in_ceres() -> Self {
+        Self::new(Direction::new(0., 0.27, 0.))
     }
-    pub const fn in_sun() -> Self {
-        Self::without_direction(293.)
+    pub fn in_sun() -> Self {
+        Self::new(Direction::new(0., 293., 0.))
     }
 }
 
-// TODO: prefixes
-// impl_prefixes![GravitationalFieldStrength, , ];
+// TODO: impl_vector_methods_two_units![GravitationalFieldStrength, , ];

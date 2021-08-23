@@ -9,17 +9,17 @@ pub struct Pressure {
     pub m: Magnitude,
 }
 
-/// # Constructors
 impl Pressure {
-    /// new Pressure
+    /// New Pressure.
     #[inline]
     pub const fn new(m: Magnitude) -> Self {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 

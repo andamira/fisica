@@ -19,17 +19,17 @@ pub struct Time {
     pub m: Magnitude,
 }
 
-/// # Constructors
 impl Time {
-    /// new Time
+    /// New Time.
     #[inline]
     pub const fn new(m: Magnitude) -> Self {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 

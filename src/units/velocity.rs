@@ -9,21 +9,19 @@ use crate::Direction;
 ///
 /// This is a vector magnitude.
 pub struct Velocity {
-    /// module
-    pub m: Magnitude,
     /// Vector
     pub d: Direction,
 }
 
 impl Velocity {
-    /// New Velocity
-    pub const fn new(m: Magnitude, d: Direction) -> Self {
-        Self { m, d }
+    /// New Velocity.
+    pub const fn new(d: Direction) -> Self {
+        Self { d }
     }
 
-    /// New velocity from Speed and undefined direction
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m, Direction::ZERO)
+    /// Returns the magnitude, derived from the length of its direction.
+    pub fn m(&self) -> Magnitude {
+        self.d.magnitude()
     }
 }
 
@@ -53,8 +51,7 @@ impl Speed {
     // }
 }
 
-// TODO: prefixes
-// impl_prefixes![Speed, km_s, kilometers_second];
+// TODO: impl_vector_methods_two_units![Speed, km_s, kilometers_second];
 
 // #[cfg(test)]
 // mod tests {

@@ -9,8 +9,6 @@
 //! - <https://en.wikipedia.org/wiki/List_of_physical_constants>
 //! - <https://en.wikipedia.org/wiki/Dimensionless_physical_constant>
 
-/!
-
 use crate::Magnitude;
 
 /// The [Coulomb constant][0], the electric force constant,

@@ -14,7 +14,6 @@ pub struct Current {
     pub m: Magnitude,
 }
 
-/// # Constructors
 impl Current {
     /// new Current
     #[inline]
@@ -22,9 +21,10 @@ impl Current {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 

@@ -1,6 +1,8 @@
+//!
+
 use std::{
     fmt,
-    ops::{Add, Sub, SubAssign, Mul, MulAssign, AddAssign}
+    ops::{Add, Div, DivAssign, Sub, SubAssign, Mul, MulAssign, AddAssign}
 };
 
 use super::{Magnitude, V3};
@@ -25,6 +27,7 @@ pub type Position = Direction;
 
 /// # Methods
 impl Direction {
+    /// New `Direction`.
     pub fn new(x: Magnitude, y: Magnitude, z: Magnitude) -> Self {
         Self {
             v: V3::new(x, y, z)
@@ -52,6 +55,7 @@ impl Direction {
     /// $$
     /// d = |\bm{a}| = \sqrt{x^2 + y^2 + z^2}
     /// $$
+    #[inline]
     pub fn magnitude(&self) -> Magnitude {
         self.v.length()
     }
@@ -180,6 +184,24 @@ impl MulAssign<Magnitude> for Direction {
     fn mul_assign(&mut self, other: Magnitude) {
         *self = Self {
             v: self.v * other,
+        };
+    }
+}
+
+// Scalar division
+impl Div<Magnitude> for Direction {
+    type Output = Self;
+
+    fn div(self, other: Magnitude) -> Self {
+        Self {
+            v: self.v / other,
+        }
+    }
+}
+impl DivAssign<Magnitude> for Direction {
+    fn div_assign(&mut self, other: Magnitude) {
+        *self = Self {
+            v: self.v / other,
         };
     }
 }

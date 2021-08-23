@@ -10,17 +10,17 @@ pub struct Speed {
     pub m: Magnitude,
 }
 
-/// # Constructors
 impl Speed {
-    /// New speed
+    /// New speed.
     #[inline]
     pub const fn new(m: Magnitude) -> Self {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 

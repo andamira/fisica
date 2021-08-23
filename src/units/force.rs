@@ -15,22 +15,20 @@ use crate::{Direction, Magnitude};
 /// - <https://en.wikipedia.org/wiki/Newton_(unit)>
 #[derive(Clone, Copy, Debug)]
 pub struct Force {
-    pub m: Magnitude,
     pub d: Direction,
 }
 
-/// # Constructors
 impl Force {
-    /// new Force
+    /// new Force.
     #[inline]
-    pub const fn new(m: Magnitude, d: Direction) -> Self {
-        Self { m, d }
+    pub const fn new(d: Direction) -> Self {
+        Self { d }
     }
 
-    /// new Force with undefined direction
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m, Direction::ZERO)
+    pub fn m(&self) -> Magnitude {
+        self.d.magnitude()
     }
 }
 
@@ -41,7 +39,7 @@ pub type Weight = Force;
 impl Force {
     /// Derives the `Force` from the given [`Mass`] and [`Acceleration`] (`F = m × a`).
     pub fn from_mass_acceleration(m: Mass, a: Acceleration) -> Self {
-        Self::new(m.m * a.m, a.d)
+        Self::new(a.d * m.m())
     }
 
     /// (Alias of [from_mass_acceleration][Force::from_mass_acceleration]).
@@ -53,18 +51,18 @@ impl Force {
     /// Calculates the [`Mass`] given the [`Acceleration`] (`m = F / a`).
     #[inline]
     pub fn calc_mass(&self, a: Acceleration) -> Mass {
-        Mass::new(self.m / a.m)
+        Mass::new(self.m() / a.m())
     }
 
     /// Calculates the [`Acceleration`] given the [`Mass`] (`a = F / m`).
     #[inline]
     pub fn calc_acceleration(&self, m: Mass) -> Acceleration {
-        Acceleration::new(self.m / m.m, self.d)
+        Acceleration::new(self.d / m.m())
     }
 
     /// Derives the `Force` from the given [`Moment`] and [`Distance`] (`F = M / d`).
     pub fn from_moment_distance(m: Moment, d: Distance) -> Self {
-        Self::new(m.m / d.m, m.d)
+        Self::new(m.d / d.m())
     }
 
     /// (Alias of [from_moment_distance][Force::from_moment_distance]).
@@ -76,13 +74,13 @@ impl Force {
     /// Calculates the [`Moment`] given the [`Distance`] (`M = F × d`).
     #[inline]
     pub fn calc_moment(&self, d: Distance) -> Moment {
-        Moment::new(self.m * d.m, self.d)
+        Moment::new(self.d * d.m())
     }
 
     /// Calculates the [`Distance`] given the [`Moment`] (`d = M / F`).
     #[inline]
     pub fn calc_distance(&self, m: Moment) -> Distance {
-        Length::new(m.m / self.m)
+        Length::new(m.m() / self.m())
     }
 }
 
@@ -101,11 +99,11 @@ impl Weight {
     /// let mass = Mass::in_kilograms(60.);
     /// let w_earth = Weight::from_mass_gfs(mass, Gfs::in_earth());
     /// let w_moon = Weight::from_mass_gfs(mass, Gfs::in_moon());
-    /// let ratio = w_earth.m / w_moon.m;
+    /// let ratio = w_earth.m() / w_moon.m();
     /// print!("A mass of {} would weight {} in Earth and {} in the Moon ({} times less)",
     ///     mass, w_earth, w_moon, ratio);
     /// println!(", as heavy as a {} mass would feel in Earth",
-    ///     Mass::in_kg(mass.m / ratio));
+    ///     Mass::in_kg(mass.m() / ratio));
     /// ```
     ///
     /// # Trivia
@@ -113,19 +111,19 @@ impl Weight {
     /// A common home scale in reality measures the Weight (Force), calibrated
     /// to show the Mass in kg, assuming it's being used on Earth's surface.
     pub fn from_mass_gfs(m: Mass, g: GravitationalFieldStrength) -> Self {
-        Self::new(m.m * g.m, g.d)
+        Self::new(g.d * m.m())
     }
 
     /// Calculates the [`Mass`] given the [`GravitationalFieldStrength`] (`m = w / g`).
     #[inline]
     pub fn calc_mass_from_gfs(&self, g: GravitationalFieldStrength) -> Mass {
-        Mass::new(self.m / g.m)
+        Mass::new(self.m() / g.m())
     }
 
     /// Calculates the [`GravitationalFieldStrength`] given the [`Mass`] (`g = w / m`).
     #[inline]
     pub fn calc_gfs(&self, m: Mass) -> GravitationalFieldStrength {
-        GravitationalFieldStrength::new(self.m / m.m, self.d)
+        GravitationalFieldStrength::new(self.d / m.m())
     }
 }
 
@@ -140,30 +138,33 @@ mod tests {
     fn force_formulas() {
         // Force, Acceleration & Mass
         let force =
-            Force::from_mass_acceleration(Mass::new(5.), Acceleration::without_direction(2.));
-        assert_float_eq!(10., force.m, r2nd <= Magnitude::EPSILON);
+            Force::from_mass_acceleration(Mass::new(5.), Acceleration::new(Direction::new(2., 0., 0.)));
+        assert_float_eq!(10., force.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             5.,
-            force.calc_mass(Acceleration::without_direction(2.)).m,
+            force.calc_mass(Acceleration::new(Direction::new(2., 0., 0.))).m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             2.,
-            force.calc_acceleration(Mass::new(5.)).m,
+            force.calc_acceleration(Mass::new(5.)).m(),
             r2nd <= Magnitude::EPSILON
         );
 
         // Distance, Moment & Force
-        let force = Force::from_moment_distance(Moment::without_direction(6.), Length::new(0.2));
-        assert_float_eq!(30., force.m, r2nd <= Magnitude::EPSILON);
+        let force =
+            Force::from_moment_distance(Moment::new(Direction::new(6., 0., 0.)), Length::new(0.2));
+        assert_float_eq!(30., force.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             0.2,
-            force.calc_distance(Moment::without_direction(6.)).m,
+            force
+                .calc_distance(Moment::new(Direction::new(6., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             6.,
-            force.calc_moment(Length::new(0.2)).m,
+            force.calc_moment(Length::new(0.2)).m(),
             r2nd <= Magnitude::EPSILON
         );
     }

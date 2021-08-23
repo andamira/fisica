@@ -3,16 +3,6 @@
 #[cfg(test)]
 mod tests;
 
-// TODO:
-// 1. support compound prefixes, for Speed, Momentum, etc.
-//   - all combinations? so either of the 2 units could be scaled?
-//      21×21=441 methods!! maybe hide them from the docs?
-//   - use a single factor argument
-//
-// TODO: copy what's been done with QaL QaM to 2 units... Q1aL, Q1aM, Q2aL, Q2aM…
-//
-// TODO: macro_rules! impl_vector_methods_two_units
-
 /// Generates 2 constructors and 2 getters, for scalar quantities.
 macro_rules! scalar_methods {
     // ROOT RULE: NON const, WITH conversion factor
@@ -53,10 +43,10 @@ macro_rules! scalar_methods {
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $QuL " " $Pu $QuM " (" $pu "" $qu ") (" $fu " " $bu ")."]
-            pub fn [<as_$pa $q>](&self) -> crate::Magnitude { self.m / $f }
+            pub fn [<as_$pa $q>](&self) -> crate::Magnitude { self.m() / $f }
             #[inline]
             #[doc = "Returns `" $ty "` as " $QuL " " $Pu $QuM " (" $pu "" $qu ") (" $fu " " $bu ")."]
-            pub fn [<as_$QaL $Pa $QaM>](&self) -> crate::Magnitude { self.m / $f }
+            pub fn [<as_$QaL $Pa $QaM>](&self) -> crate::Magnitude { self.m() / $f }
         }
     };
     // ALIAS: no need to specify: pu, Pu, bu
@@ -226,10 +216,10 @@ macro_rules! scalar_methods {
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $QuL " " $Pa $QuM " (" $pa $qu ") (base unit, " $fu " " $qu ")."]
-            pub const fn [<as_$pa $q>](&self) -> crate::Magnitude { self.m }
+            pub const fn [<as_$pa $q>](&self) -> crate::Magnitude { self.m() }
             #[inline]
             #[doc = "Returns `" $ty "` as " $QuL " " $Pa $QuM " (" $pa $qu ") (base unit, " $fu " " $qu ")."]
-            pub const fn [<as_$QaL $Pa $QaM>](&self) -> crate::Magnitude { self.m }
+            pub const fn [<as_$QaL $Pa $QaM>](&self) -> crate::Magnitude { self.m() }
         }
     };
     // ALIAS: no need to specify: pa, Pa
@@ -350,11 +340,11 @@ macro_rules! scalar_methods_2units {
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja " " $P2u $Q2u " (" $p1u $q1u "/" $p2u $q2u
                 ") (" $fu " " $b1u "/" $b2u ")." ]
-            pub fn [<as_$p1a $q1a _$p2a $q2a>](&self) -> crate::Magnitude { self.m / $f }
+            pub fn [<as_$p1a $q1a _$p2a $q2a>](&self) -> crate::Magnitude { self.m() / $f }
             #[inline]
             #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja " " $P2u $Q2u " (" $p1u $q1u "/" $p2u $q2u
                 ") (" $fu " " $b1u "/" $b2u ")." ]
-            pub fn [<as_$P1a $Q1a _$P2a $Q2a>](&self) -> crate::Magnitude { self.m / $f }
+            pub fn [<as_$P1a $Q1a _$P2a $Q2a>](&self) -> crate::Magnitude { self.m() / $f }
         }
     };
     // ALIAS: no need to specify: q1u, q2u, Q1u, Q2u, p1u, p2u, P1u, P2u
@@ -479,11 +469,11 @@ macro_rules! scalar_methods_2units {
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja " " $P2u $Q2u " (" $p1u $q1u "/" $p2u $q2u
                 ") (base unit, " $fu " " $q1u "/" $q2u ")." ]
-            pub const fn [<as_$p1a $q1a _$p2a $q2a>](&self) -> crate::Magnitude { self.m }
+            pub const fn [<as_$p1a $q1a _$p2a $q2a>](&self) -> crate::Magnitude { self.m() }
             #[inline]
             #[doc = "Returns `" $ty "` as " $P1u $Q1u " " $Ja " " $P2u $Q2u " (" $p1u $q1u "/" $p2u $q2u
                 ") (base unit, " $fu " " $q1u "/" $q2u ")." ]
-            pub const fn [<as_$P1a $Q1a _$P2a $Q2a>](&self) -> crate::Magnitude { self.m }
+            pub const fn [<as_$P1a $Q1a _$P2a $Q2a>](&self) -> crate::Magnitude { self.m() }
         }
     };
     // ALIAS: no need to specify: p1a, p2a, P1a, P2a, p1u, p2u, P1u, P2u, f
@@ -569,19 +559,19 @@ macro_rules! vector_methods {
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "New `" $ty "` in " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $bu ")."]
-            pub fn [<in_$pa $q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m * $f, d) }
+            pub fn [<in_$pa $q>](d: crate::Direction) -> Self { Self::new(d * $f) }
             #[inline]
             #[doc = "New `" $ty "` in " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $bu ")."]
-            pub fn [<in_$Pa $Q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m * $f, d) }
+            pub fn [<in_$Pa $Q>](d: crate::Direction) -> Self { Self::new(d * $f) }
             // getters
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $bu ")."]
-            pub fn [<as_$pa $q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m / $f, self.d) }
+            pub fn [<as_$pa $q>](&self) -> crate::Direction { self.d / $f }
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $Pu "" $Qu " (" $pu "" $qu ") (" $fu " " $bu ")."]
-            pub fn [<as_$Pa $Q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m / $f, self.d) }
+            pub fn [<as_$Pa $Q>](&self) -> crate::Direction { self.d / $f }
         }
     };
     // ALIAS: no need to specify: qu, Qu, bu
@@ -710,18 +700,18 @@ macro_rules! vector_methods {
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "New `" $ty "` in " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
-            pub const fn [<in_$pa $q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m, d) }
+            pub const fn [<in_$pa $q>](d: crate::Direction) -> Self { Self::new(d) }
             #[inline]
             #[doc = "New `" $ty "` in " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
-            pub const fn [<in_$Pa $Q>](m: crate::Magnitude, d: crate::Direction) -> Self { Self::new(m, d) }
+            pub const fn [<in_$Pa $Q>](d: crate::Direction) -> Self { Self::new(d) }
             // getters
             #[inline]
             #[allow(non_snake_case)]
             #[doc = "Returns `" $ty "` as " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
-            pub const fn [<as_$pa $q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m, self.d) }
+            pub const fn [<as_$pa $q>](&self) -> crate::Direction { self.d }
             #[inline]
             #[doc = "Returns `" $ty "` as " $Pa $Qu " (" $pa $qu ") (base unit, " $fu " " $q ")."]
-            pub const fn [<as_$Pa $Q>](&self) -> (crate::Magnitude, crate::Direction) { (self.m, self.d) }
+            pub const fn [<as_$Pa $Q>](&self) -> crate::Direction { self.d }
         }
     };
     // ALIAS: no need to specify: qu, Qu

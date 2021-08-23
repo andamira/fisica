@@ -20,11 +20,10 @@ impl Work {
     /// Work (J) = [`Force`] (N) × [`Distance`] (m)
     #[inline]
     pub fn from_force_length(f: Force, d: Distance) -> Self {
-        Self::new(f.m * d.m)
+        Self::new(f.m() * d.m())
     }
 }
 
-/// # Constructors
 impl Energy {
     /// new Energy
     #[inline]
@@ -32,9 +31,10 @@ impl Energy {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 
@@ -43,7 +43,7 @@ impl Energy {
     /// Derives Energy from the given [`Power`] and [`Time`] (`J = P × t`).
     #[inline]
     pub fn from_power_time(p: Power, t: Time) -> Self {
-        Self::new(p.m * t.m)
+        Self::new(p.m() * t.m())
     }
 
     /// (Alias of [from_power_time][Energy::from_power_time]).
@@ -55,13 +55,13 @@ impl Energy {
     /// Calculates the [`Power`] given the [`Time`] (`P = E / t`).
     #[inline]
     pub fn calc_power(&self, t: Time) -> Power {
-        Power::new(self.m / t.m)
+        Power::new(self.m() / t.m())
     }
 
     /// Calculates the [`Time`] given the [`Power`] (`t = E / P`).
     #[inline]
     pub fn calc_time(&self, p: Power) -> Time {
-        Time::new(self.m / p.m)
+        Time::new(self.m() / p.m())
     }
 
     /// Returns the `Energy` [equivalent][0] to the given [`Mass`] (`E = mc²`).
@@ -69,7 +69,7 @@ impl Energy {
     /// [0]:https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence
     #[inline]
     pub fn from_mass(m: Mass) -> Self {
-        Self::new(m.m * Speed::LIGHT_SQUARED.m)
+        Self::new(m.m() * Speed::LIGHT_SQUARED.m())
     }
 }
 
@@ -84,20 +84,24 @@ mod tests {
     fn energy_formulas() {
         // Energy, Power & Time
         let energy = Energy::from_power_time(Power::new(800.), Time::in_min(3.));
-        assert_float_eq!(Energy::in_kJ(144.).m, energy.m, r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
-            energy.m,
-            Energy::from_time_power(Time::in_min(3.), Power::new(800.)).m,
+            Energy::in_kJ(144.).m(),
+            energy.m(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            energy.m(),
+            Energy::from_time_power(Time::in_min(3.), Power::new(800.)).m(),
             r2nd <= Magnitude::EPSILON,
         );
         assert_float_eq!(
             800.,
-            energy.calc_power(Time::in_min(3.)).m,
+            energy.calc_power(Time::in_min(3.)).m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             Time::in_min(3.).m,
-            energy.calc_time(Power::new(800.)).m,
+            energy.calc_time(Power::new(800.)).m(),
             r2nd <= Magnitude::EPSILON
         );
     }

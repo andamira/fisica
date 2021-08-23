@@ -8,24 +8,21 @@ use crate::{Direction, Magnitude};
 /// `Momentum`, in [`Mass`] times [`Length`] per [`Time`]: `kg m/s`.
 #[derive(Clone, Copy, Debug)]
 pub struct Momentum {
-    pub m: Magnitude,
     pub d: Direction,
 }
 
-/// # Constructors
 impl Momentum {
-    /// new Momentum
+    /// New Momentum.
     #[inline]
-    pub const fn new(m: Magnitude, d: Direction) -> Self {
-        Self { m, d }
+    pub const fn new(d: Direction) -> Self {
+        Self { d }
     }
 
-    /// new Momentum with undefined direction
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m, Direction::ZERO)
+    pub fn m(&self) -> Magnitude {
+        self.d.magnitude()
     }
 }
 
-// TODO: prefixes
-// impl_prefixes![Momentum, , ];
+// TODO: impl_vector_prefixes![Momentum, , ];

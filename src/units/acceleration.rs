@@ -9,32 +9,29 @@ use crate::{Direction, Magnitude};
 /// in [`m`][Length]/[`s`][Time]².
 #[derive(Clone, Copy, Debug)]
 pub struct Acceleration {
-    pub m: Magnitude,
     pub d: Direction,
 }
 
-/// # Constructors
 impl Acceleration {
-    /// new Acceleration
+    /// New Acceleration.
     #[inline]
-    pub const fn new(m: Magnitude, d: Direction) -> Self {
-        Self { m, d }
+    pub const fn new(d: Direction) -> Self {
+        Self { d }
     }
 
-    /// new Acceleration with undefined direction
-    #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m, Direction::ZERO)
+    /// Returns the magnitude, derived from the length of its direction.
+    pub fn m(&self) -> Magnitude {
+        self.d.magnitude()
     }
 }
 
-/// # Formulas
+/// # `Acceleration` Formulas
 impl Acceleration {
     /// Derives `Acceleration` from the given change in [`Velocity`] and [`Time`] taken
     /// (`a = v / t`).
     #[inline]
     pub fn from_velocity_time(v: Velocity, t: Time) -> Self {
-        Self::new(v.m / t.m, v.d)
+        Self::new(v.d / t.m())
     }
 
     /// (Alias of [from_velocity_time][Acceleration::from_velocity_time]).
@@ -44,7 +41,7 @@ impl Acceleration {
     }
 
     pub fn from_velocities_time(v_initial: Velocity, v_final: Velocity, t: Time) -> Self {
-        Self::new((v_final.m - v_initial.m) / t.m, v_final.d + v_initial.d) // CHECK vector substraction? sum?
+        Self::new((v_final.d - v_initial.d) / t.m()) // CHECK
     }
 
     /// (Alias of [from_velocities_time][Acceleration::from_velocities_time]).
@@ -55,7 +52,7 @@ impl Acceleration {
     /// Derives `Acceleration` from the given [`Mass`] and [`Force`] (`a = F / m`).
     #[inline]
     pub fn from_mass_force(m: Mass, f: Force) -> Self {
-        Self::new(f.m / m.m, f.d)
+        Self::new(f.d / m.m())
     }
 
     /// (Alias of [from_mass_force][Acceleration::from_mass_force]).
@@ -67,18 +64,17 @@ impl Acceleration {
     /// Calculates the [`Mass`] given the [`Force`] (`m = F / a`).
     #[inline]
     pub fn calc_mass(&self, f: Force) -> Mass {
-        Mass::new(f.m / self.m)
+        Mass::new(f.m() / self.m())
     }
 
     /// Calculates the [`Force`] given the [`Mass`] (`F = m × a`).
     #[inline]
     pub fn calc_force(&self, m: Mass) -> Force {
-        Force::new(self.m * m.m, self.d)
+        Force::new(self.d * m.m())
     }
 }
 
-// TODO: prefixes
-// impl_prefixes![Acceleration, km_s2, kilometers_second_squared];
+// TODO: impl_vector_methods_two_units![Acceleration, km_s2, kilometers_second_squared];
 
 #[cfg(test)]
 mod tests {
@@ -89,16 +85,18 @@ mod tests {
     fn acceleration_formulas() {
         // Force, Acceleration & Mass
         let acceleration =
-            Acceleration::from_mass_force(Mass::new(5.), Force::without_direction(10.));
-        assert_float_eq!(2., acceleration.m, r2nd <= Magnitude::EPSILON);
+            Acceleration::from_mass_force(Mass::new(5.), Force::new(Direction::new(10., 0., 0.)));
+        assert_float_eq!(2., acceleration.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             5.,
-            acceleration.calc_mass(Force::without_direction(10.)).m,
+            acceleration
+                .calc_mass(Force::new(Direction::new(10., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             10.,
-            acceleration.calc_force(Mass::new(5.)).m,
+            acceleration.calc_force(Mass::new(5.)).m(),
             r2nd <= Magnitude::EPSILON
         );
     }

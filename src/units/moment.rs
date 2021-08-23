@@ -13,22 +13,20 @@ use crate::{Direction, Magnitude};
 ///
 /// <https://en.wikipedia.org/wiki/Moment_(physics)>
 pub struct Moment {
-    pub m: Magnitude,
     pub d: Direction,
 }
 
-/// # Constructors
 impl Moment {
-    /// new Moment
+    /// New Moment.
     #[inline]
-    pub const fn new(m: Magnitude, d: Direction) -> Self {
-        Self { m, d }
+    pub const fn new(d: Direction) -> Self {
+        Self { d }
     }
 
-    /// new Moment with undefined direction
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m, Direction::ZERO)
+    pub fn m(&self) -> Magnitude {
+        self.d.magnitude()
     }
 }
 
@@ -44,7 +42,7 @@ impl Moment {
     /// Returns the `Moment` of applying a [`Force`] over some [`Distance`]
     /// (`M = F × d`).
     pub fn from_force_distance(f: Force, d: Distance) -> Self {
-        Self::new(f.m * d.m, f.d)
+        Self::new(f.d * d.m())
     }
 
     /// (Alias of [from_force_distance][Moment::from_force_distance]).
@@ -56,13 +54,13 @@ impl Moment {
     /// Calculates the [`Distance`] for a given [`Force`] (`d = M / F`).
     #[inline]
     pub fn calc_distance(&self, f: Force) -> Distance {
-        Length::new(self.m / f.m)
+        Length::new(self.m() / f.m())
     }
 
     /// Calculates the [`Force`] for a given [`Distance`] (`F = M / d`).
     #[inline]
     pub fn calc_force(&self, d: Distance) -> Force {
-        Force::new(self.m / d.m, self.d)
+        Force::new(self.d / d.m())
     }
 }
 
@@ -76,16 +74,19 @@ mod tests {
     #[test]
     fn moment_formulas() {
         // Distance, Moment & Force
-        let moment = Moment::from_force_distance(Force::without_direction(30.), Length::new(0.2));
-        assert_float_eq!(6., moment.m, r2nd <= Magnitude::EPSILON);
+        let moment =
+            Moment::from_force_distance(Force::new(Direction::new(30., 0., 0.)), Length::new(0.2));
+        assert_float_eq!(6., moment.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             0.2,
-            moment.calc_distance(Force::without_direction(30.)).m,
+            moment
+                .calc_distance(Force::new(Direction::new(30., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             30.,
-            moment.calc_force(Length::new(0.2)).m,
+            moment.calc_force(Length::new(0.2)).m(),
             r2nd <= Magnitude::EPSILON
         );
     }

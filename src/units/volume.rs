@@ -11,17 +11,17 @@ pub struct Volume {
     pub m: Magnitude,
 }
 
-/// # Constructors
 impl Volume {
-    /// new Volume
+    /// New Volume.
     #[inline]
     pub const fn new(m: Magnitude) -> Self {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 

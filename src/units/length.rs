@@ -12,17 +12,17 @@ pub struct Length {
     pub m: Magnitude,
 }
 
-/// # Constructors
 impl Length {
-    /// new Length
+    /// New Length.
     #[inline]
     pub const fn new(m: Magnitude) -> Self {
         Self { m }
     }
 
+    /// Returns the magnitude.
     #[inline]
-    pub const fn without_direction(m: Magnitude) -> Self {
-        Self::new(m)
+    pub const fn m(&self) -> Magnitude {
+        self.m
     }
 }
 
@@ -37,7 +37,7 @@ impl Distance {
     /// Derives the [`Distance`] from the given [`Time`] and [`Speed`] (`d = s × t`).
     #[inline]
     pub fn from_time_speed(t: Time, s: Speed) -> Self {
-        Length::new(t.m * s.m)
+        Length::new(t.m() * s.m())
     }
 
     /// (Alias of [from_time_speed][Length::from_time_speed]).
@@ -48,17 +48,17 @@ impl Distance {
 
     /// Calculates the `Speed` given the [`Time`] (`s = d / t`).
     pub fn calc_speed(&self, t: Time) -> Speed {
-        Speed::new(self.m / t.m)
+        Speed::new(self.m() / t.m())
     }
 
     /// Calculates the [`Time`] given the [`Speed`] (`t = d / s`).
     pub fn calc_time(&self, s: Speed) -> Time {
-        Time::new(self.m / s.m)
+        Time::new(self.m() / s.m())
     }
 
     /// Derives the `Distance` from the given [`Moment`] and [`Force`] (`d = M / F`).
     pub fn from_moment_force(m: Moment, f: Force) -> Self {
-        Self::new(m.m / f.m)
+        Self::new(m.m() / f.m())
     }
 
     /// (Alias of [from_moment_force][Length::from_moment_force]).
@@ -70,13 +70,13 @@ impl Distance {
     /// Calculates the [`Moment`] given the [`Force`] (`M = F × d`).
     #[inline]
     pub fn calc_moment(&self, f: Force) -> Moment {
-        Moment::new(self.m * f.m, f.d)
+        Moment::new(f.d * self.m())
     }
 
     /// Calculates the [`Force`] given the [`Moment`] (`F = M / d`).
     #[inline]
     pub fn calc_force(&self, m: Moment) -> Force {
-        Force::new(m.m / self.m, m.d)
+        Force::new(m.d / self.m())
     }
 }
 
@@ -153,7 +153,7 @@ impl Length {
         Qa = astronomical_units,
         qu = "au",
         Qu = "[astronomical units][Length::ASTRONOMICAL_UNIT]",
-        f = Self::ASTRONOMICAL_UNIT.m,
+        f = Self::ASTRONOMICAL_UNIT.m(),
         fu = "149.5978707",
         bu = "Tm"
     ];
@@ -174,6 +174,7 @@ impl_scalar_methods![Length, m, metres];
 
 #[cfg(test)]
 mod tests {
+    use crate::Direction;
     use {super::*, float_eq::assert_float_eq};
 
     /// Checks the constants are defined as expected.
@@ -237,32 +238,36 @@ mod tests {
     fn length_formulas() {
         // Distance, Speed & Time
         let distance = Distance::from_time_speed(Time::new(25.), Speed::new(12.));
-        assert_float_eq!(300., distance.m, r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(300., distance.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             25.,
-            distance.calc_time(Speed::new(12.)).m,
+            distance.calc_time(Speed::new(12.)).m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             12.,
-            distance.calc_speed(Time::new(25.)).m,
+            distance.calc_speed(Time::new(25.)).m(),
             r2nd <= Magnitude::EPSILON
         );
 
         // Distance, Moment & Force
         let distance = Distance::from_moment_force(
-            Moment::without_direction(6.),
-            Force::without_direction(30.),
+            Moment::new(Direction::new(6., 0., 0.)),
+            Force::new(Direction::new(30., 0., 0.)),
         );
         assert_float_eq!(0.2, distance.m, r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             6.,
-            distance.calc_moment(Force::without_direction(30.)).m,
+            distance
+                .calc_moment(Force::new(Direction::new(30., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             30.,
-            distance.calc_force(Moment::without_direction(6.)).m,
+            distance
+                .calc_force(Moment::new(Direction::new(6., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
     }
