@@ -219,7 +219,7 @@ impl_unit!(
     Momentum,
     "kg m/s",
     "kilogram metre per second",
-    "kilograms metres per second",
+    "kilograms metre per second",
     kilograms_metres_per_second
 );
 impl_unit!(

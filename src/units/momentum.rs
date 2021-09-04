@@ -31,7 +31,7 @@ impl_vector_methods_3units_1base_kilo![
     q2a = m,
     q3a = s,
     Q1a = grams,
-    Q2a = metres,
+    Q2a = metre,
     Q3a = second,
     Ja1 = "",
     Ja2 = per

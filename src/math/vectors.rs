@@ -75,7 +75,7 @@ impl Direction {
 
     /// Returns the normalized vector, as a *unit vector*.
     ///
-    /// That is the [`Direction`] with a [`Magnitude`] of 1.
+    /// That is the `Direction` with a [`Magnitude`] of 1.
     ///
     /// $$
     /// \bm{n} = \widehat{\bm{a}} = \frac{1}{d}\thinspace\bm{a} =
