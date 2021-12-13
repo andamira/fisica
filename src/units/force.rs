@@ -95,7 +95,7 @@ impl Weight {
     /// times less), as heavy as a 9.79 kg mass would feel in Earth.
     ///
     /// ```
-    /// # use fisika::units::{Mass, Weight, Gfs};
+    /// # use fisica::units::{Mass, Weight, Gfs};
     /// let mass = Mass::in_kilograms(60.);
     /// let w_earth = Weight::from_mass_gfs(mass, Gfs::in_earth());
     /// let w_moon = Weight::from_mass_gfs(mass, Gfs::in_moon());

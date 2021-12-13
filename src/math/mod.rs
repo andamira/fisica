@@ -47,7 +47,7 @@
 //! two components its called the *normal form* of the vector.
 //!
 //! ```
-//! # use fisika::{Direction, Position};
+//! # use fisica::{Direction, Position};
 //! assert_eq![
 //!     Position::new(2., 3., 4.).normalize(),
 //!     Direction::new(0.3713906763541037, 0.5570860145311556, 0.7427813527082074)

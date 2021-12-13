@@ -1777,8 +1777,8 @@ macro_rules! impl_vector_methods_3units_1base_kilo {
             #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q1u " " $Ja1 " " $Q2u
                 "` (`" $q1u "/" $q2u "`)**." ]
             #[doc = "- base *const* constructors: [`in_k" $q1a _$q2a _$q3a "`](" $ty "#method.in_k" $q1a _$q2a _$q3a ")," ]
-            #[doc = "[`in_kilo" $Q1a _$Q2a _$Q3a"`](" $ty "#method.in_kilo" $Q1a _$Q2a _$Q3a ")"]
-            #[doc = "- base *const* converters: [`as_k" $q1a _$q2a _$q3a "`](" $ty "#method.as_k" $q1a _$q2a _$q3a")," ]
+            #[doc = "[`in_kilo" $Q1a _$Q2a _$Q3a "`](" $ty "#method.in_kilo" $Q1a _$Q2a _$Q3a ")"]
+            #[doc = "- base *const* converters: [`as_k" $q1a _$q2a _$q3a "`](" $ty "#method.as_k" $q1a _$q2a _$q3a ")," ]
             #[doc = "[`as_kilo" $Q1a _$Q2a _$Q3a "`](" $ty "#method.as_kilo" $Q1a _$Q2a _$Q3a ")"]
             impl $ty {
                 paste::paste! {

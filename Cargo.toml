@@ -1,34 +1,46 @@
 [package]
-name = "fisika"
-description = "A physics library"
+name = "fisica"
+description = "Physics"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
+rust-version = "1.57"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
+repository = "https://github.com/andamira/fisica"
+documentation = "https://docs.rs/fisica"
 license = "MIT/Apache-2.0"
 include = [
-    "src/**/*.rs",
-    "Cargo.toml",
-	"LICENSE-*",
+	"src/**/*.rs",
+	"Cargo.toml",
+	"LICENSE*",
+	"README.md",
 ]
+categories = []
+keywords = []
 publish = false
 
 [dependencies]
-glam = "0.17.*"
 paste = "1.0.5"
+glam = "0.17.*" # CHECK
+
+# itoa = "1.0.1"
+# dtoa = "1.0.1"
+ryu = "1.0.9"
+
 # pretty_dtoa = "0.3.0"
 # num = "0.4.0"
 
+
 [dev-dependencies]
 float_eq = "0.6.0"
-macroquad = "0.3.8"
+# approx = "*" # MAYBE?
+# macroquad = "0.3.8"
 
-# related crates:
-#
-# uom = "0.31.1"
-# mag = "0.3.0"
-# physical_constants = "0.4.1"
-# rapier2d = "0.8.0"
-# rapier3d = "0.8.0"
+[build-dependencies]
+# docima ="*"
 
 [package.metadata.docs.rs]
 rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
+
+[badges]
+# https://doc.rust-lang.org/cargo/reference/manifest.html#the-badges-section
+maintenance = { status = "actively-developed" }
