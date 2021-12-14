@@ -96,22 +96,22 @@ impl Time {
 ///
 /// <https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)>
 impl Time {
-    /// [Julian Year][0], used in astronomy, (`365.25 days`).
+    /// [*Julian Year*][0], used in astronomy, (`365.25 days`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Julian_year_(astronomy)
     pub const JULIAN_YEAR: Self = Time::new(31_557_600.);
 
-    /// [Full moon cycle][0] (`411 days 18 hours 49 minutes 35 seconds`).
+    /// [*Full moon cycle*][0] (`411 days 18 hours 49 minutes 35 seconds`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Year#Full_moon_cycle
     pub const FULL_MOON_CYCLE: Self = Time::new(35578174.777056);
 
-    /// [Draconic Year][0] (`346 days 14 hours 52 minuets 54 seconds`).
+    /// [*Draconic Year*][0] (`346 days 14 hours 52 minuets 54 seconds`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Year#Draconic_year
     pub const DRACONIC_YEAR: Self = Time::new(29947974.5562912);
 
-    /// [Lunar Year][0] (`354 days 8 hours 48 minutes 34 seconds`).
+    /// [*Lunar Year*][0] (`354 days 8 hours 48 minutes 34 seconds`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Lunar_calendar
     pub const LUNAR_YEAR: Self = Time::new(30617314.848);
@@ -122,22 +122,8 @@ impl Time {
     scalar_methods![Time, qa = min, Qa = minutes, f = 60., fu = "60", bu = s];
     scalar_methods![Time, qa = h, Qa = hours, f = 3600., fu = "3600", bu = s];
     scalar_methods![Time, qa = d, Qa = days, f = 86_400., fu = "86400", bu = s];
-    scalar_methods![
-        Time,
-        qa = w,
-        Qa = weeks,
-        f = 604_800.,
-        fu = "604800",
-        bu = s
-    ];
-    scalar_methods![
-        Time,
-        qa = y,
-        Qa = years,
-        f = 31_536e3,
-        fu = "365",
-        bu = "days"
-    ];
+    scalar_methods![Time, qa = w, Qa = weeks, f = 604_800., fu = "604800", bu = s];
+    scalar_methods![Time, qa = y, Qa = years, f = 31_536e3, fu = "365", bu = "days"];
     scalar_methods![
         Time,
         qa = jy,
@@ -167,16 +153,8 @@ mod tests {
             Time::from_speed_distance(Speed::new(12.), Length::new(300.)).m,
             r2nd <= Magnitude::EPSILON
         );
-        assert_float_eq!(
-            300.,
-            time.calc_distance(Speed::new(12.)).m,
-            r2nd <= Magnitude::EPSILON
-        );
-        assert_float_eq!(
-            12.,
-            time.calc_speed(Length::new(300.)).m,
-            r2nd <= Magnitude::EPSILON
-        );
+        assert_float_eq!(300., time.calc_distance(Speed::new(12.)).m, r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(12., time.calc_speed(Length::new(300.)).m, r2nd <= Magnitude::EPSILON);
 
         // Energy, Power & Time
         let time = Time::from_energy_power(Energy::in_kJ(144.), Power::new(800.));
@@ -201,26 +179,10 @@ mod tests {
     /// Checks the constants are defined as expected.
     #[test]
     fn time_constants() {
-        assert_float_eq!(
-            365.25,
-            Time::JULIAN_YEAR.as_days(),
-            r2nd <= Magnitude::EPSILON
-        );
-        assert_float_eq!(
-            411.78443029,
-            Time::FULL_MOON_CYCLE.as_days(),
-            r2nd <= Magnitude::EPSILON
-        );
-        assert_float_eq!(
-            346.620075883,
-            Time::DRACONIC_YEAR.as_days(),
-            r2nd <= Magnitude::EPSILON
-        );
-        assert_float_eq!(
-            354.36707,
-            Time::LUNAR_YEAR.as_days(),
-            r2nd <= Magnitude::EPSILON
-        );
+        assert_float_eq!(365.25, Time::JULIAN_YEAR.as_days(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(411.78443029, Time::FULL_MOON_CYCLE.as_days(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(346.620075883, Time::DRACONIC_YEAR.as_days(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(354.36707, Time::LUNAR_YEAR.as_days(), r2nd <= Magnitude::EPSILON);
     }
 
     /// Checks the non SI prefixes behave as expected.
@@ -232,10 +194,6 @@ mod tests {
         assert_float_eq!(86_400., Time::in_d(1.).m, r2nd <= Magnitude::EPSILON);
         assert_float_eq!(604_800., Time::in_w(1.).m, r2nd <= Magnitude::EPSILON);
         assert_float_eq!(31_536e3, Time::in_y(1.).m, r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(
-            Time::JULIAN_YEAR.m,
-            Time::in_jy(1.).m,
-            r2nd <= Magnitude::EPSILON
-        );
+        assert_float_eq!(Time::JULIAN_YEAR.m, Time::in_jy(1.).m, r2nd <= Magnitude::EPSILON);
     }
 }

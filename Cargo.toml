@@ -1,6 +1,6 @@
 [package]
 name = "fisica"
-description = "Physics"
+description = "A physics library"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.57"
@@ -14,29 +14,24 @@ include = [
 	"LICENSE*",
 	"README.md",
 ]
-categories = []
-keywords = []
-publish = false
+categories = [ "science" ]
+keywords = [ "physics"  ]
 
 [dependencies]
 paste = "1.0.5"
-glam = "0.17.*" # CHECK
+glam = "^0.20"
 
 # itoa = "1.0.1"
 # dtoa = "1.0.1"
-ryu = "1.0.9"
-
+# ryu = "1.0.9"
 # pretty_dtoa = "0.3.0"
 # num = "0.4.0"
 
-
 [dev-dependencies]
 float_eq = "0.6.0"
-# approx = "*" # MAYBE?
-# macroquad = "0.3.8"
+# approx = "*"
 
 [build-dependencies]
-# docima ="*"
 
 [package.metadata.docs.rs]
 rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]

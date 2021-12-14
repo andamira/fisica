@@ -79,8 +79,8 @@ pub use volume::Volume;
 
 /// Units for kinematics.
 ///
-/// Kinematics is a subfield of physics, developed in [classical mechanics][0],
-/// that describes the [motion][1] of points, bodies, and systems of bodies
+/// Kinematics is a subfield of physics, developed in [*classical mechanics*][0],
+/// that describes the [*motion*][1] of points, bodies, and systems of bodies
 /// without considering the forces that cause them to move.
 ///
 /// [0]:https://en.wikipedia.org/wiki/Classical_mechanics
@@ -91,8 +91,8 @@ pub mod kinematics {
 
 /// Units for dynamics.
 ///
-/// Dynamics is the branch of physics developed in [classical mechanics][0]
-/// concerned with the study of [forces][1] and their effects on [motion][2].
+/// Dynamics is the branch of physics developed in [*classical mechanics*][0]
+/// concerned with the study of [*forces*][1] and their effects on [motion][2].
 ///
 /// [0]:https://en.wikipedia.org/wiki/Classical_mechanics
 /// [1]:https://en.wikipedia.org/wiki/Force_(physics)
@@ -182,13 +182,7 @@ impl_unit!(Energy, "J", "joule", "joules", joules);
 impl_unit!(Frequency, "Hz", "hertz", "hertzs", hertzs);
 impl_unit!(Power, "W", "watt", "watts", watts);
 impl_unit!(Pressure, "Pa", "pascal", "pascals", pascals);
-impl_unit!(
-    Speed,
-    "m/s",
-    "metre per second",
-    "metres per second",
-    metres_per_second
-);
+impl_unit!(Speed, "m/s", "metre per second", "metres per second", metres_per_second);
 impl_unit!(Volume, "m³", "cubic metre", "cubic metres", cubic_metres);
 
 // vector
@@ -208,13 +202,7 @@ impl_unit!(
     "newtons per kilogram",
     newtons_per_kilogram
 );
-impl_unit!(
-    Moment,
-    "Nm",
-    "newton per metre",
-    "newtons per metre",
-    newtons_per_metre
-);
+impl_unit!(Moment, "Nm", "newton per metre", "newtons per metre", newtons_per_metre);
 impl_unit!(
     Momentum,
     "kg m/s",
@@ -222,10 +210,4 @@ impl_unit!(
     "kilograms metre per second",
     kilograms_metres_per_second
 );
-impl_unit!(
-    Velocity,
-    "m/s",
-    "metre per second",
-    "metres per second",
-    metres_per_second
-);
+impl_unit!(Velocity, "m/s", "metre per second", "metres per second", metres_per_second);

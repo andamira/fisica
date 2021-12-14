@@ -100,9 +100,7 @@ mod tests {
         assert_float_eq!(2., acceleration.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             5.,
-            acceleration
-                .calc_mass(Force::new(Direction::new(10., 0., 0.)))
-                .m(),
+            acceleration.calc_mass(Force::new(Direction::new(10., 0., 0.))).m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(

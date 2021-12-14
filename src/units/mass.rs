@@ -30,7 +30,7 @@ impl Mass {
 
 /// # Formulas
 impl Mass {
-    /// Returns the `Mass` [equivalent][0] to the given [`Energy`] (`m = E / c²`).
+    /// Returns the `Mass` [*equivalent*][0] to the given [`Energy`] (`m = E / c²`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Mass–energy_equivalence
     #[inline]
@@ -84,17 +84,17 @@ impl Mass {
 ///
 /// <https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)>
 impl Mass {
-    /// (10e-31) The mass of the [electron][0] (`0.0009 yg`).
+    /// (10e-31) The mass of the [*electron*][0] (`0.0009 yg`).
     ///
     /// [0]: https://en.wikipedia.org/wiki/Electron
     pub const ELECTRON: Self = Mass::new(9.109_383_70e-31);
 
-    /// (10e-27) The mass of the [proton][0] (`1.6 yg`).
+    /// (10e-27) The mass of the [*proton*][0] (`1.6 yg`).
     ///
     /// [0]: https://en.wikipedia.org/wiki/Proton
     pub const PROTON: Self = Mass::new(1.672_621_923_69e-27);
 
-    /// (10e-27) The mass of the [neutron][0] (`1.6 yg`).
+    /// (10e-27) The mass of the [*neutron*][0] (`1.6 yg`).
     ///
     /// [0]: https://en.wikipedia.org/wiki/Neutron
     pub const NEUTRON: Self = Mass::new(1.674_927_498e-27);
@@ -118,14 +118,12 @@ mod tests {
         assert_float_eq!(5., mass.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             2.,
-            mass.calc_acceleration(Force::new(Direction::new(10., 0., 0.)))
-                .m(),
+            mass.calc_acceleration(Force::new(Direction::new(10., 0., 0.))).m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             10.,
-            mass.calc_force(Acceleration::new(Direction::new(2., 0., 0.)))
-                .m(),
+            mass.calc_force(Acceleration::new(Direction::new(2., 0., 0.))).m(),
             r2nd <= Magnitude::EPSILON
         );
     }

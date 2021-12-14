@@ -65,14 +65,7 @@ impl Moment {
     }
 }
 
-impl_vector_methods_2units![
-    Moment,
-    q1a = N,
-    q2a = m,
-    Q1a = newtons,
-    Q2a = metre,
-    Ja = per
-];
+impl_vector_methods_2units![Moment, q1a = N, q2a = m, Q1a = newtons, Q2a = metre, Ja = per];
 
 #[cfg(test)]
 mod tests {
@@ -87,15 +80,9 @@ mod tests {
         assert_float_eq!(6., moment.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             0.2,
-            moment
-                .calc_distance(Force::new(Direction::new(30., 0., 0.)))
-                .m(),
+            moment.calc_distance(Force::new(Direction::new(30., 0., 0.))).m(),
             r2nd <= Magnitude::EPSILON
         );
-        assert_float_eq!(
-            30.,
-            moment.calc_force(Length::new(0.2)).m(),
-            r2nd <= Magnitude::EPSILON
-        );
+        assert_float_eq!(30., moment.calc_force(Length::new(0.2)).m(), r2nd <= Magnitude::EPSILON);
     }
 }
