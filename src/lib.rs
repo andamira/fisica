@@ -5,8 +5,8 @@
 mod auto_impls;
 
 pub mod constants;
-// pub mod engine;
 pub mod math;
 pub mod units;
 
+#[doc(inline)]
 pub use math::{Direction, Magnitude, Orientation, Position};

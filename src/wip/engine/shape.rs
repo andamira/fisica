@@ -13,3 +13,9 @@ impl Default for Shape {
         }
     }
 }
+
+// RETHINK
+// impl Shape {
+//     pub fn new() -> Self {
+//     }
+// }

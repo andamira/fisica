@@ -89,5 +89,5 @@ pub(crate) type V3 = glam::DVec3;
 /// Orientation
 pub type Orientation = glam::DQuat;
 
-/// Rotatation Matrix
+/// Rotation Matrix
 pub type Matrix = glam::DMat3;

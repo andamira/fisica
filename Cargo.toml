@@ -9,27 +9,27 @@ repository = "https://github.com/andamira/fisica"
 documentation = "https://docs.rs/fisica"
 license = "MIT/Apache-2.0"
 include = [
-	"src/**/*.rs",
-	"Cargo.toml",
-	"LICENSE*",
-	"README.md",
+	"/src/",
+	"!/src/wip/",
+	"/Cargo.toml",
+	"/LICENSE*",
+	"/README.md",
 ]
 categories = [ "science" ]
 keywords = [ "physics"  ]
 
 [dependencies]
-paste = "1.0.5"
 glam = "^0.20"
+paste = "^1.0"
+# twofloat = "^0.4"
 
-# itoa = "1.0.1"
-# dtoa = "1.0.1"
-# ryu = "1.0.9"
-# pretty_dtoa = "0.3.0"
-# num = "0.4.0"
+# num = "^0.4"
+# ryu = "^1.0"
+# pretty_dtoa = "^0.3"
 
 [dev-dependencies]
-float_eq = "0.6.0"
-# approx = "*"
+float_eq = "^0.7"
+# approx = "^0.5"
 
 [build-dependencies]
 

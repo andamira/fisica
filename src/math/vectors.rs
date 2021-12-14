@@ -9,11 +9,9 @@ use super::{Magnitude, V3};
 
 /// `Direction` is a vector quantity that represents a change in [`Position`].
 ///
-/// Position and Direction are two sides of the same coin.
+/// `Position` and `Direction` are two sides of the same coin.
 /// We can also think of any position as a change of position from the
-/// origin (Position::ZERO) to the target location.
-//
-// https://docs.rs/glam/*/glam/f64/struct.DVec3.html
+/// origin (`Position::ZERO`) to the target location.
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, Default, PartialEq)]
 pub struct Direction {
@@ -21,8 +19,7 @@ pub struct Direction {
 }
 
 /// A vector quantity representing a unique location in space.
-///
-/// Being equal to [`Direction`], it has a different name for semantic purposes.
+/// Semantic alias of [`Direction`].
 pub type Position = Direction;
 
 /// # Methods
