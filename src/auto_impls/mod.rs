@@ -788,7 +788,6 @@ macro_rules! vector_methods {
 /// This is macro is called by:
 /// - impl_vector_methods_2units (Acceleration, GravitationalFieldStrength, Moment, Velocity)
 ///
-// TODO: - impl_vector_methods_2units_2base_kilo (GravitationalFieldStrength)
 macro_rules! vector_methods_2units {
     // ROOT RULE: NON const, WITH conversion factor
     //
@@ -1033,7 +1032,6 @@ macro_rules! vector_methods_2units {
 /// This is macro is called by:
 /// - impl_vector_methods_3units_1base_kilo (Momentum)
 ///
-// WIP
 macro_rules! vector_methods_3units {
     // ROOT RULE: NON const, WITH conversion factor
     //
@@ -1100,7 +1098,6 @@ macro_rules! vector_methods_3units {
             pub fn [<as_$P1a $Q1a _$P2a $Q2a _$P3a $Q3a>](&self) -> crate::Direction { self.d / $f }
         }
     };
-    // WIP
     // ALIAS: no need to specify: p2a, P2a, p3a, P3a, p2u, p3u, P2u, P3u,
     //
     // e.g.:
@@ -1775,7 +1772,7 @@ macro_rules! impl_vector_methods_3units_1base_kilo {
         paste::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q1u " " $Ja1 " " $Q2u
-                "` (`" $q1u "/" $q2u "`)**." ]
+                " per " $Q3u "` (`k" $q1u " " $q2u "/" $q3u "`)**." ]
             #[doc = "- base *const* constructors: [`in_k" $q1a _$q2a _$q3a "`](" $ty "#method.in_k" $q1a _$q2a _$q3a ")," ]
             #[doc = "[`in_kilo" $Q1a _$Q2a _$Q3a "`](" $ty "#method.in_kilo" $Q1a _$Q2a _$Q3a ")"]
             #[doc = "- base *const* converters: [`as_k" $q1a _$q2a _$q3a "`](" $ty "#method.as_k" $q1a _$q2a _$q3a ")," ]
