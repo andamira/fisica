@@ -1279,6 +1279,8 @@ macro_rules! impl_scalar_methods {
             #[doc = "- base *const* converters: [`as_" $q "`](" $ty "#method.as_" $q ")," ]
             #[doc = "[`as_" $Q "`](" $ty "#method.as_" $Q ")"]
             impl $ty {
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="Q", Pa="quetta", f=1e30, fu="10³⁰"];
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="R", Pa="ronna", f=1e27, fu="10²⁷"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="Y", Pa="yotta", f=1e24, fu="10²⁴"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="Z", Pa="zetta", f=1e21, fu="10²¹"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="E", Pa="exa", f=1e18, fu="10¹⁸"];
@@ -1301,6 +1303,8 @@ macro_rules! impl_scalar_methods {
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="a", Pa="atto", f=1e-18, fu="10⁻¹⁸"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="z", Pa="zepto", f=1e-21, fu="10⁻²¹"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="y", Pa="yocto", f=1e-24, fu="10⁻²⁴"];
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="r", Pa="ronto", f=1e-27, fu="10⁻²⁷"];
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="q", Pa="quecto", f=1e-30, fu="10⁻³⁰"];
             }
         }
     };
@@ -1320,6 +1324,8 @@ macro_rules! impl_scalar_methods_base_kilo {
             #[doc = "- base *const* converters: [`as_k" $q "`](" $ty "#method.as_k" $q ")," ]
             #[doc = "[`as_kilo" $Q "`](" $ty "#method.as_kilo" $Q ")"]
             impl $ty {
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="Q", Pa="quetta", f=1e27, fu="10³⁰"];
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="R", Pa="ronna", f=1e24, fu="10²⁷"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="Y", Pa="yotta", f=1e21, fu="10²⁴"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="Z", Pa="zetta", f=1e18, fu="10²¹"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="E", Pa="exa", f=1e15, fu="10¹⁸"];
@@ -1342,6 +1348,8 @@ macro_rules! impl_scalar_methods_base_kilo {
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="a", Pa="atto", f=1e-21, fu="10⁻¹⁸"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="z", Pa="zepto", f=1e-24, fu="10⁻²¹"];
                 scalar_methods![$ty, qa=$q, Qa=$Q, pa="y", Pa="yocto", f=1e-27, fu="10⁻²⁴"];
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="r", Pa="ronto", f=1e-30, fu="10⁻²⁷"];
+                scalar_methods![$ty, qa=$q, Qa=$Q, pa="q", Pa="quecto", f=1e-33, fu="10⁻³⁰"];
             }
         }
     };
@@ -1364,6 +1372,10 @@ macro_rules! impl_scalar_methods_square {
             #[doc = "- base *const* converters: [`as_" $qa "`](" $ty "#method.as_" $qa ")," ]
             #[doc = "[`as_" $QaL $QaM "`](" $ty "#method.as_" $QaL _ $QaM ")"]
             impl $ty {
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="Q", Pa="quetta", f=1e60, fu="10⁶⁰"];
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="R", Pa="ronna", f=1e54, fu="10⁵⁴"];
                 scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
                     pa="Y", Pa="yotta", f=1e48, fu="10⁴⁸"];
                 scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
@@ -1405,6 +1417,10 @@ macro_rules! impl_scalar_methods_square {
                     pa="z", Pa="zepto", f=1e-42, fu="10⁻⁴²"];
                 scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
                     pa="y", Pa="yocto", f=1e-48, fu="10⁻⁴⁸"];
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="r", Pa="ronto", f=1e-54, fu="10⁻⁵⁴"];
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="q", Pa="quecto", f=1e-60, fu="10⁻⁶⁰"];
             }
         }
     };
@@ -1427,6 +1443,10 @@ macro_rules! impl_scalar_methods_cubic {
             #[doc = "- base *const* converters: [`as_" $qa "`](" $ty "#method.as_" $qa ")," ]
             #[doc = "[`as_" $QaL $QaM "`](" $ty "#method.as_" $QaL _ $QaM ")"]
             impl $ty {
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="Q", Pa="quetta", f=1e90, fu="10⁹⁰"];
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="R", Pa="ronna", f=1e81, fu="10⁸¹"];
                 scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
                     pa="Y", Pa="yotta", f=1e72, fu="10⁷²"];
                 scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
@@ -1468,6 +1488,10 @@ macro_rules! impl_scalar_methods_cubic {
                     pa="z", Pa="zepto", f=1e-63, fu="10⁻⁶³"];
                 scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
                     pa="y", Pa="yocto", f=1e-72, fu="10⁻⁷²"];
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="r", Pa="ronto", f=1e-81, fu="10⁻⁸¹"];
+                scalar_methods![$ty, qa=$qa, QaL=$QaL, QaM=$QaM, qu=$qu, QuL=$QuL, QuM=$QuM,
+                    pa="q", Pa="quecto", f=1e-90, fu="10⁻⁹⁰"];
             }
         }
     };
@@ -1491,6 +1515,10 @@ macro_rules! impl_scalar_methods_2units {
             #[doc = "- base *const* converters: [`as_" $q1a _ $q2a "`](" $ty "#method.as_" $q1a _ $q2a ")," ]
             #[doc = "[`as_" $Q1a _ $Q2a "`](" $ty "#method.as_" $Q1a _ $Q2a ")"]
             impl $ty {
+                scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="Q", p2a="", P1a="quetta", P2a="", f=1e30, fu="10³⁰", b1u=$q1a, b2u=$q2a];
+                scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="R", p2a="", P1a="ronna", P2a="", f=1e27, fu="10²⁷", b1u=$q1a, b2u=$q2a];
                 scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                     p1a="Y", p2a="", P1a="yotta", P2a="", f=1e24, fu="10²⁴", b1u=$q1a, b2u=$q2a];
                 scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
@@ -1533,6 +1561,10 @@ macro_rules! impl_scalar_methods_2units {
                     p1a="z", p2a="", P1a="zepto", P2a="", f=1e-21, fu="10⁻²¹", b1u=$q1a, b2u=$q2a];
                 scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                     p1a="y", p2a="", P1a="yocto", P2a="", f=1e-24, fu="10⁻²⁴", b1u=$q1a, b2u=$q2a];
+                scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="r", p2a="", P1a="ronto", P2a="", f=1e-27, fu="10⁻²⁷", b1u=$q1a, b2u=$q2a];
+                scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="q", p2a="", P1a="quecto", P2a="", f=1e-30, fu="10⁻³⁰", b1u=$q1a, b2u=$q2a];
             }
         }
     };
@@ -1556,6 +1588,12 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
             #[doc = "[`as_kilo" $Q1a _ $Q2a "`](" $ty "#method.as_kilo" $Q1a _ $Q2a ")"]
             impl $ty {
                 paste::paste! {
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                        q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="Q", p2a="",
+                        P1a="quetta", P2a="", f=1e27, fu="10³⁰", b1u=$q1u, b2u=$q2u];
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                        q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="R", p2a="",
+                        P1a="ronna", P2a="", f=1e24, fu="10²⁷", b1u=$q1u, b2u=$q2u];
                     scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="Y", p2a="",
                         P1a="yotta", P2a="", f=1e21, fu="10²⁴", b1u=$q1u, b2u=$q2u];
@@ -1620,6 +1658,12 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
                     scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="y", p2a="",
                         P1a="yocto", P2a="", f=1e-27, fu="10⁻²⁴", b1u=$q1u, b2u=$q2u];
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                        q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="r", p2a="",
+                        P1a="ronto", P2a="", f=1e-30, fu="10⁻²⁷", b1u=$q1u, b2u=$q2u];
+                    scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                        q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="q", p2a="",
+                        P1a="quecto", P2a="", f=1e-33, fu="10⁻³⁰", b1u=$q1u, b2u=$q2u];
                 }
             }
         }
@@ -1655,6 +1699,8 @@ macro_rules! impl_vector_methods {
             #[doc = "- base *const* converters: [`as_" $q "`](" $ty "#method.as_" $q ")," ]
             #[doc = "[`as_" $Q "`](" $ty "#method.as_" $Q ")"]
             impl $ty {
+                vector_methods![$ty, qa=$q, Qa=$Q, pa="Q", Pa="quetta", f=1e30, fu="10³⁰"];
+                vector_methods![$ty, qa=$q, Qa=$Q, pa="R", Pa="ronna", f=1e27, fu="10²⁷"];
                 vector_methods![$ty, qa=$q, Qa=$Q, pa="Y", Pa="yotta", f=1e24, fu="10²⁴"];
                 vector_methods![$ty, qa=$q, Qa=$Q, pa="Z", Pa="zetta", f=1e21, fu="10²¹"];
                 vector_methods![$ty, qa=$q, Qa=$Q, pa="E", Pa="exa", f=1e18, fu="10¹⁸"];
@@ -1677,6 +1723,8 @@ macro_rules! impl_vector_methods {
                 vector_methods![$ty, qa=$q, Qa=$Q, pa="a", Pa="atto", f=1e-18, fu="10⁻¹⁸"];
                 vector_methods![$ty, qa=$q, Qa=$Q, pa="z", Pa="zepto", f=1e-21, fu="10⁻²¹"];
                 vector_methods![$ty, qa=$q, Qa=$Q, pa="y", Pa="yocto", f=1e-24, fu="10⁻²⁴"];
+                vector_methods![$ty, qa=$q, Qa=$Q, pa="r", Pa="ronto", f=1e-27, fu="10⁻²⁷"];
+                vector_methods![$ty, qa=$q, Qa=$Q, pa="q", Pa="quecto", f=1e-30, fu="10⁻³⁰"];
             }
         }
     };
@@ -1697,6 +1745,10 @@ macro_rules! impl_vector_methods_2units {
             #[doc = "- base *const* converters: [`as_" $q1a _ $q2a "`](" $ty "#method.as_" $q1a _ $q2a ")," ]
             #[doc = "[`as_" $Q1a _ $Q2a "`](" $ty "#method.as_" $Q1a _ $Q2a ")"]
             impl $ty {
+                vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="Q", p2a="", P1a="quetta", P2a="", f=1e30, fu="10³⁰", b1u=$q1a, b2u=$q2a];
+                vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="R", p2a="", P1a="ronna", P2a="", f=1e27, fu="10²⁷", b1u=$q1a, b2u=$q2a];
                 vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                     p1a="Y", p2a="", P1a="yotta", P2a="", f=1e24, fu="10²⁴", b1u=$q1a, b2u=$q2a];
                 vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
@@ -1739,6 +1791,11 @@ macro_rules! impl_vector_methods_2units {
                     p1a="z", p2a="", P1a="zepto", P2a="", f=1e-21, fu="10⁻²¹", b1u=$q1a, b2u=$q2a];
                 vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                     p1a="y", p2a="", P1a="yocto", P2a="", f=1e-24, fu="10⁻²⁴", b1u=$q1a, b2u=$q2a];
+                vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="r", p2a="", P1a="ronto", P2a="", f=1e-27, fu="10⁻²⁷", b1u=$q1a, b2u=$q2a];
+                vector_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
+                    p1a="q", p2a="", P1a="quecto", P2a="", f=1e-30, fu="10⁻³⁰", b1u=$q1a, b2u=$q2a];
+
             }
         }
     };
@@ -1779,6 +1836,12 @@ macro_rules! impl_vector_methods_3units_1base_kilo {
             #[doc = "[`as_kilo" $Q1a _$Q2a _$Q3a "`](" $ty "#method.as_kilo" $Q1a _$Q2a _$Q3a ")"]
             impl $ty {
                 paste::paste! {
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="Q", P1a="quetta", f=1e27, fu="10³⁰", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="R", P1a="ronna", f=1e24, fu="10²⁷", b1u=$q1u, b2u=$q2u, b3u=$q3u];
                     vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
                         Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
                         p1a="Y", P1a="yotta", f=1e21, fu="10²⁴", b1u=$q1u, b2u=$q2u, b3u=$q3u];
@@ -1851,6 +1914,12 @@ macro_rules! impl_vector_methods_3units_1base_kilo {
                     vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
                         Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
                         p1a="y", P1a="yocto", f=1e-27, fu="10⁻²⁴", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="r", P1a="ronto", f=1e-30, fu="10⁻²⁷", b1u=$q1u, b2u=$q2u, b3u=$q3u];
+                    vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
+                        Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
+                        p1a="q", P1a="quecto", f=1e-33, fu="10⁻³⁰", b1u=$q1u, b2u=$q2u, b3u=$q3u];
                 }
             }
         }
