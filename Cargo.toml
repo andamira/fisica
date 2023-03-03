@@ -21,11 +21,18 @@ keywords = [ "physics"  ]
 glam = "0.20"
 paste = "1.0"
 
+[features]
+default = ["std", "safe"]
+safe = []
+std = []
+nightly = []
+
 [dev-dependencies]
 float_eq = "0.7"
 
 [package.metadata.docs.rs]
 rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
+features = ["nightly"]
 
 [badges]
 maintenance = { status = "experimental" }
