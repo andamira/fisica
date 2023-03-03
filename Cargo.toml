@@ -10,7 +10,6 @@ documentation = "https://docs.rs/fisica"
 license = "MIT/Apache-2.0"
 include = [
 	"/src/",
-	"!/src/wip/",
 	"/Cargo.toml",
 	"/LICENSE*",
 	"/README.md",
@@ -19,23 +18,14 @@ categories = [ "science" ]
 keywords = [ "physics"  ]
 
 [dependencies]
-glam = "^0.20"
-paste = "^1.0"
-# twofloat = "^0.4"
-
-# num = "^0.4"
-# ryu = "^1.0"
-# pretty_dtoa = "^0.3"
+glam = "0.20"
+paste = "1.0"
 
 [dev-dependencies]
-float_eq = "^0.7"
-# approx = "^0.5"
-
-[build-dependencies]
+float_eq = "0.7"
 
 [package.metadata.docs.rs]
 rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
 
 [badges]
-# https://doc.rust-lang.org/cargo/reference/manifest.html#the-badges-section
-maintenance = { status = "actively-developed" }
+maintenance = { status = "experimental" }
