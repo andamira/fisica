@@ -31,7 +31,7 @@ nightly = []
 float_eq = "0.7"
 
 [package.metadata.docs.rs]
-rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
+rustdoc-args = [ "--html-in-header", "./res/rustdoc-header.html" ]
 features = ["nightly"]
 
 [badges]
