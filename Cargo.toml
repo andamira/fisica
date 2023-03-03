@@ -7,15 +7,17 @@ rust-version = "1.57"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/fisica"
 documentation = "https://docs.rs/fisica"
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 include = [
-	"/src/",
+	"/src/**/*.rs",
+	"/res/*",
 	"/Cargo.toml",
-	"/LICENSE*",
 	"/README.md",
+	"/LICENSE-*",
 ]
 categories = [ "science" ]
 keywords = [ "physics"  ]
+publish = true
 
 [dependencies]
 glam = "0.20"
