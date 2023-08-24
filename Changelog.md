@@ -8,8 +8,24 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
+- add features: `alloc`, `no-std`, `safest`, `unsafe`, `unsafest`, `nightly_docs`.
+- add `devela` dependency.
+- add `all` root module.
 - add changelog.
 
+### Removed
+- remove `safe` from the default features.
+- disable `no-std` checks for now.
+
+### Changed
+- remove direct `paste` dependency.
+- update warnings allowances.
+- update `glam` dependency.
+
+### Fixed
+- make it compile without the standard library.
+- update readme and licenses.
+- add missing headers.
 
 ## [0.1.1] - 2023-03-03
 
