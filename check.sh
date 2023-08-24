@@ -4,7 +4,7 @@
 
 set -e # stops on error
 
-MSRV="1.57.0" # sync with readme, Cargo.toml & .github/workflows/check.yml
+MSRV="1.71.1" # sync with readme, Cargo.toml & .github/workflows/check.yml
 RCMD="rustup -v run $MSRV"
 
 rustup override set $MSRV
@@ -22,7 +22,7 @@ rustup target add x86_64-apple-darwin
 #
 # (5) Bare x86_64, softfloat, 64-bit, no-std
 # https://doc.rust-lang.org/nightly/rustc/platform-support/x86_64-unknown-none.html
-# rustup target add x86_64-unknown-none # tier 2 (_64)
+rustup target add x86_64-unknown-none # tier 2 (_64)
 #
 # (6) Linux i686, 32-bit, std, little-endian, (kernel 3.2+, glibc 2.17+)
 # may need to install libc6-dev-amd64-i386-cross for testing
@@ -37,21 +37,21 @@ rustup target add thumbv7m-none-eabi # tier 2 (_thumb)
 
 # check
 cmd="$RCMD cargo c"; echo "std\n$ " $cmd; $cmd
-# cmd="$RCMD cargo cu"; echo "std, unsafe\n$" $cmd; $cmd
-# cmd="$RCMD cargo cn"; echo "no-std, safe\n$" $cmd; $cmd
+cmd="$RCMD cargo cu"; echo "std, unsafe\n$" $cmd; $cmd
+# cmd="$RCMD cargo cn"; echo "no-std\n$" $cmd; $cmd
 
 # check additional targets
-# cmd="$RCMD cargo cuT1"; echo "std, unsafe\n$" $cmd; $cmd
-# cmd="$RCMD cargo cuT2"; echo "std, unsafe\n$" $cmd; $cmd
-# cmd="$RCMD cargo cuT3"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT1"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT2"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT3"; echo "std, unsafe\n$" $cmd; $cmd
 # cmd="$RCMD cargo cnuT5"; echo "no-std, no-alloc, unsafe\n$" $cmd; $cmd
-# cmd="$RCMD cargo cuT6"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT6"; echo "std, unsafe\n$" $cmd; $cmd
 # cmd="$RCMD cargo cnuT7"; echo "no-std, no-alloc, unsafe\n$" $cmd; $cmd
 # cmd="$RCMD cargo cnuT8"; echo "no-std, no-alloc, unsafe\n$" $cmd; $cmd
 
 # test
-# cmd="$RCMD cargo t"; echo "tests\n$" $cmd; $cmd
-# cmd="$RCMD cargo tu"; echo "tests, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo t"; echo "tests\n$" $cmd; $cmd
+cmd="$RCMD cargo tu"; echo "tests, unsafe\n$" $cmd; $cmd
 
 # docs
-# cmd="cargo +nightly nd"; echo "docs\n$" $cmd; $cmd
+cmd="cargo +nightly nd"; echo "docs\n$" $cmd; $cmd
