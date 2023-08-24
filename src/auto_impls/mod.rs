@@ -38,7 +38,7 @@ macro_rules! scalar_methods {
     //
     [$ty:ty, qa=$q:ident, QaL=$QaL:tt, QaM=$QaM:ident, qu=$qu:tt, QuL=$QuL:tt, QuM=$QuM:tt,
      pa=$pa:tt, Pa=$Pa:tt, pu=$pu:tt, Pu=$Pu:tt, f=$f:expr, fu=$fu:expr, bu=$bu:tt] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -211,7 +211,7 @@ macro_rules! scalar_methods {
     //
     [$ty:ty, base, qa=$q:ident, QaL=$QaL:tt, QaM=$QaM:ident, qu=$qu:tt, QuL=$QuL:tt, QuM=$QuM:tt,
      pa=$pa:tt, Pa=$Pa:tt, fu=$fu:expr] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -340,7 +340,7 @@ macro_rules! scalar_methods_2units {
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt,
      f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -467,7 +467,7 @@ macro_rules! scalar_methods_2units {
      Ja=$Ja:ident, q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt, fu=$fu:expr] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -572,7 +572,7 @@ macro_rules! vector_methods {
     // $bu = base unit for conversion, in unicode
     [$ty:ty, qa=$q:ident, Qa=$Q:ident, qu=$qu:tt, Qu=$Qu:tt,
      pa=$pa:tt, Pa=$Pa:tt, pu=$pu:tt, Pu=$Pu:tt, f=$f:expr, fu=$fu:expr, bu=$bu:tt] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -713,7 +713,7 @@ macro_rules! vector_methods {
 
     // ROOT RULE: const base unit, WITHOUT conversion factor
     [$ty:ty, base, qa=$q:ident, Qa=$Q:ident, qu=$qu:tt, Qu=$Qu:tt, pa=$pa:tt, Pa=$Pa:tt, fu=$fu:expr] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -819,7 +819,7 @@ macro_rules! vector_methods_2units {
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt,
      f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -946,7 +946,7 @@ macro_rules! vector_methods_2units {
      Ja=$Ja:ident, q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, P1a=$P1a:tt, P2a=$P2a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, P1u=$P1u:tt, P2u=$P2u:tt, fu=$fu:expr] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -1076,7 +1076,7 @@ macro_rules! vector_methods_3units {
      p1a=$p1a:tt, p2a=$p2a:tt, p3a=$p3a:tt, P1a=$P1a:tt, P2a=$P2a:tt, P3a=$P3a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, p3u=$p3u:tt, P1u=$P1u:tt, P2u=$P2u:tt, P3u=$P3u:tt,
      f=$f:expr, fu=$fu:expr, b1u=$b1u:tt, b2u=$b2u:tt, b3u=$b3u:tt] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -1198,7 +1198,7 @@ macro_rules! vector_methods_3units {
      q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
      p1a=$p1a:tt, p2a=$p2a:tt, p3a=$p3a:tt, P1a=$P1a:tt, P2a=$P2a:tt, P3a=$P3a:tt,
      p1u=$p1u:tt, p2u=$p2u:tt, p3u=$p3u:tt, P1u=$P1u:tt, P2u=$P2u:tt, P3u=$P3u:tt, fu=$fu:expr] => {
-        paste::paste! {
+        devela::paste! {
             // constructors
             #[inline]
             #[allow(non_snake_case)]
@@ -1271,7 +1271,7 @@ macro_rules! vector_methods_3units {
 ///
 macro_rules! impl_scalar_methods {
     [$ty:ty, $q:ident, $Q:ident] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `" $Q "` (`" $q "`)**."]
             #[doc = "- base *const* constructors: [`in_" $q "`](" $ty "#method.in_" $q ")," ]
@@ -1316,7 +1316,7 @@ macro_rules! impl_scalar_methods {
 ///
 macro_rules! impl_scalar_methods_base_kilo {
     [$ty:ty, $q:ident, $Q:ident] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q "` (`k" $q "`)**."]
             #[doc = "- base *const* constructors: [`in_k" $q "`](" $ty "#method.in_k" $q ")," ]
@@ -1361,7 +1361,7 @@ macro_rules! impl_scalar_methods_base_kilo {
 ///
 macro_rules! impl_scalar_methods_square {
     [$ty:ty, qa=$qa:ident, QaL=$QaL:ident, QaM=$QaM:ident, qu=$qu:tt, QuL=$QuL:tt, QuM=$QuM:tt] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             ///
             /// The units are square (10² for 1 step, 10⁶ for 3 steps)
@@ -1432,7 +1432,7 @@ macro_rules! impl_scalar_methods_square {
 ///
 macro_rules! impl_scalar_methods_cubic {
     [$ty:ty, qa=$qa:ident, QaL=$QaL:tt, QaM=$QaM:ident, qu=$qu:literal, QuL=$QuL:tt, QuM=$QuM:tt] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             ///
             /// The units are cubic (10³ for 1 step, 10⁹ for 3 steps)
@@ -1507,7 +1507,7 @@ macro_rules! impl_scalar_methods_cubic {
 ///
 macro_rules! impl_scalar_methods_2units {
     [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `" $Q1a " " $Ja " " $Q2a "` (`" $q1a "/" $q2a "`)**." ]
             #[doc = "- base *const* constructors: [`in_" $q1a _ $q2a "`](" $ty "#method.in_" $q1a _ $q2a ")," ]
@@ -1578,7 +1578,7 @@ macro_rules! impl_scalar_methods_2units {
 macro_rules! impl_scalar_methods_2units_base_kilo {
     [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, q1u=$q1u:tt, q2u=$q2u:tt,
      Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident, Q1u=$Q1u:tt, Q2u=$Q2u:tt] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q1u " " $Ja " " $Q2u
                 "` (`" $q1u "/" $q2u "`)**." ]
@@ -1587,7 +1587,7 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
             #[doc = "- base *const* converters: [`as_k" $q1a _ $q2a "`](" $ty "#method.as_k" $q1a _ $q2a ")," ]
             #[doc = "[`as_kilo" $Q1a _ $Q2a "`](" $ty "#method.as_kilo" $Q1a _ $Q2a ")"]
             impl $ty {
-                paste::paste! {
+                devela::paste! {
                     scalar_methods_2units![$ty, q1a=$q1a, q2a=$q2a, Q1a=$Q1a, Q2a=$Q2a, Ja=$Ja,
                         q1u=$q1u, q2u=$q2u, Q1u=$Q1u, Q2u=$Q2u, p1a="Q", p2a="",
                         P1a="quetta", P2a="", f=1e27, fu="10³⁰", b1u=$q1u, b2u=$q2u];
@@ -1691,7 +1691,7 @@ macro_rules! impl_scalar_methods_2units_base_kilo {
 ///
 macro_rules! impl_vector_methods {
     [$ty:ty, $q:ident, $Q:ident] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `" $Q "`**."]
             #[doc = "- base *const* constructors: [`in_" $q "`](" $ty "#method.in_" $q ")," ]
@@ -1737,7 +1737,7 @@ macro_rules! impl_vector_methods {
 macro_rules! impl_vector_methods_2units {
     [$ty:ty, q1a=$q1a:ident, q2a=$q2a:ident, Q1a=$Q1a:ident, Q2a=$Q2a:ident, Ja=$Ja:ident,
     q1u=$q1u:tt, q2u=$q2u:tt, Q1u=$Q1u:tt, Q2u=$Q2u:tt] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `" $Q1a " " $Ja " " $Q2a "` (`" $q1a "/" $q2a "`)**." ]
             #[doc = "- base *const* constructors: [`in_" $q1a _ $q2a "`](" $ty "#method.in_" $q1a _ $q2a ")," ]
@@ -1826,7 +1826,7 @@ macro_rules! impl_vector_methods_3units_1base_kilo {
      q1a=$q1a:ident, q2a=$q2a:ident, q3a=$q3a:ident, q1u=$q1u:tt, q2u=$q2u:tt, q3u=$q3u:tt,
      Q1a=$Q1a:ident, Q2a=$Q2a:ident, Q3a=$Q3a:ident, Q1u=$Q1u:tt, Q2u=$Q2u:tt, Q3u=$Q3u:tt,
      Ja1=$Ja1:tt, Ja2=$Ja2:tt] => {
-        paste::paste! {
+        devela::paste! {
             /// # SI prefixes constructors: `in_*` & converters `as_*`
             #[doc = "**The `" $ty "` quantity is internally stored in `kilo" $Q1u " " $Ja1 " " $Q2u
                 " per " $Q3u "` (`k" $q1u " " $q2u "/" $q3u "`)**." ]
@@ -1835,7 +1835,7 @@ macro_rules! impl_vector_methods_3units_1base_kilo {
             #[doc = "- base *const* converters: [`as_k" $q1a _$q2a _$q3a "`](" $ty "#method.as_k" $q1a _$q2a _$q3a ")," ]
             #[doc = "[`as_kilo" $Q1a _$Q2a _$Q3a "`](" $ty "#method.as_kilo" $Q1a _$Q2a _$Q3a ")"]
             impl $ty {
-                paste::paste! {
+                devela::paste! {
                     vector_methods_3units![$ty, q1a=$q1a, q2a=$q2a, q3a=$q3a, Q1a=$Q1a, Q2a=$Q2a, Q3a=$Q3a,
                         Ja1=$Ja1, Ja2=$Ja2, q1u=$q1u, q2u=$q2u, q3u=$q3u, Q1u=$Q1u, Q2u=$Q2u, Q3u=$Q3u,
                         p1a="Q", P1a="quetta", f=1e27, fu="10³⁰", b1u=$q1u, b2u=$q2u, b3u=$q3u];

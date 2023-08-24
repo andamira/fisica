@@ -20,8 +20,8 @@ keywords = [ "physics"  ]
 publish = true
 
 [dependencies]
-glam = "0.20"
-paste = "1.0"
+devela = "0.7.1"
+glam = "0.24.1"
 
 [features]
 default = ["std", "safe"]
