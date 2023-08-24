@@ -180,11 +180,27 @@ mod tests {
     /// Checks the constants are defined as expected.
     #[test]
     fn length_constants() {
-        assert_float_eq!(0.00000000001616255, Length::PLANCK.as_ym(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(10., Length::WEAK_FORCE_RANGE.as_am(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(0.833, Length::PROTON_RADIUS.as_fm(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            0.00000000001616255,
+            Length::PLANCK.as_ym(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            10.,
+            Length::WEAK_FORCE_RANGE.as_am(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            0.833,
+            Length::PROTON_RADIUS.as_fm(),
+            r2nd <= Magnitude::EPSILON
+        );
 
-        assert_float_eq!(2.8179403227, Length::ELECTRON_RADIUS.as_fm(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            2.8179403227,
+            Length::ELECTRON_RADIUS.as_fm(),
+            r2nd <= Magnitude::EPSILON
+        );
         assert_float_eq!(
             3.,
             Length::ATOMIC_NUCLEUS_DIAMETER_MIN.as_fm(),
@@ -195,10 +211,26 @@ mod tests {
             Length::ATOMIC_NUCLEUS_DIAMETER_MAX.as_fm(),
             r2nd <= Magnitude::EPSILON
         );
-        assert_float_eq!(5., Length::XRAY_SHORTEST_WAVELENGTH.as_pm(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(28., Length::HELIUM_RADIUS.as_pm(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(52.9177210903, Length::BOHR_RADIUS.as_pm(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(154., Length::COVALENT_BOND_DIAMOND.as_pm(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            5.,
+            Length::XRAY_SHORTEST_WAVELENGTH.as_pm(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            28.,
+            Length::HELIUM_RADIUS.as_pm(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            52.9177210903,
+            Length::BOHR_RADIUS.as_pm(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            154.,
+            Length::COVALENT_BOND_DIAMOND.as_pm(),
+            r2nd <= Magnitude::EPSILON
+        );
     }
 
     /// Checks the formulas behave as expected.
@@ -207,8 +239,16 @@ mod tests {
         // Distance, Speed & Time
         let distance = Distance::from_time_speed(Time::new(25.), Speed::new(12.));
         assert_float_eq!(300., distance.m(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(25., distance.calc_time(Speed::new(12.)).m(), r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(12., distance.calc_speed(Time::new(25.)).m(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            25.,
+            distance.calc_time(Speed::new(12.)).m(),
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            12.,
+            distance.calc_speed(Time::new(25.)).m(),
+            r2nd <= Magnitude::EPSILON
+        );
 
         // Distance, Moment & Force
         let distance = Distance::from_moment_force(
@@ -218,12 +258,16 @@ mod tests {
         assert_float_eq!(0.2, distance.m, r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             6.,
-            distance.calc_moment(Force::new(Direction::new(30., 0., 0.))).m(),
+            distance
+                .calc_moment(Force::new(Direction::new(30., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             30.,
-            distance.calc_force(Moment::new(Direction::new(6., 0., 0.))).m(),
+            distance
+                .calc_force(Moment::new(Direction::new(6., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
     }

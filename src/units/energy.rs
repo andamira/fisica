@@ -84,13 +84,21 @@ mod tests {
     fn energy_formulas() {
         // Energy, Power & Time
         let energy = Energy::from_power_time(Power::new(800.), Time::in_min(3.));
-        assert_float_eq!(Energy::in_kJ(144.).m(), energy.m(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            Energy::in_kJ(144.).m(),
+            energy.m(),
+            r2nd <= Magnitude::EPSILON
+        );
         assert_float_eq!(
             energy.m(),
             Energy::from_time_power(Time::in_min(3.), Power::new(800.)).m(),
             r2nd <= Magnitude::EPSILON,
         );
-        assert_float_eq!(800., energy.calc_power(Time::in_min(3.)).m(), r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            800.,
+            energy.calc_power(Time::in_min(3.)).m(),
+            r2nd <= Magnitude::EPSILON
+        );
         assert_float_eq!(
             Time::in_min(3.).m,
             energy.calc_time(Power::new(800.)).m(),

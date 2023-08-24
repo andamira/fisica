@@ -153,7 +153,14 @@ impl Speed {
     pub const LIGHT_SQUARED: Self = Speed::new(89_875_517_873_681_764.);
 }
 
-impl_scalar_methods_2units![Speed, q1a = m, q2a = s, Q1a = metres, Q2a = second, Ja = per];
+impl_scalar_methods_2units![
+    Speed,
+    q1a = m,
+    q2a = s,
+    Q1a = metres,
+    Q2a = second,
+    Ja = per
+];
 
 #[cfg(test)]
 mod tests {
@@ -171,7 +178,15 @@ mod tests {
         // Distance, Speed & Time
         let speed = Speed::from_distance_time(Distance::in_m(300.), Time::new(25.));
         assert_float_eq!(12., speed.m, r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(25., speed.calc_time(Length::new(300.)).m, r2nd <= Magnitude::EPSILON);
-        assert_float_eq!(300., speed.calc_distance(Time::new(25.)).m, r2nd <= Magnitude::EPSILON);
+        assert_float_eq!(
+            25.,
+            speed.calc_time(Length::new(300.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
+        assert_float_eq!(
+            300.,
+            speed.calc_distance(Time::new(25.)).m,
+            r2nd <= Magnitude::EPSILON
+        );
     }
 }

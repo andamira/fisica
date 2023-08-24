@@ -51,7 +51,14 @@ impl Speed {
     // }
 }
 
-impl_vector_methods_2units![Velocity, q1a = m, q2a = s, Q1a = metres, Q2a = second, Ja = per];
+impl_vector_methods_2units![
+    Velocity,
+    q1a = m,
+    q2a = s,
+    Q1a = metres,
+    Q2a = second,
+    Ja = per
+];
 
 // #[cfg(test)]
 // mod tests {

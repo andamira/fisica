@@ -182,7 +182,13 @@ impl_unit!(Energy, "J", "joule", "joules", joules);
 impl_unit!(Frequency, "Hz", "hertz", "hertzs", hertzs);
 impl_unit!(Power, "W", "watt", "watts", watts);
 impl_unit!(Pressure, "Pa", "pascal", "pascals", pascals);
-impl_unit!(Speed, "m/s", "metre per second", "metres per second", metres_per_second);
+impl_unit!(
+    Speed,
+    "m/s",
+    "metre per second",
+    "metres per second",
+    metres_per_second
+);
 impl_unit!(Volume, "m³", "cubic metre", "cubic metres", cubic_metres);
 
 // vector
@@ -202,7 +208,13 @@ impl_unit!(
     "newtons per kilogram",
     newtons_per_kilogram
 );
-impl_unit!(Moment, "Nm", "newton per metre", "newtons per metre", newtons_per_metre);
+impl_unit!(
+    Moment,
+    "Nm",
+    "newton per metre",
+    "newtons per metre",
+    newtons_per_metre
+);
 impl_unit!(
     Momentum,
     "kg m/s",
@@ -210,4 +222,10 @@ impl_unit!(
     "kilograms metre per second",
     kilograms_metres_per_second
 );
-impl_unit!(Velocity, "m/s", "metre per second", "metres per second", metres_per_second);
+impl_unit!(
+    Velocity,
+    "m/s",
+    "metre per second",
+    "metres per second",
+    metres_per_second
+);

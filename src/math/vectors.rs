@@ -26,7 +26,9 @@ pub type Position = Direction;
 impl Direction {
     /// New `Direction`.
     pub fn new(x: Magnitude, y: Magnitude, z: Magnitude) -> Self {
-        Self { v: V3::new(x, y, z) }
+        Self {
+            v: V3::new(x, y, z),
+        }
     }
 
     pub fn to_array(&self) -> [Magnitude; 3] {
@@ -77,7 +79,9 @@ impl Direction {
     /// \frac{\bm{a}}{|\bm{a}|}
     /// $$
     pub fn normalize(&self) -> Direction {
-        Self { v: self.v.normalize() }
+        Self {
+            v: self.v.normalize(),
+        }
     }
 
     /// Returns the cross product.
@@ -96,7 +100,9 @@ impl Direction {
     /// \end{bmatrix}
     /// $$
     pub fn cross(&self, other: Self) -> Self {
-        Self { v: self.v.cross(other.v) }
+        Self {
+            v: self.v.cross(other.v),
+        }
     }
 
     /// Returns the dot product.
@@ -133,12 +139,16 @@ impl Direction {
 impl Add for Direction {
     type Output = Self;
     fn add(self, other: Self) -> Self {
-        Self { v: self.v + other.v }
+        Self {
+            v: self.v + other.v,
+        }
     }
 }
 impl AddAssign for Direction {
     fn add_assign(&mut self, other: Self) {
-        *self = Self { v: self.v + other.v };
+        *self = Self {
+            v: self.v + other.v,
+        };
     }
 }
 
@@ -147,12 +157,16 @@ impl Sub for Direction {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Self { v: self.v - other.v }
+        Self {
+            v: self.v - other.v,
+        }
     }
 }
 impl SubAssign for Direction {
     fn sub_assign(&mut self, other: Self) {
-        *self = Self { v: self.v - other.v };
+        *self = Self {
+            v: self.v - other.v,
+        };
     }
 }
 

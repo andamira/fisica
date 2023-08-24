@@ -118,12 +118,14 @@ mod tests {
         assert_float_eq!(5., mass.m(), r2nd <= Magnitude::EPSILON);
         assert_float_eq!(
             2.,
-            mass.calc_acceleration(Force::new(Direction::new(10., 0., 0.))).m(),
+            mass.calc_acceleration(Force::new(Direction::new(10., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
         assert_float_eq!(
             10.,
-            mass.calc_force(Acceleration::new(Direction::new(2., 0., 0.))).m(),
+            mass.calc_force(Acceleration::new(Direction::new(2., 0., 0.)))
+                .m(),
             r2nd <= Magnitude::EPSILON
         );
     }
