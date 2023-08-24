@@ -11,13 +11,47 @@
 use crate::Magnitude;
 use core::fmt;
 
+pub use all::*;
+pub(crate) mod all {
+    // base quantities
+    #[doc(inline)]
+    pub use super::{
+        amount::Amount,
+        current::Current,
+        intensity::Intensity,
+        length::{Distance, Height, Length},
+        mass::Mass,
+        temperature::Temperature,
+        time::Time,
+    };
+
+    // derived quantities
+    #[doc(inline)]
+    pub use super::{
+        acceleration::Acceleration,
+        area::Area,
+        charge::Charge,
+        density::Density,
+        energy::{Energy, Work},
+        force::{Force, Weight},
+        frequency::Frequency,
+        gfs::{Gfs, GravitationalFieldStrength},
+        moment::{Moment, Torque},
+        momentum::Momentum,
+        power::Power,
+        pressure::Pressure,
+        speed::Speed,
+        velocity::Velocity,
+        volume::Volume,
+    };
+}
+
 // Base quantities
 //
 // - https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
 // - https://en.wikipedia.org/wiki/Physical_quantity#Base_quantities
 //
 // The 7 base units
-//
 // - https://en.wikipedia.org/wiki/2019_redefinition_of_the_SI_base_units
 
 mod amount;
@@ -28,21 +62,12 @@ mod mass;
 mod temperature;
 mod time;
 
-pub use amount::Amount;
-pub use current::Current;
-pub use intensity::Intensity;
-pub use length::{Distance, Height, Length};
-pub use mass::Mass;
-pub use temperature::Temperature;
-pub use time::Time;
-
 // Derived quantities
 //
 // - https://en.wikipedia.org/wiki/International_System_of_Quantities#Derived_quantities
 // - https://en.wikipedia.org/wiki/Physical_quantity#General_derived_quantities
 
-// scalar
-
+// scalar:
 mod area; // Length²
 mod charge;
 mod density;
@@ -53,30 +78,13 @@ mod pressure;
 mod speed; // Length / Time
 mod volume; // Length³
 
-// vector
-
+// vector:
 mod acceleration; // Length / Time²
 mod force;
 mod gfs; // Force × Mass
 mod moment; // Force × Length
 mod momentum; // Mass × Length / Time
 mod velocity; // Length / Time
-
-pub use acceleration::Acceleration;
-pub use area::Area;
-pub use charge::Charge;
-pub use density::Density;
-pub use energy::{Energy, Work};
-pub use force::{Force, Weight};
-pub use frequency::Frequency;
-pub use gfs::{Gfs, GravitationalFieldStrength};
-pub use moment::{Moment, Torque};
-pub use momentum::Momentum;
-pub use power::Power;
-pub use pressure::Pressure;
-pub use speed::Speed;
-pub use velocity::Velocity;
-pub use volume::Volume;
 
 // thematic sub-modules
 
@@ -89,6 +97,7 @@ pub use volume::Volume;
 /// [0]:https://en.wikipedia.org/wiki/Classical_mechanics
 /// [1]:https://en.wikipedia.org/wiki/Motion_(physics)
 pub mod kinematics {
+    #[doc(inline)]
     pub use crate::units::{Distance, Length, Speed, Time};
 }
 
@@ -101,6 +110,7 @@ pub mod kinematics {
 /// [1]:https://en.wikipedia.org/wiki/Force_(physics)
 /// [2]:https://en.wikipedia.org/wiki/Motion_(physics)
 pub mod dynamics {
+    #[doc(inline)]
     pub use crate::units::{Force, Velocity};
 }
 
