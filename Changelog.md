@@ -18,7 +18,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 - remove `safe` from the default features.
-- disable `no-std` checks for now.
 
 ### Changed
 - remove direct `paste` dependency.
@@ -26,7 +25,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update `glam` dependency.
 
 ### Fixed
-- make it compile without the standard library.
+- make it compile without the standard library
+  (although it doesn't yet support no-std because of `glam`).
 - update readme and licenses.
 - add missing headers.
 
