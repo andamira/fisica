@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+
+## [0.2.0] - 2023-08-24
+
 ### Added
 - add features: `alloc`, `no-std`, `safest`, `unsafe`, `unsafest`, `nightly_docs`.
 - add `devela` dependency.
@@ -40,7 +43,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 First release
 
 
-[unreleased]: https://github.com/andamira/fisica/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/andamira/fisica/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/andamira/fisica/releases/tag/v0.2.0
 [0.1.1]: https://github.com/andamira/fisica/releases/tag/v0.1.1
 [0.1.0]: https://github.com/andamira/fisica/releases/tag/v0.1.0
 
