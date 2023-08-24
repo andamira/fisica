@@ -1,4 +1,4 @@
-// fisica
+// fisica::lib
 //
 //! A physics library
 //

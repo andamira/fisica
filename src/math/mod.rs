@@ -1,3 +1,5 @@
+// fisica::math
+//
 //! # The math
 //!
 //! ## Vectors

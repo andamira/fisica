@@ -1,4 +1,7 @@
+// fisica::auto_impls
+//
 //! SI prefixes
+//
 
 #[cfg(test)]
 #[cfg(feature = "alloc")]

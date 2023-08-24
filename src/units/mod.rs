@@ -1,9 +1,12 @@
+// fisica::units
+//
 //! All the physical units
 //!
 //! External links:
 //! - <https://en.wikipedia.org/wiki/International_System_of_Units>
 //! - <https://en.wikipedia.org/wiki/SI_unit>
 //! - <https://en.wikipedia.org/wiki/Order_of_magnitude>
+//
 
 use crate::Magnitude;
 use core::fmt;
