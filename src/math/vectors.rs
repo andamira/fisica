@@ -1,6 +1,6 @@
 //!
 
-use std::{
+use core::{
     fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };

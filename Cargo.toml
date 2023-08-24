@@ -15,7 +15,7 @@ include = [
 	"/README.md",
 	"/LICENSE-*",
 ]
-categories = [ "science" ]
+categories = [ "science", "no-std::no-alloc" ]
 keywords = [ "physics"  ]
 publish = true
 

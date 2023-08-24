@@ -1,6 +1,7 @@
 //! SI prefixes
 
 #[cfg(test)]
+#[cfg(feature = "alloc")]
 mod tests;
 
 /// Generates 2 constructors and 2 getters, for scalar quantities.
