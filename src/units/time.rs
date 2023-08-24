@@ -7,9 +7,12 @@ use crate::Magnitude;
 /// `Time`, in seconds: `s`.
 ///
 ///
-/// It is defined as the duration of 9.19263177e9 periods of the radiation
-/// corresponding to the transition between two hyperfine levels of the
-/// ground state of the caesium 133 atom.
+/// It is defined precisely as the duration of 9.19263177e9 periods of the
+/// radiation corresponding to the transition between two hyperfine levels
+/// of the ground state of the caesium 133 atom.
+///
+/// More practically, it is the time of a single swing for a pendulum in Earth
+/// 0.994m long.
 ///
 /// # External links
 /// - <https://en.wikipedia.org/wiki/Time_in_physics>
@@ -106,7 +109,7 @@ impl Time {
     /// [0]:https://en.wikipedia.org/wiki/Year#Full_moon_cycle
     pub const FULL_MOON_CYCLE: Self = Time::new(35578174.777056);
 
-    /// [*Draconic Year*][0] (`346 days 14 hours 52 minuets 54 seconds`).
+    /// [*Draconic Year*][0] (`346 days 14 hours 52 minutes 54 seconds`).
     ///
     /// [0]:https://en.wikipedia.org/wiki/Year#Draconic_year
     pub const DRACONIC_YEAR: Self = Time::new(29947974.5562912);

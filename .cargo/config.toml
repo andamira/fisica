@@ -1,5 +1,5 @@
 [build]
-
+rustdocflags = [ "--html-in-header", "./res/rustdoc-header.html"]
 
 [alias]
 # additional targets:
